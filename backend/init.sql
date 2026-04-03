@@ -20,10 +20,11 @@ CREATE TABLE IF NOT EXISTS reports (
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
     bounty DECIMAL(10, 2) DEFAULT 0.00,
     admin_notes TEXT,
+    evidence_url TEXT,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ensure columns exist for Day 3 (in case tables were already created)
+-- Ensure columns exist for Day 3 & 4 (in case tables were already created)
 DO $$
 BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reports' AND column_name='bounty') THEN
@@ -32,5 +33,9 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reports' AND column_name='admin_notes') THEN
         ALTER TABLE reports ADD COLUMN admin_notes TEXT;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reports' AND column_name='evidence_url') THEN
+        ALTER TABLE reports ADD COLUMN evidence_url TEXT;
     END IF;
 END $$;

@@ -51,6 +51,7 @@ router.patch("/reports/:id", async (req, res, next) => {
     if (severity) { fields.push(`severity = $${idx++}`); values.push(severity); }
     if (bounty !== undefined) { fields.push(`bounty = $${idx++}`); values.push(bounty); }
     if (admin_notes !== undefined) { fields.push(`admin_notes = $${idx++}`); values.push(admin_notes); }
+    if (evidence_url !== undefined) { fields.push(`evidence_url = $${idx++}`); values.push(evidence_url); }
 
     if (fields.length === 0) {
       return res.status(400).json({ error: "No fields to update" });

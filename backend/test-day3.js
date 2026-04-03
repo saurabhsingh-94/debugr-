@@ -1,4 +1,4 @@
-const BASE_URL = "http://localhost:3000/api";
+const BASE_URL = "https://debugr-backend-production.up.railway.app/api";
 
 const runTest = async () => {
   try {
@@ -12,8 +12,17 @@ const runTest = async () => {
       body: JSON.stringify({ email: researcherEmail, password: "password123" })
     });
     const regData = await regRes.json();
-    const resToken = regData.token;
     console.log("✅ Researcher registered.");
+
+    console.log("1b. Logging in as Researcher...");
+    const loginRes = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: researcherEmail, password: "password123" })
+    });
+    const loginData = await loginRes.json();
+    const resToken = loginData.token;
+    console.log("✅ Researcher logged in.");
 
     console.log("2. Submitting Bug Report...");
     const reportRes = await fetch(`${BASE_URL}/reports`, {
@@ -29,6 +38,10 @@ const runTest = async () => {
       })
     });
     const reportData = await reportRes.json();
+    if (!reportData.success) {
+      console.error("❌ Report submission failed:", reportData);
+      throw new Error("Report submission failed");
+    }
     const reportId = reportData.report.id;
     console.log(`✅ Report submitted (ID: ${reportId})`);
 
