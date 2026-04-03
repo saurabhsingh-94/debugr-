@@ -1,19 +1,28 @@
-import express from "express";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
+import { body } from "express-validator";
+import validate from "../middleware/validator.js";
 import { pool } from "../db.js";
 
 const router = express.Router();
 console.log("🔐 Auth routes initialized");
 
+// Register validation rules
+const registerValidation = [
+  body("email").isEmail().withMessage("Must be a valid email"),
+  body("password").isLength({ min: 6 }).withMessage("Password must be at least 6 characters"),
+  validate
+];
+
+// Login validation rules
+const loginValidation = [
+  body("email").isEmail().withMessage("Must be a valid email"),
+  body("password").notEmpty().withMessage("Password is required"),
+  validate
+];
+
 // Register
-router.post("/register", async (req, res, next) => {
+router.post("/register", registerValidation, async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
-    }
 
     // Check if user exists
     const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
@@ -41,13 +50,9 @@ router.post("/register", async (req, res, next) => {
 });
 
 // Login
-router.post("/login", async (req, res, next) => {
+router.post("/login", loginValidation, async (req, res, next) => {
   try {
     const { email, password } = req.body;
-
-    if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
-    }
 
     // Find user
     const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);

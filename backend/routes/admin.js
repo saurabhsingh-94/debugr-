@@ -2,25 +2,68 @@ import express from "express";
 import { pool } from "../db.js";
 import authMiddleware from "../middleware/auth.js";
 import adminMiddleware from "../middleware/admin.js";
+import sendEmail from "../utils/mailer.js";
 
 const router = express.Router();
 
 // Apply auth and admin middleware to all routes in this file
 router.use(authMiddleware, adminMiddleware);
 
-// GET ALL reports (for Triage)
-router.get("/reports", async (req, res, next) => {
+// GET Statistics for Admin Dashboard
+router.get("/stats", async (req, res, next) => {
   try {
-    const result = await pool.query(`
-      SELECT r.*, u.email as researcher_email 
-      FROM reports r 
-      JOIN users u ON r.user_id = u.id 
-      ORDER BY r.created_at DESC
+    const stats = await pool.query(`
+      SELECT 
+        COUNT(*) as total_reports,
+        COUNT(*) FILTER (WHERE status = 'open') as open_reports,
+        COUNT(*) FILTER (WHERE severity = 'critical') as critical_bugs,
+        COALESCE(SUM(bounty), 0) as total_bounties_paid
+      FROM reports
     `);
+
+    const users = await pool.query("SELECT COUNT(*) as total_users FROM users WHERE role = 'researcher'");
 
     res.json({
       success: true,
-      count: result.rows.length,
+      stats: {
+        ...stats.rows[0],
+        total_users: users.rows[0].total_users
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+// GET ALL reports (with Pagination and Filtering)
+router.get("/reports", async (req, res, next) => {
+  try {
+    const { page = 1, limit = 10, status } = req.query;
+    const offset = (page - 1) * limit;
+
+    let query = `
+      SELECT r.*, u.email as researcher_email 
+      FROM reports r 
+      JOIN users u ON r.user_id = u.id 
+    `;
+    const values = [];
+
+    if (status) {
+      query += " WHERE r.status = $1 ";
+      values.push(status);
+    }
+
+    query += ` ORDER BY r.created_at DESC LIMIT $${values.length + 1} OFFSET $${values.length + 2}`;
+    values.push(parseInt(limit), parseInt(offset));
+
+    const result = await pool.query(query, values);
+    const countResult = await pool.query("SELECT COUNT(*) FROM reports" + (status ? " WHERE status = $1" : ""), status ? [status] : []);
+
+    res.json({
+      success: true,
+      total: parseInt(countResult.rows[0].count),
+      page: parseInt(page),
+      limit: parseInt(limit),
       reports: result.rows
     });
   } catch (err) {
@@ -32,10 +75,16 @@ router.get("/reports", async (req, res, next) => {
 router.patch("/reports/:id", async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { status, severity, bounty, admin_notes } = req.body;
+    const { status, severity, bounty, admin_notes, evidence_url } = req.body;
 
-    // Check if report exists
-    const checkResult = await pool.query("SELECT * FROM reports WHERE id = $1", [id]);
+    // Check if report exists and get researcher email
+    const checkResult = await pool.query(`
+      SELECT r.*, u.email as researcher_email 
+      FROM reports r
+      JOIN users u ON r.user_id = u.id
+      WHERE r.id = $1
+    `, [id]);
+    
     if (checkResult.rows.length === 0) {
       return res.status(404).json({ error: "Report not found" });
     }
@@ -63,9 +112,26 @@ router.patch("/reports/:id", async (req, res, next) => {
       values
     );
 
+    const updatedReport = updateResult.rows[0];
+
+    // Notification: researcher update
+    if (status || bounty !== undefined) {
+      const subject = bounty !== undefined ? `💰 Bounty Awarded: ${updatedReport.title}` : `📉 Status Updated: ${updatedReport.title}`;
+      const msg = bounty !== undefined 
+        ? `Congratulations! You have been awarded a bounty of $${bounty} for your report "${updatedReport.title}".`
+        : `Your bug report "${updatedReport.title}" has been updated to "${status}".`;
+
+      await sendEmail(
+        checkResult.rows[0].researcher_email,
+        subject,
+        msg,
+        `<h3>Platform Update</h3><p>${msg}</p><p>Keep up the great work!</p>`
+      );
+    }
+
     res.json({
       success: true,
-      report: updateResult.rows[0]
+      report: updatedReport
     });
   } catch (err) {
     next(err);

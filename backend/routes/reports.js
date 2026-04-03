@@ -1,21 +1,23 @@
-import express from "express";
-import { pool } from "../db.js";
-import authMiddleware from "../middleware/auth.js";
-import upload from "../middleware/upload.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
+import sendEmail from "../utils/mailer.js";
 
 const router = express.Router();
+// ... (omitting validation for brevity in replace)
+// Report validation rules
+const reportValidation = [
+  body("title").trim().isLength({ min: 5, max: 200 }).withMessage("Title must be between 5 and 200 characters"),
+  body("description").trim().isLength({ min: 20 }).withMessage("Description must be at least 20 characters"),
+  body("severity").isIn(["low", "medium", "high", "critical"]).withMessage("Invalid severity level"),
+  validate
+];
 
 // Create a new report (Authenticated) with optional Evidence Upload
-router.post("/", authMiddleware, upload.single("evidence"), async (req, res, next) => {
+router.post("/", authMiddleware, upload.single("evidence"), reportValidation, async (req, res, next) => {
   try {
     const { title, description, severity } = req.body;
     const userId = req.user.id;
+    const userEmail = req.user.email;
     let evidence_url = null;
-
-    if (!title || !description || !severity) {
-      return res.status(400).json({ error: "Title, description, and severity are required" });
-    }
 
     // Handle file upload if present
     if (req.file) {
@@ -35,9 +37,19 @@ router.post("/", authMiddleware, upload.single("evidence"), async (req, res, nex
       [title, description, severity, userId, evidence_url]
     );
 
+    const report = newReport.rows[0];
+
+    // Notification: Researcher confirmation
+    await sendEmail(
+      userEmail,
+      `[Debugr] Bug Report Submitted: ${title}`,
+      `Hi! We received your report "${title}". Our triage team is reviewing it. Current Status: ${report.status}`,
+      `<h2>Report Confirmed</h2><p>Hi!</p><p>We received your report "<strong>${title}</strong>".</p><p>Status: <span style="color: blue;">${report.status}</span></p><p>Our triage team will review it soon.</p>`
+    );
+
     res.status(201).json({
       success: true,
-      report: newReport.rows[0]
+      report
     });
   } catch (err) {
     next(err);
