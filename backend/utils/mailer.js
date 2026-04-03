@@ -1,25 +1,36 @@
 import nodemailer from "nodemailer";
-import dotenv from "dotenv";
+import config from "../config/config.js";
+import logger from "./logger.js";
 
-dotenv.config();
-
-// Create a transporter
-// In production, you'd use SMTP keys. For now, we use a "Logger" transporter.
-const transporter = nodemailer.createTransport({
-  jsonTransport: true // This will log the "sent" email as JSON to the console
-});
-
-// To use real SMTP later, you'd do:
-/*
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: process.env.SMTP_PORT,
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS
+/**
+ * Creates a transporter based on environment configuration.
+ * Falls back to jsonTransport for development/testing if no SMTP provided.
+ */
+const createTransporter = () => {
+  const { smtp } = config;
+  
+  if (smtp.host && smtp.user && smtp.pass) {
+    logger.info(`📧 Using Real SMTP: ${smtp.host}`);
+    return nodemailer.createTransport({
+      host: smtp.host,
+      port: smtp.port || 587,
+      auth: {
+        user: smtp.user,
+        pass: smtp.pass,
+      },
+      tls: {
+        rejectUnauthorized: true
+      }
+    });
   }
-});
-*/
+
+  logger.warn("⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.");
+  return nodemailer.createTransport({
+    jsonTransport: true
+  });
+};
+
+const transporter = createTransporter();
 
 /**
  * Sends a transactional email
@@ -31,21 +42,24 @@ const transporter = nodemailer.createTransport({
 export const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
-      from: '"Debugr Platform" <noreply@debugr.io>',
+      from: `"Debugr Platform" <${config.smtp.user || "noreply@debugr.io"}>`,
       to,
       subject,
       text,
       html
     });
 
-    console.log(`[Email Sent] To: ${to} | Subject: ${subject}`);
+    logger.info(`[Email Sent] To: ${to} | Subject: ${subject}`);
+    
     if (transporter.options.jsonTransport) {
-      console.log("[Email Content]", info.message);
+      logger.debug(`[Email Mock Content] ${JSON.stringify(info.message)}`);
     }
+    
     return info;
   } catch (err) {
-    console.error(`[Email Error] Failed to send email to ${to}:`, err.message);
-    // Don't throw - we don't want email failures to crash the API request
+    logger.error(`[Email Error] Failed to send email to ${to}: ${err.message}`);
+    // Non-blocking error: don't throw, just log
+    return null;
   }
 };
 

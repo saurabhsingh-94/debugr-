@@ -1,0 +1,4 @@
+2026-04-03 18:04:33:433 error: config is not defined - ReferenceError: config is not defined
+    at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7
+2026-04-03 18:05:22:522 error: config is not defined - ReferenceError: config is not defined
+    at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7

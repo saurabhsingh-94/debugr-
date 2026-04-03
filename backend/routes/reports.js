@@ -6,6 +6,8 @@ import authMiddleware from "../middleware/auth.js";
 import upload from "../middleware/upload.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import sendEmail from "../utils/mailer.js";
+import { logActivity } from "../utils/activity.js";
+import logger from "../utils/logger.js";
 
 const router = express.Router();
 
@@ -30,7 +32,7 @@ router.post("/", authMiddleware, upload.single("evidence"), reportValidation, as
       try {
         evidence_url = await uploadToCloudinary(req.file.buffer);
       } catch (uploadErr) {
-        console.error("Cloudinary Upload Error:", uploadErr);
+        logger.error("Cloudinary Upload Error: " + uploadErr.message);
         return res.status(500).json({ 
           error: "Failed to upload evidence to cloud", 
           details: uploadErr.message 
@@ -44,6 +46,12 @@ router.post("/", authMiddleware, upload.single("evidence"), reportValidation, as
     );
 
     const report = newReport.rows[0];
+
+    // Log the initial submission (Day 5)
+    await logActivity(report.id, userId, "report_submitted", { 
+      severity, 
+      has_evidence: !!evidence_url 
+    });
 
     // Notification: Researcher confirmation
     await sendEmail(

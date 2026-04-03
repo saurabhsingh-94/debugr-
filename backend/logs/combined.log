@@ -1,0 +1,68 @@
+2026-04-03 18:04:22:422 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 18:04:22:422 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 18:04:26:426 info: ✅ Database initialized successfully
+2026-04-03 18:04:33:433 info: ::1 - - [03/Apr/2026:12:34:33 +0000] "POST /api/auth/register HTTP/1.1" 400 185 "-" "node"
+2026-04-03 18:04:33:433 error: config is not defined - ReferenceError: config is not defined
+    at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7
+2026-04-03 18:04:33:433 info: ::1 - - [03/Apr/2026:12:34:33 +0000] "POST /api/auth/login HTTP/1.1" 500 49 "-" "node"
+2026-04-03 18:04:33:433 info: ::1 - - [03/Apr/2026:12:34:33 +0000] "PATCH /api/admin/reports/any-uuid HTTP/1.1" 401 36 "-" "node"
+2026-04-03 18:04:33:433 warn: 403 - Not allowed by CORS
+2026-04-03 18:04:33:433 info: ::1 - - [03/Apr/2026:12:34:33 +0000] "GET /api/unknown-route HTTP/1.1" 404 27 "-" "node"
+2026-04-03 18:05:09:59 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 18:05:09:59 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 18:05:12:512 info: ✅ Database initialized successfully
+2026-04-03 18:05:19:519 info: ::1 - - [03/Apr/2026:12:35:19 +0000] "POST /api/auth/register HTTP/1.1" 400 185 "-" "node"
+2026-04-03 18:05:22:522 info: ::1 - - [03/Apr/2026:12:35:22 +0000] "POST /api/auth/login HTTP/1.1" - - "-" "node"
+2026-04-03 18:05:22:522 error: config is not defined - ReferenceError: config is not defined
+    at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7
+2026-04-03 18:05:59:559 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 18:05:59:559 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 18:06:01:61 info: ✅ Database initialized successfully
+2026-04-03 18:06:08:68 info: ::1 - - [03/Apr/2026:12:36:08 +0000] "POST /api/auth/register HTTP/1.1" 400 185 "-" "node"
+2026-04-03 18:06:08:68 info: ::1 - - [03/Apr/2026:12:36:08 +0000] "POST /api/auth/login HTTP/1.1" 200 362 "-" "node"
+2026-04-03 18:06:08:68 info: ::1 - - [03/Apr/2026:12:36:08 +0000] "PATCH /api/admin/reports/any-uuid HTTP/1.1" 400 96 "-" "node"
+2026-04-03 18:06:09:69 warn: 403 - Not allowed by CORS
+2026-04-03 18:06:09:69 warn: 404 - Route not found
+2026-04-03 18:06:09:69 info: ::1 - - [03/Apr/2026:12:36:09 +0000] "GET /api/unknown-route HTTP/1.1" 404 43 "-" "node"
+2026-04-03 19:11:55:1155 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 19:11:55:1155 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 19:11:59:1159 info: ✅ Database initialized successfully
+2026-04-03 19:12:56:1256 info: ::1 - - [03/Apr/2026:13:42:56 +0000] "POST /api/auth/register HTTP/1.1" 201 161 "-" "node"
+2026-04-03 19:12:56:1256 info: ::1 - - [03/Apr/2026:13:42:56 +0000] "POST /api/auth/login HTTP/1.1" 200 388 "-" "node"
+2026-04-03 19:12:57:1257 warn: 401 - Invalid credentials
+2026-04-03 19:12:57:1257 info: ::1 - - [03/Apr/2026:13:42:57 +0000] "POST /api/auth/login HTTP/1.1" 401 47 "-" "node"
+2026-04-03 19:16:26:1626 warn: 400 - User already exists
+2026-04-03 19:16:26:1626 info: ::1 - - [03/Apr/2026:13:46:26 +0000] "POST /api/auth/register HTTP/1.1" 400 47 "-" "node"
+2026-04-03 19:16:26:1626 info: ::1 - - [03/Apr/2026:13:46:26 +0000] "POST /api/auth/login HTTP/1.1" 200 388 "-" "node"
+2026-04-03 19:16:26:1626 warn: 401 - Invalid credentials
+2026-04-03 19:16:26:1626 info: ::1 - - [03/Apr/2026:13:46:26 +0000] "POST /api/auth/login HTTP/1.1" 401 47 "-" "node"
+2026-04-03 19:18:16:1816 warn: 400 - User already exists
+2026-04-03 19:18:16:1816 info: ::1 - - [03/Apr/2026:13:48:16 +0000] "POST /api/auth/register HTTP/1.1" 400 47 "-" "node"
+2026-04-03 19:18:16:1816 info: ::1 - - [03/Apr/2026:13:48:16 +0000] "POST /api/auth/login HTTP/1.1" 200 388 "-" "node"
+2026-04-03 19:18:17:1817 info: ::1 - - [03/Apr/2026:13:48:17 +0000] "POST /api/auth/login HTTP/1.1" 200 362 "-" "node"
+2026-04-03 19:18:18:1818 info: 📝 Activity Logged [report_submitted] on report 66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 by user 3a4ce074-2723-4040-8b76-55a504a0ba3d
+2026-04-03 19:18:18:1818 info: [Email Sent] To: researcher5@debugr.io | Subject: [Debugr] Bug Report Submitted: Day 5 Audit Test Bug
+2026-04-03 19:18:18:1818 info: ::1 - - [03/Apr/2026:13:48:18 +0000] "POST /api/reports HTTP/1.1" 201 346 "-" "node"
+2026-04-03 19:18:19:1819 info: 📝 Activity Logged [comment_added] on report 66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 by user 3a4ce074-2723-4040-8b76-55a504a0ba3d
+2026-04-03 19:18:19:1819 info: ::1 - - [03/Apr/2026:13:48:19 +0000] "POST /api/comments/66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 HTTP/1.1" 201 277 "-" "node"
+2026-04-03 19:18:21:1821 info: 📝 Activity Logged [comment_added] on report 66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 by user 27a15724-bdb5-46a4-823b-290c7fc2d889
+2026-04-03 19:18:21:1821 info: ::1 - - [03/Apr/2026:13:48:21 +0000] "POST /api/comments/66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 HTTP/1.1" 201 282 "-" "node"
+2026-04-03 19:18:21:1821 info: ::1 - - [03/Apr/2026:13:48:21 +0000] "GET /api/comments/66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 HTTP/1.1" 200 342 "-" "node"
+2026-04-03 19:18:22:1822 info: ::1 - - [03/Apr/2026:13:48:22 +0000] "GET /api/comments/66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 HTTP/1.1" 200 649 "-" "node"
+2026-04-03 19:18:24:1824 info: 📝 Activity Logged [status_updated] on report 66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 by user 27a15724-bdb5-46a4-823b-290c7fc2d889
+2026-04-03 19:18:24:1824 info: 📝 Activity Logged [bounty_updated] on report 66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 by user 27a15724-bdb5-46a4-823b-290c7fc2d889
+2026-04-03 19:18:24:1824 info: [Email Sent] To: researcher5@debugr.io | Subject: 💰 Bounty Awarded: Day 5 Audit Test Bug
+2026-04-03 19:18:24:1824 info: ::1 - - [03/Apr/2026:13:48:24 +0000] "PATCH /api/admin/reports/66f831d2-ee7a-4aa8-9cb5-e72f62c7c267 HTTP/1.1" 200 349 "-" "node"
+2026-04-03 19:18:26:1826 info: ::1 - - [03/Apr/2026:13:48:26 +0000] "GET /api/users/profile/me HTTP/1.1" 200 258 "-" "node"
+2026-04-03 19:18:26:1826 info: ::1 - - [03/Apr/2026:13:48:26 +0000] "GET /api/users/leaderboard HTTP/1.1" 200 155 "-" "node"
+2026-04-03 20:03:20:320 warn: 404 - Route not found
+2026-04-03 20:03:20:320 info: ::1 - - [03/Apr/2026:14:33:20 +0000] "GET / HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-03 20:03:20:320 warn: 404 - Route not found
+2026-04-03 20:03:20:320 info: ::1 - - [03/Apr/2026:14:33:20 +0000] "GET /favicon.ico HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-03 20:03:22:322 warn: 404 - Route not found
+2026-04-03 20:03:22:322 info: ::1 - - [03/Apr/2026:14:33:22 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-03 20:30:49:3049 warn: 403 - Not allowed by CORS
+2026-04-03 20:33:38:3338 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 20:33:38:3338 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-03 20:33:38:3338 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 20:33:40:3340 info: ✅ Database initialized successfully

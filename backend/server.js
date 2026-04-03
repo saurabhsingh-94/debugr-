@@ -9,28 +9,48 @@ import { pool, initDB } from "./db.js";
 import authRoutes from "./routes/auth.js";
 import reportRoutes from "./routes/reports.js";
 import adminRoutes from "./routes/admin.js";
+import commentRoutes from "./routes/comments.js";
+import userRoutes from "./routes/users.js";
+import logger from "./utils/logger.js";
+import ApiError from "./utils/ApiError.js";
 
 dotenv.config();
+
+import config from "./config/config.js";
 
 const app = express();
 
 // Security & Performance Middleware
 app.use(helmet());
 app.use(compression());
-app.use(cors());
+
+// CORS with Whitelist from Config
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || config.corsWhitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new ApiError(403, `Origin ${origin} not allowed by CORS`));
+    }
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
 app.use(express.json());
-app.use(morgan("dev"));
+
+// Professional Logging (Morgan + Winston)
+app.use(morgan("combined", { stream: { write: (message) => logger.info(message.trim()) } }));
 
 // Rate Limiting
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
+  max: 100,
   message: { error: "Too many requests from this IP, please try again after 15 minutes" }
 });
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20, // Stricter limit for auth & reports
+  max: 20,
   message: { error: "Too many attempts, please try again later" }
 });
 
@@ -55,7 +75,7 @@ app.get("/db-test", async (req, res, next) => {
       time: result.rows[0].now 
     });
   } catch (err) {
-    next(err);
+    next(new ApiError(500, "Database connection error", false, err.stack));
   }
 });
 
@@ -63,24 +83,35 @@ app.get("/db-test", async (req, res, next) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/comments", commentRoutes);
+app.use("/api/users", userRoutes);
 
 // 404 Handler
-app.use((req, res) => {
-  res.status(404).json({ error: "Route not found" });
+app.use((req, res, next) => {
+  next(new ApiError(404, "Route not found"));
 });
 
 // Global Error Handler
 app.use((err, req, res, next) => {
-  console.error(`[Error] ${err.message}`);
-  res.status(500).json({ 
+  let { statusCode, message } = err;
+
+  if (!err.isOperational) {
+    statusCode = 500;
+    message = "Internal Server Error";
+    logger.error(`${err.message} - ${err.stack}`);
+  } else {
+    logger.warn(`${statusCode} - ${message}`);
+  }
+
+  res.status(statusCode || 500).json({ 
     success: false,
-    error: err.message,
+    error: message,
     stack: process.env.NODE_ENV === "development" ? err.stack : undefined
   });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
-  console.log(`🚀 Server running on port ${PORT}`);
+  logger.info(`🚀 Server running on port ${PORT} in ${process.env.NODE_ENV || "development"} mode`);
   await initDB();
 });

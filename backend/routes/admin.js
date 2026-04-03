@@ -2,7 +2,13 @@ import express from "express";
 import { pool } from "../db.js";
 import authMiddleware from "../middleware/auth.js";
 import adminMiddleware from "../middleware/admin.js";
+import { body } from "express-validator";
+import validate from "../middleware/validator.js";
 import sendEmail from "../utils/mailer.js";
+import ApiError from "../utils/ApiError.js";
+import logger from "../utils/logger.js";
+import { logActivity } from "../utils/activity.js";
+import redis from "../utils/redis.js";
 
 const router = express.Router();
 
@@ -15,7 +21,7 @@ router.get("/stats", async (req, res, next) => {
     const stats = await pool.query(`
       SELECT 
         COUNT(*) as total_reports,
-        COUNT(*) FILTER (WHERE status = 'open') as open_reports,
+        COUNT(*) FILTER (WHERE status = 'pending') as pending_reports,
         COUNT(*) FILTER (WHERE severity = 'critical') as critical_bugs,
         COALESCE(SUM(bounty), 0) as total_bounties_paid
       FROM reports
@@ -72,7 +78,15 @@ router.get("/reports", async (req, res, next) => {
 });
 
 // Update Report Status/Severity/Bounty
-router.patch("/reports/:id", async (req, res, next) => {
+router.patch(
+  "/reports/:id",
+  [
+    body("status").optional().isIn(["pending", "triaged", "resolved", "closed"]).withMessage("Invalid status"),
+    body("severity").optional().isIn(["low", "medium", "high", "critical"]).withMessage("Invalid severity"),
+    body("bounty").optional().isFloat({ min: 0 }).withMessage("Bounty must be a non-negative number"),
+    validate
+  ],
+  async (req, res, next) => {
   try {
     const { id } = req.params;
     const { status, severity, bounty, admin_notes, evidence_url } = req.body;
@@ -86,7 +100,7 @@ router.patch("/reports/:id", async (req, res, next) => {
     `, [id]);
     
     if (checkResult.rows.length === 0) {
-      return res.status(404).json({ error: "Report not found" });
+      throw new ApiError(404, "Report not found");
     }
 
     const currentReport = checkResult.rows[0];
@@ -94,16 +108,29 @@ router.patch("/reports/:id", async (req, res, next) => {
     // Build update query dynamically
     const fields = [];
     const values = [];
+    const updates = {};
     let idx = 1;
 
-    if (status) { fields.push(`status = $${idx++}`); values.push(status); }
-    if (severity) { fields.push(`severity = $${idx++}`); values.push(severity); }
-    if (bounty !== undefined) { fields.push(`bounty = $${idx++}`); values.push(bounty); }
+    if (status) { 
+      fields.push(`status = $${idx++}`); 
+      values.push(status);
+      updates.status = { old: currentReport.status, new: status };
+    }
+    if (severity) { 
+      fields.push(`severity = $${idx++}`); 
+      values.push(severity);
+      updates.severity = { old: currentReport.severity, new: severity };
+    }
+    if (bounty !== undefined) { 
+      fields.push(`bounty = $${idx++}`); 
+      values.push(bounty);
+      updates.bounty = { old: currentReport.bounty, new: bounty };
+    }
     if (admin_notes !== undefined) { fields.push(`admin_notes = $${idx++}`); values.push(admin_notes); }
     if (evidence_url !== undefined) { fields.push(`evidence_url = $${idx++}`); values.push(evidence_url); }
 
     if (fields.length === 0) {
-      return res.status(400).json({ error: "No fields to update" });
+      throw new ApiError(400, "No fields provided for update");
     }
 
     values.push(id);
@@ -113,6 +140,12 @@ router.patch("/reports/:id", async (req, res, next) => {
     );
 
     const updatedReport = updateResult.rows[0];
+
+    // Log Activities (Day 5)
+    const adminId = req.user.id;
+    for (const [key, val] of Object.entries(updates)) {
+      await logActivity(id, adminId, `${key}_updated`, val);
+    }
 
     // Notification: researcher update
     if (status || bounty !== undefined) {
@@ -127,6 +160,31 @@ router.patch("/reports/:id", async (req, res, next) => {
         msg,
         `<h3>Platform Update</h3><p>${msg}</p><p>Keep up the great work!</p>`
       );
+
+      // REDIS UPDATE: If bounty was awarded, update global leaderboard
+      if (bounty !== undefined && redis) {
+        try {
+          const REDIS_KEY = "leaderboard:global";
+          // Get the difference to add (or total sum if we prefer recalculating)
+          // For simplicity, we just zadd with the NEW total sum of bounties for this user
+          const researcherId = updatedReport.user_id;
+          const researcherEmail = checkResult.rows[0].researcher_email;
+          
+          const totalBountyResult = await pool.query(
+            "SELECT COALESCE(SUM(bounty), 0) as total FROM reports WHERE user_id = $1 AND status = 'resolved'",
+            [researcherId]
+          );
+          
+          const newTotal = parseFloat(totalBountyResult.rows[0].total);
+          await redis.zadd(REDIS_KEY, newTotal, `${researcherId}:${researcherEmail}`);
+          
+          // Invalidate cache for this user's profile
+          await redis.del(`__express__/api/users/profile/me`);
+          logger.info(`🎯 Redis Leaderboard updated for ${researcherEmail}`);
+        } catch (rErr) {
+          logger.error("❌ Redis update failed: " + rErr.message);
+        }
+      }
     }
 
     res.json({
