@@ -1,3 +1,6 @@
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 import { body } from "express-validator";
 import validate from "../middleware/validator.js";
 import { pool } from "../db.js";

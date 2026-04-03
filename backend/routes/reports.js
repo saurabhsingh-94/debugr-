@@ -1,8 +1,14 @@
+import express from "express";
+import { body } from "express-validator";
+import validate from "../middleware/validator.js";
+import { pool } from "../db.js";
+import authMiddleware from "../middleware/auth.js";
+import upload from "../middleware/upload.js";
 import { uploadToCloudinary } from "../utils/cloudinary.js";
 import sendEmail from "../utils/mailer.js";
 
 const router = express.Router();
-// ... (omitting validation for brevity in replace)
+
 // Report validation rules
 const reportValidation = [
   body("title").trim().isLength({ min: 5, max: 200 }).withMessage("Title must be between 5 and 200 characters"),
