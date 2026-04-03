@@ -2,7 +2,9 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import morgan from "morgan";
-import { pool } from "./db.js";
+import { pool, initDB } from "./db.js";
+import authRoutes from "./routes/auth.js";
+import reportRoutes from "./routes/reports.js";
 
 dotenv.config();
 
@@ -34,6 +36,10 @@ app.get("/db-test", async (req, res, next) => {
   }
 });
 
+// Feature Routes
+app.use("/api/auth", authRoutes);
+app.use("/api/reports", reportRoutes);
+
 // 404 Handler
 app.use((req, res) => {
   res.status(404).json({ error: "Route not found" });
@@ -50,6 +56,7 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
+  await initDB();
 });
