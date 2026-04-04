@@ -66,3 +66,196 @@
 2026-04-03 20:33:38:3338 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
 2026-04-03 20:33:38:3338 info: 🚀 Server running on port 3000 in development mode
 2026-04-03 20:33:40:3340 info: ✅ Database initialized successfully
+2026-04-03 23:00:47:047 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-03 23:00:47:047 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-03 23:00:47:047 info: 🚀 Server running on port 3000 in development mode
+2026-04-03 23:00:49:049 info: ✅ Database initialized successfully
+2026-04-04 11:51:23:5123 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 11:51:23:5123 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 11:51:23:5123 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 11:51:23:5123 warn: 404 - Route not found
+2026-04-04 11:51:23:5123 info: ::1 - - [04/Apr/2026:06:21:23 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:23:5123 warn: 404 - Route not found
+2026-04-04 11:51:23:5123 info: ::ffff:127.0.0.1 - - [04/Apr/2026:06:21:23 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:23:5123 warn: 404 - Route not found
+2026-04-04 11:51:23:5123 info: ::1 - - [04/Apr/2026:06:21:23 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:23:5123 warn: 404 - Route not found
+2026-04-04 11:51:23:5123 info: ::ffff:127.0.0.1 - - [04/Apr/2026:06:21:23 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:24:5124 warn: 404 - Route not found
+2026-04-04 11:51:24:5124 info: ::1 - - [04/Apr/2026:06:21:24 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:24:5124 warn: 404 - Route not found
+2026-04-04 11:51:24:5124 info: ::1 - - [04/Apr/2026:06:21:24 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:24:5124 warn: 404 - Route not found
+2026-04-04 11:51:24:5124 info: ::1 - - [04/Apr/2026:06:21:24 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:24:5124 warn: 404 - Route not found
+2026-04-04 11:51:24:5124 info: ::1 - - [04/Apr/2026:06:21:24 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:24:5124 warn: 404 - Route not found
+2026-04-04 11:51:24:5124 info: ::1 - - [04/Apr/2026:06:21:24 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:25:5125 warn: 404 - Route not found
+2026-04-04 11:51:25:5125 info: ::1 - - [04/Apr/2026:06:21:25 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:25:5125 warn: 404 - Route not found
+2026-04-04 11:51:25:5125 info: ::1 - - [04/Apr/2026:06:21:25 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:25:5125 warn: 404 - Route not found
+2026-04-04 11:51:25:5125 info: ::1 - - [04/Apr/2026:06:21:25 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:25:5125 warn: 404 - Route not found
+2026-04-04 11:51:25:5125 info: ::1 - - [04/Apr/2026:06:21:25 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:25:5125 warn: 404 - Route not found
+2026-04-04 11:51:25:5125 info: ::1 - - [04/Apr/2026:06:21:25 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:26:5126 warn: 404 - Route not found
+2026-04-04 11:51:26:5126 info: ::1 - - [04/Apr/2026:06:21:26 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:26:5126 warn: 404 - Route not found
+2026-04-04 11:51:26:5126 info: ::1 - - [04/Apr/2026:06:21:26 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:26:5126 warn: 404 - Route not found
+2026-04-04 11:51:26:5126 info: ::1 - - [04/Apr/2026:06:21:26 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:26:5126 warn: 404 - Route not found
+2026-04-04 11:51:26:5126 info: ::1 - - [04/Apr/2026:06:21:26 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:26:5126 warn: 404 - Route not found
+2026-04-04 11:51:26:5126 info: ::1 - - [04/Apr/2026:06:21:26 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:27:5127 info: ✅ Database initialized successfully
+2026-04-04 11:51:27:5127 warn: 404 - Route not found
+2026-04-04 11:51:27:5127 info: ::1 - - [04/Apr/2026:06:21:27 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:27:5127 warn: 404 - Route not found
+2026-04-04 11:51:27:5127 info: ::1 - - [04/Apr/2026:06:21:27 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:27:5127 warn: 404 - Route not found
+2026-04-04 11:51:27:5127 info: ::1 - - [04/Apr/2026:06:21:27 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:27:5127 warn: 404 - Route not found
+2026-04-04 11:51:27:5127 info: ::1 - - [04/Apr/2026:06:21:27 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:27:5127 warn: 404 - Route not found
+2026-04-04 11:51:27:5127 info: ::1 - - [04/Apr/2026:06:21:27 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:32:5132 warn: 404 - Route not found
+2026-04-04 11:51:32:5132 info: ::1 - - [04/Apr/2026:06:21:32 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:32:5132 warn: 404 - Route not found
+2026-04-04 11:51:32:5132 info: ::1 - - [04/Apr/2026:06:21:32 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:32:5132 warn: 404 - Route not found
+2026-04-04 11:51:32:5132 info: ::1 - - [04/Apr/2026:06:21:32 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:32:5132 warn: 404 - Route not found
+2026-04-04 11:51:32:5132 info: ::1 - - [04/Apr/2026:06:21:32 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:32:5132 warn: 404 - Route not found
+2026-04-04 11:51:32:5132 info: ::1 - - [04/Apr/2026:06:21:32 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:37:5137 warn: 404 - Route not found
+2026-04-04 11:51:37:5137 info: ::1 - - [04/Apr/2026:06:21:37 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:37:5137 warn: 404 - Route not found
+2026-04-04 11:51:37:5137 info: ::1 - - [04/Apr/2026:06:21:37 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:37:5137 warn: 404 - Route not found
+2026-04-04 11:51:37:5137 info: ::1 - - [04/Apr/2026:06:21:37 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:37:5137 warn: 404 - Route not found
+2026-04-04 11:51:37:5137 info: ::1 - - [04/Apr/2026:06:21:37 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:37:5137 warn: 404 - Route not found
+2026-04-04 11:51:37:5137 info: ::1 - - [04/Apr/2026:06:21:37 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:39:5139 info: ::1 - - [04/Apr/2026:06:21:39 +0000] "GET /api/programs HTTP/1.1" 200 1000 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"
+2026-04-04 11:51:42:5142 warn: 404 - Route not found
+2026-04-04 11:51:42:5142 info: ::1 - - [04/Apr/2026:06:21:42 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:42:5142 warn: 404 - Route not found
+2026-04-04 11:51:42:5142 info: ::1 - - [04/Apr/2026:06:21:42 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:42:5142 warn: 404 - Route not found
+2026-04-04 11:51:42:5142 info: ::1 - - [04/Apr/2026:06:21:42 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:42:5142 warn: 404 - Route not found
+2026-04-04 11:51:42:5142 info: ::1 - - [04/Apr/2026:06:21:42 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:42:5142 warn: 404 - Route not found
+2026-04-04 11:51:42:5142 info: ::1 - - [04/Apr/2026:06:21:42 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:47:5147 warn: 404 - Route not found
+2026-04-04 11:51:47:5147 info: ::1 - - [04/Apr/2026:06:21:47 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:47:5147 warn: 404 - Route not found
+2026-04-04 11:51:47:5147 info: ::1 - - [04/Apr/2026:06:21:47 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:47:5147 warn: 404 - Route not found
+2026-04-04 11:51:47:5147 info: ::1 - - [04/Apr/2026:06:21:47 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:47:5147 warn: 404 - Route not found
+2026-04-04 11:51:47:5147 info: ::1 - - [04/Apr/2026:06:21:47 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:47:5147 warn: 404 - Route not found
+2026-04-04 11:51:47:5147 info: ::1 - - [04/Apr/2026:06:21:47 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:52:5152 warn: 404 - Route not found
+2026-04-04 11:51:52:5152 info: ::1 - - [04/Apr/2026:06:21:52 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:52:5152 warn: 404 - Route not found
+2026-04-04 11:51:52:5152 info: ::1 - - [04/Apr/2026:06:21:52 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:52:5152 warn: 404 - Route not found
+2026-04-04 11:51:52:5152 info: ::1 - - [04/Apr/2026:06:21:52 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:53:5153 warn: 404 - Route not found
+2026-04-04 11:51:53:5153 info: ::1 - - [04/Apr/2026:06:21:53 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:53:5153 warn: 404 - Route not found
+2026-04-04 11:51:53:5153 info: ::1 - - [04/Apr/2026:06:21:53 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:57:5157 warn: 404 - Route not found
+2026-04-04 11:51:57:5157 info: ::1 - - [04/Apr/2026:06:21:57 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:57:5157 warn: 404 - Route not found
+2026-04-04 11:51:57:5157 info: ::1 - - [04/Apr/2026:06:21:57 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:58:5158 warn: 404 - Route not found
+2026-04-04 11:51:58:5158 info: ::1 - - [04/Apr/2026:06:21:58 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:58:5158 warn: 404 - Route not found
+2026-04-04 11:51:58:5158 info: ::1 - - [04/Apr/2026:06:21:58 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:51:58:5158 warn: 404 - Route not found
+2026-04-04 11:51:58:5158 info: ::1 - - [04/Apr/2026:06:21:58 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:02:522 warn: 404 - Route not found
+2026-04-04 11:52:02:522 info: ::1 - - [04/Apr/2026:06:22:02 +0000] "GET /_next/webpack-hmr?id=SbLNStM7CznGJBSoSqxEZ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:02:522 warn: 404 - Route not found
+2026-04-04 11:52:02:522 info: ::1 - - [04/Apr/2026:06:22:02 +0000] "GET /programs/fintech-corp HTTP/1.1" 404 43 "http://localhost:3000/programs/fintech-corp" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /_next/webpack-hmr?id=SU-x4yCTI9iePkXEO6l_T HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /favicon.ico HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET / HTTP/1.1" 404 43 "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /_next/webpack-hmr?id=2GX6Mx2g1CjbNrLuQ6yoJ HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /programs HTTP/1.1" 404 43 "http://localhost:3000/programs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /_next/webpack-hmr?id=_2OUEdH6DlKxgLhPvZJIU HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /_next/webpack-hmr?id=oZBzz6yzTxFT-ol5uQLdw HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET / HTTP/1.1" 404 43 "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:03:523 warn: 404 - Route not found
+2026-04-04 11:52:03:523 info: ::1 - - [04/Apr/2026:06:22:03 +0000] "GET /programs/fintech-corp HTTP/1.1" 404 43 "http://localhost:3000/programs/fintech-corp" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:05:525 warn: 404 - Route not found
+2026-04-04 11:52:05:525 info: ::1 - - [04/Apr/2026:06:22:05 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 11:52:54:5254 info: ::1 - - [04/Apr/2026:06:22:54 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" - - "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"
+2026-04-04 11:54:06:546 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 11:54:06:546 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 11:54:06:546 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 11:54:10:5410 info: ✅ Database initialized successfully
+2026-04-04 11:54:25:5425 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 11:54:25:5425 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 11:54:25:5425 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 11:54:28:5428 info: ✅ Database initialized successfully
+2026-04-04 11:54:34:5434 info: ::1 - - [04/Apr/2026:06:24:34 +0000] "GET /api/programs HTTP/1.1" 200 2942 "-" "curl/8.18.0"
+2026-04-04 12:15:52:1552 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 12:15:52:1552 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 12:15:52:1552 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 12:15:55:1555 info: ✅ Database initialized successfully
+2026-04-04 12:17:33:1733 warn: 404 - Route not found
+2026-04-04 12:17:33:1733 info: ::1 - - [04/Apr/2026:06:47:33 +0000] "GET /signup HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:17:35:1735 warn: 404 - Route not found
+2026-04-04 12:17:35:1735 info: ::1 - - [04/Apr/2026:06:47:35 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:17:52:1752 warn: 404 - Route not found
+2026-04-04 12:17:52:1752 info: ::1 - - [04/Apr/2026:06:47:52 +0000] "GET / HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:17:53:1753 warn: 404 - Route not found
+2026-04-04 12:17:53:1753 info: ::1 - - [04/Apr/2026:06:47:53 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:17:56:1756 warn: 404 - Route not found
+2026-04-04 12:17:56:1756 info: ::1 - - [04/Apr/2026:06:47:56 +0000] "GET /programs HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:17:58:1758 warn: 404 - Route not found
+2026-04-04 12:17:58:1758 info: ::1 - - [04/Apr/2026:06:47:58 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:18:28:1828 info: ::1 - - [04/Apr/2026:06:48:28 +0000] "GET /api/programs HTTP/1.1" 200 - "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:18:30:1830 warn: 404 - Route not found
+2026-04-04 12:18:30:1830 info: ::1 - - [04/Apr/2026:06:48:30 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:19:49:1949 info: ::1 - - [04/Apr/2026:06:49:49 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" 200 33 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:19:51:1951 warn: 404 - Route not found
+2026-04-04 12:19:51:1951 info: ::1 - - [04/Apr/2026:06:49:51 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:20:09:209 warn: 404 - Route not found
+2026-04-04 12:20:09:209 info: ::1 - - [04/Apr/2026:06:50:09 +0000] "GET /dashboard HTTP/1.1" 404 43 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:20:10:2010 warn: 404 - Route not found
+2026-04-04 12:20:10:2010 info: ::1 - - [04/Apr/2026:06:50:10 +0000] "GET /sw.js HTTP/1.1" 404 43 "http://localhost:3000/sw.js" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-04 12:33:04:334 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 12:33:04:334 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 12:33:04:334 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 12:33:06:336 info: ✅ Database initialized successfully
+2026-04-04 12:33:29:3329 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 12:33:29:3329 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 12:33:29:3329 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 12:33:31:3331 info: ✅ Database initialized successfully
+2026-04-04 12:33:39:3339 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 12:33:39:3339 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 12:33:39:3339 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 12:33:41:3341 info: ✅ Database initialized successfully
+2026-04-04 12:34:12:3412 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-04 12:34:12:3412 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-04 12:34:12:3412 info: 🚀 Server running on port 3000 in development mode
+2026-04-04 12:34:15:3415 info: ✅ Database initialized successfully

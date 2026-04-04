@@ -16,6 +16,13 @@ const registerValidation = [
   body("password").isLength({ min: 8 }).withMessage("Password must be at least 8 characters")
     .matches(/\d/).withMessage("Password must contain at least one number")
     .matches(/[A-Z]/).withMessage("Password must contain at least one uppercase letter"),
+  body("role").isIn(["hacker", "company"]).withMessage("Role must be 'hacker' or 'company'"),
+  // Optional profile fields for Step 3
+  body("name").optional().trim().isLength({ max: 255 }),
+  body("handle").optional().trim().isLength({ max: 100 }),
+  body("specialization").optional().trim().isLength({ max: 100 }),
+  body("industry").optional().trim().isLength({ max: 100 }),
+  body("experience_level").optional().trim().isLength({ max: 50 }),
   validate
 ];
 
@@ -29,7 +36,7 @@ const loginValidation = [
 // Register
 router.post("/register", registerValidation, async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, role } = req.body;
 
     // Check if user exists
     const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
@@ -41,10 +48,13 @@ router.post("/register", registerValidation, async (req, res, next) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
-    // Insert user
+    // Insert user with profile fields
+    const { name, handle, specialization, industry, experience_level } = req.body;
     const newUser = await pool.query(
-      "INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email, role, created_at",
-      [email, hashedPassword]
+      `INSERT INTO users (email, password, role, name, handle, specialization, industry, experience_level) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       RETURNING id, email, role, handle, created_at`,
+      [email, hashedPassword, role, name, handle, specialization, industry, experience_level]
     );
 
     res.status(201).json({

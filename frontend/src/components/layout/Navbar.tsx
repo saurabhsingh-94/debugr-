@@ -36,21 +36,25 @@ export default function Navbar() {
 
         {/* Links */}
         <div style={{ display: 'flex', gap: 40, alignItems: 'center' }}>
-          {['Directory', 'Leaderboard', 'Docs', 'Triage'].map((item) => (
+          {[
+            { label: 'Directory', href: '/programs' },
+            { label: 'Leaderboard', href: '/leaderboard' },
+            { label: 'Docs', href: '/docs' }
+          ].map((item) => (
             <Link 
-              key={item} 
-              href={`/${item.toLowerCase()}`} 
+              key={item.label} 
+              href={item.href} 
               style={{ fontSize: 13, fontWeight: 500, color: '#a1a1a6', textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={e => (e.currentTarget.style.color = '#f5f5f7')}
               onMouseLeave={e => (e.currentTarget.style.color = '#a1a1a6')}
             >
-              {item}
+              {item.label}
             </Link>
           ))}
           
           <div style={{ width: 1, height: 20, background: 'rgba(255,255,255,0.1)', marginLeft: 8, marginRight: 8 }} />
           
-          <Link href="/login" style={{ fontSize: 13, fontWeight: 500, color: '#f5f5f7', textDecoration: 'none' }}>
+          <Link href="/signin" style={{ fontSize: 13, fontWeight: 500, color: '#f5f5f7', textDecoration: 'none' }}>
             Sign in
           </Link>
 

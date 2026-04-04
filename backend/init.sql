@@ -6,7 +6,13 @@ CREATE TABLE IF NOT EXISTS users (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email VARCHAR(255) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(50) DEFAULT 'researcher',
+    role VARCHAR(50) DEFAULT 'hacker',
+    -- Unified profile fields
+    name VARCHAR(255), -- Legal Name or Organization Name
+    handle VARCHAR(100) UNIQUE, -- @handle for hackers
+    specialization VARCHAR(100), -- Primary field (Web, Pwn, etc.)
+    industry VARCHAR(100), -- For companies
+    experience_level VARCHAR(50), -- For hackers (Beginner, Pro, etc.)
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -18,6 +24,7 @@ CREATE TABLE IF NOT EXISTS reports (
     severity VARCHAR(50) CHECK (severity IN ('low', 'medium', 'high', 'critical')),
     status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'triaged', 'resolved', 'closed')),
     user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    program_id UUID REFERENCES programs(id) ON DELETE SET NULL,
     bounty DECIMAL(10, 2) DEFAULT 0.00,
     admin_notes TEXT,
     evidence_url TEXT,
@@ -37,6 +44,10 @@ BEGIN
 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reports' AND column_name='evidence_url') THEN
         ALTER TABLE reports ADD COLUMN evidence_url TEXT;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='reports' AND column_name='program_id') THEN
+        ALTER TABLE reports ADD COLUMN program_id UUID REFERENCES programs(id) ON DELETE SET NULL;
     END IF;
 END $$;
 
@@ -70,8 +81,26 @@ CREATE TABLE IF NOT EXISTS programs (
     reward_min DECIMAL(10, 2) DEFAULT 0.00,
     reward_max DECIMAL(10, 2) DEFAULT 0.00,
     scope JSONB DEFAULT '[]',
+    company_id UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Migrations for programs table
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='programs' AND column_name='company_id') THEN
+        ALTER TABLE programs ADD COLUMN company_id UUID REFERENCES users(id) ON DELETE SET NULL;
+    END IF;
+
+    -- New profile fields for users
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='handle') THEN
+        ALTER TABLE users ADD COLUMN handle VARCHAR(100) UNIQUE;
+        ALTER TABLE users ADD COLUMN name VARCHAR(255);
+        ALTER TABLE users ADD COLUMN specialization VARCHAR(100);
+        ALTER TABLE users ADD COLUMN industry VARCHAR(100);
+        ALTER TABLE users ADD COLUMN experience_level VARCHAR(50);
+    END IF;
+END $$;
 
 -- Insert some initial seed programs
 INSERT INTO programs (name, description, type, reward_min, reward_max, scope)
