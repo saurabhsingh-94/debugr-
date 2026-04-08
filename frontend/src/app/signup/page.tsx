@@ -538,54 +538,93 @@ function ShieldWall() {
       className="absolute inset-0 pointer-events-none"
       style={{ overflow: 'hidden' }}
     >
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        {/* Hex Grid Background (Azure) */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 0.15 }}
-          style={{ 
-            position: 'absolute', inset: 0,
-            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z' fill='none' stroke='%233b82f6' stroke-opacity='0.5' stroke-width='1'/%3E%3C/svg%3E")`,
-            backgroundSize: '20px 24px'
-          }}
-        />
+      {/* Background Matrix Grid */}
+      <div 
+        style={{ 
+          position: 'absolute', inset: 0,
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z' fill='none' stroke='%233b82f6' stroke-opacity='0.15' stroke-width='1'/%3E%3C/svg%3E")`,
+          backgroundSize: '40px 48px',
+          opacity: 0.4
+        }}
+      />
 
-        {/* The Azure Strike (Organization Thunderbolt) */}
+      <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        <defs>
+          <radialGradient id="shieldGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
+          </radialGradient>
+          <linearGradient id="barrierGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#06b6d4" />
+            <stop offset="50%" stopColor="#3b82f6" />
+            <stop offset="100%" stopColor="#06b6d4" />
+          </linearGradient>
+        </defs>
+
+        {/* Pulsing Concentric Defense Rings */}
+        {[1, 2, 3].map((i) => (
+          <motion.circle
+            key={i}
+            cx="200" cy="200" r={40 * i}
+            fill="none"
+            stroke="#3b82f6"
+            strokeWidth="1"
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ 
+              scale: [1, 1.5],
+              opacity: [0.3, 0],
+              strokeWidth: [2, 0.5]
+            }}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity, 
+              delay: i * 0.6,
+              ease: "easeOut" 
+            }}
+          />
+        ))}
+
+        {/* Shimmering Energy Barrier Arc */}
         <motion.path
-          d="M 90 0 L 82 20 L 95 35 L 75 55 L 88 70 L 40 90 L 10 100"
+          d="M 100 300 Q 200 150 300 300"
           fill="none"
-          stroke="#3b82f6"
-          strokeWidth="1.8"
+          stroke="url(#barrierGradient)"
+          strokeWidth="4"
+          strokeLinecap="round"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
-            pathLength: [0, 1, 1],
-            opacity: [0, 1, 0, 1, 0, 0.9, 0],
-            strokeWidth: [1, 3, 1, 4, 1.5],
+            pathLength: 1, 
+            opacity: [0.4, 0.8, 0.4],
+            filter: ['blur(1px)', 'blur(4px)', 'blur(1px)']
           }}
           transition={{ 
-            duration: 0.9,
-            times: [0, 0.1, 0.15, 0.2, 0.25, 0.3, 1],
-            ease: "easeOut"
+            pathLength: { duration: 1, ease: "easeInOut" },
+            opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
+            filter: { duration: 3, repeat: Infinity, ease: "easeInOut" }
           }}
-          style={{ filter: 'drop-shadow(0 0 15px #3b82f6) drop-shadow(0 0 30px rgba(0, 100, 255, 0.5))' }}
+          style={{ filter: 'drop-shadow(0 0 15px #3b82f6)' }}
         />
 
-        {/* Energy Displacement Field */}
+        {/* Core Protection Pulse */}
         <motion.circle
-          cx="40" cy="90" r="10"
-          fill="rgba(59, 130, 246, 0.1)"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: [0.5, 2], opacity: [0, 0.4, 0] }}
-          transition={{ duration: 0.5, delay: 0.2 }}
+          cx="200" cy="230" r="15"
+          fill="#3b82f6"
+          initial={{ scale: 1, opacity: 0.5 }}
+          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          style={{ filter: 'drop-shadow(0 0 20px #3b82f6)' }}
         />
       </svg>
-
-      {/* Azure Flash */}
+      
+      {/* Scanning Line */}
       <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.2, 0] }}
-        transition={{ duration: 0.2 }}
-        style={{ position: 'absolute', inset: 0, background: '#3b82f6', mixBlendMode: 'color-dodge', zIndex: 10 }}
+        animate={{ y: ['0%', '100%', '0%'] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+        style={{ 
+          position: 'absolute', top: 0, left: 0, right: 0, height: '1px', 
+          background: 'linear-gradient(90deg, transparent, #22d3ee, transparent)',
+          boxShadow: '0 0 15px #22d3ee', zIndex: 5, opacity: 0.3
+        }}
       />
     </motion.div>
   );
