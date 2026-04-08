@@ -63,4 +63,31 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
+// GET global platform stats (Public)
+router.get("/stats/global", async (req, res, next) => {
+  try {
+    const stats = await pool.query(`
+      SELECT 
+        COUNT(*) as total_reports,
+        COUNT(*) FILTER (WHERE status = 'resolved') as resolved_bugs,
+        COALESCE(SUM(bounty), 0) as total_bounties_paid
+      FROM reports
+    `);
+
+    const users = await pool.query("SELECT COUNT(*) as total_hackers FROM users WHERE role = 'hacker'");
+
+    res.json({
+      success: true,
+      stats: {
+        total_payouts: stats.rows[0].total_bounties_paid,
+        total_resolved: stats.rows[0].resolved_bugs,
+        total_hackers: users.rows[0].total_hackers,
+        total_companies: 340 // Placeholder for now or count companies in users table if applicable
+      }
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

@@ -1,7 +1,28 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000';
+const API_BASE = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined') 
+  ? process.env.NEXT_PUBLIC_API_URL 
+  : ''; // Relative to current domain or hardcoded
+
+export const API_URL = API_BASE || 'http://localhost:5000';
+
+// Cookie Helpers
+export function setCookie(name: string, value: string, days: number = 7) {
+  const expires = new Date(Date.now() + days * 864e5).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
+export function getCookie(name: string) {
+  return document.cookie.split('; ').reduce((r, v) => {
+    const parts = v.split('=');
+    return parts[0] === name ? decodeURIComponent(parts[1]) : r;
+  }, '');
+}
+
+export function deleteCookie(name: string) {
+  document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+}
 
 export async function fetchWithAuth(endpoint: string, options: RequestInit = {}) {
-  const token = typeof window !== 'undefined' ? localStorage.getItem('debugr_token') : null;
+  const token = typeof window !== 'undefined' ? getCookie('debugr_token') : null;
   
   const headers = {
     'Content-Type': 'application/json',
@@ -15,9 +36,8 @@ export async function fetchWithAuth(endpoint: string, options: RequestInit = {})
   });
 
   if (response.status === 401) {
-    // Optional: Redirect to login or clear token
     if (typeof window !== 'undefined') {
-      localStorage.removeItem('debugr_token');
+      deleteCookie('debugr_token');
     }
   }
 

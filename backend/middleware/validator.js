@@ -6,9 +6,11 @@ import { validationResult } from "express-validator";
 export const validate = (req, res, next) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    const errorArray = errors.array();
     return res.status(400).json({ 
       success: false,
-      errors: errors.array().map(err => ({
+      error: errorArray[0].msg, // Return the first error for simple toast/error bars
+      errors: errorArray.map(err => ({
         field: err.path,
         message: err.msg
       }))

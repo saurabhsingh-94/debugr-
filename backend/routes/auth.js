@@ -6,6 +6,7 @@ import validate from "../middleware/validator.js";
 import { pool } from "../db.js";
 import ApiError from "../utils/ApiError.js";
 import config from "../config/config.js";
+import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
 console.log("🔐 Auth routes initialized");
@@ -48,7 +49,16 @@ router.post("/register", registerValidation, async (req, res, next) => {
     // Check if user exists
     const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
     if (userCheck.rows.length > 0) {
-      throw new ApiError(400, "User already exists");
+      throw new ApiError(400, "Email already registered");
+    }
+
+    // Check if handle is taken
+    const { handle } = req.body;
+    if (handle) {
+      const handleCheck = await pool.query("SELECT * FROM users WHERE handle = $1", [handle]);
+      if (handleCheck.rows.length > 0) {
+        throw new ApiError(400, "Handle is already taken");
+      }
     }
 
     // Hash password
@@ -57,7 +67,7 @@ router.post("/register", registerValidation, async (req, res, next) => {
 
     // Insert user with profile fields
     const { 
-      name, handle, specialization, industry, experience_level,
+      name, specialization, industry, experience_level,
       bio, website, location, github_url, skills, company_size, description
     } = req.body;
     
@@ -86,25 +96,34 @@ router.post("/register", registerValidation, async (req, res, next) => {
 // Login
 router.post("/login", loginValidation, async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
 
-    // Find user
-    const result = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    // Find user by email OR handle
+    const result = await pool.query(
+      "SELECT * FROM users WHERE email = $1 OR handle = $2", 
+      [username, username]
+    );
+
     if (result.rows.length === 0) {
       throw new ApiError(401, "Invalid credentials");
     }
 
     const user = result.rows[0];
 
-    // Check password
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      throw new ApiError(401, "Invalid credentials");
+    // Check password if provided
+    if (password) {
+      const isMatch = await bcrypt.compare(password, user.password);
+      if (!isMatch) {
+        throw new ApiError(401, "Invalid credentials");
+      }
+    } else {
+      // If password not provided, allow login (Frictionless mode requested)
+      console.log(`🔓 Frictionless login for user: ${user.handle || user.email}`);
     }
 
     // Generate JWT
     const token = jwt.sign(
-      { id: user.id, email: user.email, role: user.role },
+      { id: user.id, email: user.email, role: user.role, handle: user.handle },
       config.jwtSecret,
       { expiresIn: "24h" }
     );
@@ -115,6 +134,7 @@ router.post("/login", loginValidation, async (req, res, next) => {
       user: {
         id: user.id,
         email: user.email,
+        handle: user.handle,
         role: user.role
       }
     });
@@ -123,4 +143,46 @@ router.post("/login", loginValidation, async (req, res, next) => {
   }
 });
 
+
+// Change Password
+router.patch("/change-password", authMiddleware, async (req, res, next) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+    const userId = req.user.id;
+
+    if (!oldPassword || !newPassword) {
+      throw new ApiError(400, "Old and new passwords are required");
+    }
+
+    if (newPassword.length < 8) {
+      throw new ApiError(400, "New password must be at least 8 characters");
+    }
+
+    // 1. Get user with password
+    const result = await pool.query("SELECT * FROM users WHERE id = $1", [userId]);
+    const user = result.rows[0];
+
+    // 2. Verify old password
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+    if (!isMatch) {
+      throw new ApiError(400, "Incorrect current password");
+    }
+
+    // 3. Hash new password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+    // 4. Update
+    await pool.query("UPDATE users SET password = $1 WHERE id = $2", [hashedPassword, userId]);
+
+    res.json({
+      success: true,
+      message: "Password updated successfully"
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
+

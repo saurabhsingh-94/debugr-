@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import HackerDashboard from '@/components/dashboard/HackerDashboard';
 import CompanyDashboard from '@/components/dashboard/CompanyDashboard';
+import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 
 interface User {
   email: string;
@@ -17,27 +18,36 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    const token = localStorage.getItem('token');
+    const fetchUser = async () => {
+      const token = getCookie('debugr_token');
+      if (!token) {
+        router.push('/signin');
+        return;
+      }
 
-    if (!storedUser || !token) {
-      router.push('/signin');
-      return;
-    }
+      try {
+        const res = await fetchWithAuth(API_ENDPOINTS.PROFILE);
+        const data = await res.json();
+        if (data.success) {
+          setUser(data.user);
+        } else {
+          deleteCookie('debugr_token');
+          router.push('/signin');
+        }
+      } catch (err) {
+        console.error(err);
+        router.push('/signin');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-    try {
-      setUser(JSON.parse(storedUser));
-    } catch {
-      localStorage.clear();
-      router.push('/signin');
-    } finally {
-      setLoading(false);
-    }
+    fetchUser();
   }, [router]);
 
   const handleLogout = () => {
-    localStorage.clear();
-    router.push('/signin');
+    deleteCookie('debugr_token');
+    window.location.href = '/signin';
   };
 
   if (loading) {

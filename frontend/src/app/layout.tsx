@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: "Connect with top hackers and protect your digital assets with the industrial-grade Debugr platform.",
 };
 
+import LenisProvider from "@/components/providers/LenisProvider";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,7 +29,11 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <LenisProvider>
+          {children}
+        </LenisProvider>
+      </body>
     </html>
   );
 }

@@ -162,4 +162,34 @@ router.patch("/:id/status", authMiddleware, async (req, res, next) => {
   }
 });
 
+// Get public Hacktivity (Recent resolved/triaged reports) - Publicly Accessible
+router.get("/hacktivity", async (req, res, next) => {
+  try {
+    const activity = await pool.query(
+      `SELECT r.id, r.title, r.severity, r.status, r.bounty, r.created_at, 
+              p.name as company, u.email as hacker_email 
+       FROM reports r 
+       JOIN programs p ON r.program_id = p.id 
+       JOIN users u ON r.user_id = u.id 
+       WHERE r.status IN ('resolved', 'triaged') 
+       ORDER BY r.created_at DESC 
+       LIMIT 10`
+    );
+
+    // Sanitize hacker email for public view (only for display)
+    const sanitized = activity.rows.map(row => ({
+      ...row,
+      hacker_handle: row.hacker_email.split('@')[0] // Simple handle extraction for now
+    }));
+
+    res.json({
+      success: true,
+      count: sanitized.length,
+      activity: sanitized
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;
