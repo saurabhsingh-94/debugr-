@@ -31,8 +31,12 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
       setFormData(initialData);
       document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     }
+    
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen, initialData]);
 
   const handleSave = async () => {

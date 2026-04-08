@@ -71,8 +71,12 @@ export default function SignUp() {
   };
 
   return (
-    <div className="aurora-bg" style={{ minHeight: '100vh', color: 'var(--t1)', overflowX: 'hidden' }}>
-      <div className="aurora-blobs" />
+    <div style={{ minHeight: '100vh', color: 'var(--t1)', overflowX: 'hidden' }}>
+      <div className="aurora-bg">
+        <div className="aurora-blob blob-1" />
+        <div className="aurora-blob blob-2" />
+        <div className="aurora-blob blob-3" />
+      </div>
       <Navbar />
 
       <main style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1.2fr', minHeight: '100vh', position: 'relative', zIndex: 1 }}>

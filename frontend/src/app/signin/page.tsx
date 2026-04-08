@@ -46,7 +46,7 @@ export default function SignIn() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050505', color: '#f5f5f7', position: 'relative', overflow: 'hidden' }}>
+    <div style={{ minHeight: '100vh', background: '#050505', color: '#f5f5f7', position: 'relative', overflowX: 'hidden' }}>
       {/* Background Aurora Effect */}
       <div className="aurora-bg">
         <div className="aurora-blob blob-1 animate-breathing" style={{ opacity: 0.1 }} />

@@ -45,6 +45,11 @@ export const config = {
     user: process.env.SMTP_USER,
     pass: process.env.SMTP_PASS,
   },
+  cashfree: {
+    appId: process.env.CASHFREE_APP_ID,
+    secretKey: process.env.CASHFREE_SECRET_KEY,
+    env: process.env.CASHFREE_ENVIRONMENT || "SANDBOX"
+  }
 };
 
 export default config;

@@ -1,0 +1,73 @@
+import express from "express";
+import { Cashfree } from "cashfree-pg";
+import config from "../config/config.js";
+import ApiError from "../utils/ApiError.js";
+import { authenticate } from "../middleware/auth.js";
+import logger from "../utils/logger.js";
+
+const router = express.Router();
+
+Cashfree.XClientId = config.cashfree.appId;
+Cashfree.XClientSecret = config.cashfree.secretKey;
+Cashfree.XEnvironment = config.cashfree.env === "PROD" ? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX;
+
+router.post("/create-order", authenticate, async (req, res, next) => {
+  try {
+    const { orderAmount, orderCurrency, customerDetails } = req.body;
+
+    if (!orderAmount || !customerDetails || !customerDetails.customer_id || !customerDetails.customer_phone) {
+      throw new ApiError(400, "Missing required fields for Cashfree order");
+    }
+
+    const orderId = `order_${Date.now()}_${req.user.id}`;
+
+    const request = {
+      order_amount: orderAmount,
+      order_currency: orderCurrency || "INR",
+      order_id: orderId,
+      customer_details: customerDetails,
+      order_meta: {
+        return_url: `${req.headers.origin || 'http://localhost:3000'}/add-funds/status?order_id={order_id}`
+      }
+    };
+
+    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
+    
+    res.json({
+      success: true,
+      data: {
+        payment_session_id: response.data.payment_session_id,
+        order_id: response.data.order_id
+      }
+    });
+
+  } catch (error) {
+    logger.error(`Cashfree Create Order Error: ${error.response?.data?.message || error.message}`);
+    next(new ApiError(500, error.response?.data?.message || "Failed to create payment order"));
+  }
+});
+
+router.post("/verify", authenticate, async (req, res, next) => {
+  try {
+    const { orderId } = req.body;
+    if (!orderId) {
+      throw new ApiError(400, "Missing order_id");
+    }
+
+    const response = await Cashfree.PGOrderFetchPayments("2023-08-01", orderId);
+    
+    // In a real application, you would check if the payment is SUCCESS
+    // and then update the user's balance in the database.
+    // e.g., const isSuccess = response.data.filter(payment => payment.payment_status === "SUCCESS").length > 0;
+    
+    res.json({
+      success: true,
+      data: response.data
+    });
+  } catch (error) {
+    logger.error(`Cashfree Verify Payment Error: ${error.response?.data?.message || error.message}`);
+    next(new ApiError(500, error.response?.data?.message || "Failed to verify payment"));
+  }
+});
+
+export default router;
