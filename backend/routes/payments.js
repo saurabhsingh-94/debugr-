@@ -9,7 +9,9 @@ const router = express.Router();
 
 Cashfree.XClientId = config.cashfree.appId;
 Cashfree.XClientSecret = config.cashfree.secretKey;
-Cashfree.XEnvironment = config.cashfree.env === "PROD" ? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX;
+Cashfree.XEnvironment = config.cashfree.env === "PROD" 
+  ? (Cashfree.Environment?.PRODUCTION || "PRODUCTION") 
+  : (Cashfree.Environment?.SANDBOX || "SANDBOX");
 
 router.post("/create-order", authenticate, async (req, res, next) => {
   try {

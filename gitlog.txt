@@ -1,0 +1,16 @@
+﻿3cd6f91 feat: premium animation overhaul and auth security enforcement
+3ac6bae Phase 3.5: High-Fidelity Onboarding Enrichment (Researcher Bios, Skill Tags, Corporate Intel)
+47bc78e Phase 3: Implemented Role-Based Onboarding and Dual-Dashboard Architecture for Hackers and Companies
+a43fe92 Build: Implement Bounty Directory, Global Leaderboard, and Documentation Portal
+3d2bff9 Refactor Framer Motion animations for type-safety and scalability
+b50d48c feat: platform-wide refactor for live deployment (Vercel/Railway) with Redis integration and live dashboard
+84b9e4b HOTFIX #2: Restored missing core imports in server.js
+9ef02ca HOTFIX: Restored missing imports in auth and report routes
+67e1e9d Day 5: Completed Backend Hardening & Notifications
+e885309 Day 4: Fixed Cloudinary resource_type for non-image uploads
+5d2421e Day 4: Added detailed Cloudinary error logs
+fe06424 Day 4: Implemented Cloudinary Evidence Uploads with Multer
+e86cd12 Day 3: Added Admin triage, bounties, and rewards infrastructure
+3fdd542 Day 2: Added Auth and Bug Reporting core features
+d7dcb93 Day 1: Finalize backend foundation with logging and documentation
+889e85a day1 backend core

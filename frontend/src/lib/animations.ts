@@ -4,11 +4,11 @@ import { Variants, Easing, TargetAndTransition, Transition } from "framer-motion
  * Premium easings for high-end UI feel.
  * Based on Apple/Luxury design standards.
  */
-export const easeStandard: Easing = [0.25, 0.1, 0.25, 1];
-export const easeOutExpo: Easing = [0.16, 1, 0.3, 1];
-export const easeOutQuart: Easing = [0.25, 1, 0.5, 1];
-export const easeSmooth: Easing = [0.23, 1, 0.32, 1];
-export const easeInertia: Easing = [0.08, 0.82, 0.17, 1];
+export const easeStandard: Easing = [0.25, 0.1, 0.25, 1] as [number, number, number, number];
+export const easeOutExpo: Easing = [0.16, 1, 0.3, 1] as [number, number, number, number];
+export const easeOutQuart: Easing = [0.25, 1, 0.5, 1] as [number, number, number, number];
+export const easeSmooth: Easing = [0.23, 1, 0.32, 1] as [number, number, number, number];
+export const easeInertia: Easing = [0.08, 0.82, 0.17, 1] as [number, number, number, number];
 
 /**
  * Spring configurations for interactive elements.
