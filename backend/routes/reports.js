@@ -150,12 +150,25 @@ router.patch("/:id/status", authMiddleware, async (req, res, next) => {
       [status, bounty, admin_notes, id]
     );
 
+    const report = updatedReport.rows[0];
+
+    // If bounty is awarded and status is resolved, record a transaction
+    if (report.status === 'resolved' && report.bounty > 0) {
+      await pool.query(
+        `INSERT INTO transactions (user_id, type, amount, status, reference_id, details) 
+         VALUES ($1, 'payout', $2, 'completed', $3, $4)
+         ON CONFLICT DO NOTHING`,
+        [report.user_id, report.bounty, `report_${report.id}_payout`, JSON.stringify({ program_id: report.program_id, report_title: report.title })]
+      );
+      logger.info(`💸 Bountry payout of ${report.bounty} recorded for user ${report.user_id} on report ${report.id}`);
+    }
+
     // Log the triage action
     await logActivity(id, companyId, `status_updated_to_${status}`, { status, bounty });
 
     res.json({
       success: true,
-      report: updatedReport.rows[0]
+      report
     });
   } catch (err) {
     next(err);

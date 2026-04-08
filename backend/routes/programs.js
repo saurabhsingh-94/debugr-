@@ -90,4 +90,31 @@ router.get("/stats/global", async (req, res, next) => {
   }
 });
 
+// Create a new program (Company only)
+router.post("/", authMiddleware, async (req, res, next) => {
+  try {
+    const { name, description, type, reward_min, reward_max, scope, logo_url } = req.body;
+    const company_id = req.user.id;
+
+    if (req.user.role !== "company" && req.user.role !== "admin") {
+      throw new ApiError(403, "Access denied. Company role required to launch programs.");
+    }
+
+    const result = await pool.query(
+      `INSERT INTO programs (name, description, type, reward_min, reward_max, scope, logo_url, company_id) 
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+       RETURNING *`,
+      [name, description, type || 'public', reward_min || 0, reward_max || 0, JSON.stringify(scope || []), logo_url, company_id]
+    );
+
+    res.status(201).json({
+      success: true,
+      message: "Security program initialized and deployed to the grid.",
+      program: result.rows[0]
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

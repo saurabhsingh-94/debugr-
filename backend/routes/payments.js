@@ -58,9 +58,20 @@ router.post("/verify", authenticate, async (req, res, next) => {
 
     const response = await Cashfree.PGOrderFetchPayments("2023-08-01", orderId);
     
-    // In a real application, you would check if the payment is SUCCESS
-    // and then update the user's balance in the database.
-    // e.g., const isSuccess = response.data.filter(payment => payment.payment_status === "SUCCESS").length > 0;
+    // check if the payment is SUCCESS
+    const successPayment = response.data.find(payment => payment.payment_status === "SUCCESS");
+    
+    if (successPayment) {
+      // Record transaction in DB if success
+      await pool.query(
+        `INSERT INTO transactions (user_id, type, amount, currency, status, reference_id, details) 
+         VALUES ($1, 'top_up', $2, $3, 'completed', $4, $5)
+         ON CONFLICT (reference_id) DO NOTHING`,
+        [req.user.id, successPayment.payment_amount, successPayment.payment_currency, orderId, JSON.stringify(successPayment)]
+      );
+      
+      logger.info(`💰 User ${req.user.id} topped up ${successPayment.payment_amount}`);
+    }
     
     res.json({
       success: true,

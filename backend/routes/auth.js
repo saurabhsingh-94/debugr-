@@ -36,7 +36,7 @@ const registerValidation = [
 
 // Login validation rules
 const loginValidation = [
-  body("email").isEmail().withMessage("Must be a valid email"),
+  body("username").notEmpty().withMessage("Handle or Email is required"),
   body("password").notEmpty().withMessage("Password is required"),
   validate
 ];

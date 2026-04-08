@@ -107,6 +107,19 @@ BEGIN
     END IF;
 END $$;
 
+-- Create Transactions Table (Production Persistence)
+CREATE TABLE IF NOT EXISTS transactions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    type VARCHAR(50) NOT NULL CHECK (type IN ('top_up', 'payout', 'hold')),
+    amount DECIMAL(12, 2) NOT NULL,
+    currency VARCHAR(10) DEFAULT 'INR',
+    status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'completed', 'failed')),
+    reference_id VARCHAR(255), -- Cashfree order id or internal ref
+    details JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Insert some initial seed programs
 INSERT INTO programs (name, description, type, reward_min, reward_max, scope)
 VALUES 

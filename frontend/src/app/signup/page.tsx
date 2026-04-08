@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
@@ -23,14 +23,16 @@ export default function SignUp() {
   const nextStep = () => {
     setError('');
     
-    // Step 2 Validation: Must have email and password
+    // Step 2 Validation: Must match backend requirements
     if (step === 2) {
       if (!formData.email || !formData.email.includes('@')) {
         setError('A valid email protocol is required');
         return;
       }
-      if (!formData.password || formData.password.length < 6) {
-        setError('Secure passcode must be at least 6 characters');
+      // Aligned with backend/routes/auth.js regex
+      const passRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
+      if (!passRegex.test(formData.password)) {
+        setError('Passcode must be 8+ characters with at least one uppercase letter and one number');
         return;
       }
       if (formData.password !== formData.confirmPassword) {
@@ -61,7 +63,7 @@ export default function SignUp() {
         const loginRes = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: formData.email, password: formData.password }),
+          body: JSON.stringify({ username: formData.email, password: formData.password }),
         });
         const loginData = await loginRes.json();
         
@@ -156,22 +158,11 @@ export default function SignUp() {
                     {[
                       { 
                         id: 'hacker', title: 'Hacker', desc: 'Hunt bugs, uncover flaws, and earn reputation + rewards.', icon: '⚡',
-                        hoverEffect: {
-                          scale: [1, 1.2, 1],
-                          rotate: [0, -10, 10, 0],
-                          filter: ['drop-shadow(0 0 0px #fff)', 'drop-shadow(0 0 15px #fcd34d)', 'drop-shadow(0 0 0px #fff)'],
-                          color: ['#fff', '#fcd34d', '#fff'],
-                          transition: { duration: 0.3, repeat: Infinity }
-                        }
+                        fullEffect: <LightningField />
                       },
                       { 
                         id: 'company', title: 'Organization', desc: 'Secure your assets through world-class security intelligence.', icon: '🛡️',
-                        hoverEffect: {
-                          scale: [1, 1.1, 1],
-                          filter: ['drop-shadow(0 0 0px #fff)', 'drop-shadow(0 0 20px #60a5fa)', 'drop-shadow(0 0 0px #fff)'],
-                          color: ['#fff', '#60a5fa', '#fff'],
-                          transition: { duration: 1.5, repeat: Infinity }
-                        }
+                        fullEffect: <ShieldWall />
                       }
                     ].map(r => (
                       <motion.button 
@@ -187,16 +178,17 @@ export default function SignUp() {
                           position: 'relative', overflow: 'hidden'
                         }}
                         variants={{
-                          hover: { y: -8, scale: 1.02, transition: { duration: 0.2 } },
+                          hover: { y: -8, scale: 1.02, transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } },
                           initial: { y: 0, scale: 1 }
                         }}
                       >
+                        {/* Immersive Full-Board Effect */}
+                        <AnimatePresence>
+                          {r.fullEffect}
+                        </AnimatePresence>
+
                         <motion.div 
-                          variants={{
-                            hover: r.hoverEffect,
-                            initial: { scale: 1, rotate: 0, filter: 'none' }
-                          }}
-                          style={{ fontSize: 32, display: 'inline-block', width: 'fit-content' }}
+                          style={{ fontSize: 32, display: 'inline-block', width: 'fit-content', position: 'relative', zIndex: 2 }}
                         >
                           {r.icon}
                         </motion.div>
@@ -435,6 +427,112 @@ function Input({ label, type = 'text', value, onChange, placeholder }: InputProp
         style={{ width: '100%', padding: '18px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 15 }}
       />
     </div>
+  );
+}
+
+// --- Immersive Effects Components ---
+
+function LightningField() {
+  const bolts = useMemo(() => [
+    { id: 1, delay: 0.5, duration: 5, left: 15, path: "M 50 0 L 45 30 L 55 60 L 48 100" },
+    { id: 2, delay: 2.0, duration: 6, left: 50, path: "M 50 0 L 58 35 L 42 65 L 50 100" },
+    { id: 3, delay: 3.5, duration: 4.5, left: 85, path: "M 50 0 L 42 40 L 58 70 L 52 100" }
+  ], []);
+
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 pointer-events-none"
+      style={{ overflow: 'hidden' }}
+    >
+      {/* Dynamic Lightning Bolts - Slow & Smooth */}
+      {bolts.map((bolt) => (
+        <motion.svg 
+          key={bolt.id}
+          viewBox="0 0 100 100" 
+          strokeLinecap="round"
+          style={{ position: 'absolute', top: 0, left: `${bolt.left}%`, width: '30%', height: '100%', opacity: 0.3 }}
+          animate={{ 
+            opacity: [0, 0.6, 0.2, 0.8, 0],
+            scale: [1, 1.05, 1],
+            filter: ['blur(1px)', 'blur(3px)', 'blur(1px)']
+          }}
+          transition={{ 
+            duration: bolt.duration, 
+            repeat: Infinity, 
+            delay: bolt.delay,
+            ease: "easeInOut"
+          }}
+        >
+          <path 
+            d={bolt.path} 
+            fill="none" 
+            stroke="rgba(191, 123, 255, 0.8)" 
+            strokeWidth="0.8"
+            style={{ filter: 'drop-shadow(0 0 15px rgba(191, 123, 255, 0.6))' }}
+          />
+        </motion.svg>
+      ))}
+      
+      {/* Slow Background Pulse */}
+      <motion.div 
+        animate={{ opacity: [0.03, 0.1, 0.03] }}
+        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+        style={{ 
+          position: 'absolute', inset: 0, 
+          background: 'radial-gradient(circle at center, rgba(147, 51, 234, 0.15) 0%, transparent 80%)',
+          mixBlendMode: 'plus-lighter' 
+        }}
+      />
+    </motion.div>
+  );
+}
+
+function ShieldWall() {
+  return (
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="absolute inset-0 pointer-events-none"
+      style={{ 
+        background: `
+          radial-gradient(circle at center, rgba(59, 130, 246, 0.08) 0%, transparent 80%),
+          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z' fill='none' stroke='white' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E")
+        `,
+        backgroundSize: '100% 100%, 40px 45px'
+      }}
+    >
+      {/* Slow Ripple Effect */}
+      <motion.div 
+        animate={{ 
+          scale: [0.9, 1.3, 0.9],
+          opacity: [0.05, 0.2, 0.05],
+          rotate: [0, 5, 0]
+        }}
+        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+        style={{ 
+          position: 'absolute', inset: -100, 
+          background: 'radial-gradient(circle at center, rgba(37, 99, 235, 0.2) 0%, transparent 60%)',
+          filter: 'blur(40px)'
+        }}
+      />
+      
+      {/* Surface Glimmer */}
+      <motion.div 
+        animate={{ 
+          x: ['-100%', '100%'],
+          opacity: [0, 0.2, 0]
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+        style={{ 
+          position: 'absolute', inset: 0, 
+          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)'
+        }}
+      />
+    </motion.div>
   );
 }
 
