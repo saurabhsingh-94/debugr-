@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useState } from 'react';
@@ -10,11 +10,23 @@ import {
   easeOutExpo, 
   hoverScale, 
   tapScale,
-  viewportConfig
+  viewportConfig,
+  easeSmooth
 } from '@/lib/animations';
+import { getCookie } from '@/lib/api';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Home() {
+  const router = useRouter();
   const [hoveredFeature, setHoveredFeature] = useState<number | null>(null);
+
+  useEffect(() => {
+    const token = getCookie('debugr_token');
+    if (token) {
+      router.push('/dashboard');
+    }
+  }, [router]);
 
   const features = [
     {
@@ -83,17 +95,7 @@ export default function Home() {
           animate="visible"
           style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 900 }}
         >
-          <motion.div variants={fadeInUp()}>
-            <span style={{ 
-              display: 'inline-block', padding: '10px 24px', borderRadius: 100,
-              background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-              color: 'var(--accent-purple)', fontSize: 13, fontWeight: 700, letterSpacing: '0.05em',
-              textTransform: 'uppercase', marginBottom: 32,
-              boxShadow: '0 0 30px rgba(157, 80, 187, 0.1)'
-            }}>
-              Unleash the Power of Elite Security
-            </span>
-          </motion.div>
+          {/* Removed secondary heading */}
 
           <motion.h1 
             variants={blurIn(0.1)}
@@ -151,6 +153,37 @@ export default function Home() {
                 Start Hacking
               </motion.div>
             </Link>
+          </motion.div>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 2, duration: 1 }}
+          style={{ 
+            position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
+            zIndex: 10
+          }}
+        >
+          <motion.div
+            animate={{ y: [0, 8, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: easeSmooth }}
+            style={{ 
+              width: 24, height: 40, borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)',
+              position: 'relative'
+            }}
+          >
+            <motion.div 
+              animate={{ opacity: [0.3, 1, 0.3], y: [4, 24, 4] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              style={{ 
+                position: 'absolute', top: 4, left: '50%', marginLeft: -1.5,
+                width: 3, height: 8, background: '#fff', borderRadius: 2,
+                boxShadow: '0 0 10px #fff'
+              }}
+            />
           </motion.div>
         </motion.div>
       </section>

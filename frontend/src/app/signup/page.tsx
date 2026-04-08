@@ -22,10 +22,23 @@ export default function SignUp() {
 
   const nextStep = () => {
     setError('');
-    if (step === 2 && formData.password !== formData.confirmPassword) {
-      setError('Passcodes do not match');
-      return;
+    
+    // Step 2 Validation: Must have email and password
+    if (step === 2) {
+      if (!formData.email || !formData.email.includes('@')) {
+        setError('A valid email protocol is required');
+        return;
+      }
+      if (!formData.password || formData.password.length < 6) {
+        setError('Secure passcode must be at least 6 characters');
+        return;
+      }
+      if (formData.password !== formData.confirmPassword) {
+        setError('Passcodes do not match');
+        return;
+      }
     }
+    
     setStep(s => s + 1);
   };
 
@@ -141,14 +154,31 @@ export default function SignUp() {
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
                     {[
-                      { id: 'hacker', title: 'Hacker', desc: 'Hunt bugs, uncover flaws, and earn reputation + rewards.', icon: '⚡' },
-                      { id: 'company', title: 'Organization', desc: 'Secure your assets through world-class security intelligence.', icon: '🛡️' }
+                      { 
+                        id: 'hacker', title: 'Hacker', desc: 'Hunt bugs, uncover flaws, and earn reputation + rewards.', icon: '⚡',
+                        hoverEffect: {
+                          scale: [1, 1.2, 1],
+                          rotate: [0, -10, 10, 0],
+                          filter: ['drop-shadow(0 0 0px #fff)', 'drop-shadow(0 0 15px #fcd34d)', 'drop-shadow(0 0 0px #fff)'],
+                          color: ['#fff', '#fcd34d', '#fff'],
+                          transition: { duration: 0.3, repeat: Infinity }
+                        }
+                      },
+                      { 
+                        id: 'company', title: 'Organization', desc: 'Secure your assets through world-class security intelligence.', icon: '🛡️',
+                        hoverEffect: {
+                          scale: [1, 1.1, 1],
+                          filter: ['drop-shadow(0 0 0px #fff)', 'drop-shadow(0 0 20px #60a5fa)', 'drop-shadow(0 0 0px #fff)'],
+                          color: ['#fff', '#60a5fa', '#fff'],
+                          transition: { duration: 1.5, repeat: Infinity }
+                        }
+                      }
                     ].map(r => (
                       <motion.button 
                         key={r.id} 
                         onClick={() => { setRole(r.id as Role); nextStep(); }} 
-                        whileHover={{ y: -8, scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        whileHover="hover"
+                        initial="initial"
                         className="glass-panel hover-glow"
                         style={{ 
                           textAlign: 'left', padding: '40px 32px', borderRadius: 32, cursor: 'pointer',
@@ -156,8 +186,20 @@ export default function SignUp() {
                           background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
                           position: 'relative', overflow: 'hidden'
                         }}
+                        variants={{
+                          hover: { y: -8, scale: 1.02, transition: { duration: 0.2 } },
+                          initial: { y: 0, scale: 1 }
+                        }}
                       >
-                        <div style={{ fontSize: 32 }}>{r.icon}</div>
+                        <motion.div 
+                          variants={{
+                            hover: r.hoverEffect,
+                            initial: { scale: 1, rotate: 0, filter: 'none' }
+                          }}
+                          style={{ fontSize: 32, display: 'inline-block', width: 'fit-content' }}
+                        >
+                          {r.icon}
+                        </motion.div>
                         <div>
                           <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800, marginBottom: 10 }}>{r.title}</h3>
                           <p style={{ fontSize: 14, color: 'var(--t3)', lineHeight: 1.5 }}>{r.desc}</p>
