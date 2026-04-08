@@ -28,14 +28,24 @@ export default function CompanyDashboard() {
   const [programs, setPrograms] = useState<Program[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<'inbox' | 'programs'>('inbox');
+  const [balance, setBalance] = useState('0');
+  const [showNewProgram, setShowNewProgram] = useState(false);
 
   useEffect(() => {
     async function loadCompanyData() {
       try {
-        const [repRes, progRes] = await Promise.all([
+        const [repRes, progRes, profileRes] = await Promise.all([
           fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/reports/company`),
-          fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/programs/managed`)
+          fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/programs/managed`),
+          fetchWithAuth(API_ENDPOINTS.PROFILE)
         ]);
+
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          if (profileData.success) {
+            setBalance(profileData.user.wallet_balance || '0');
+          }
+        }
 
         if (repRes.ok) {
           const repData = await repRes.json();
@@ -72,13 +82,13 @@ export default function CompanyDashboard() {
 
           <div style={{ display: 'flex', gap: 32 }}>
             {[
-              { label: 'Total Bounties Paid', value: `$${totalPaid.toLocaleString()}`, highlight: true },
+              { label: 'Bounty Funds', value: `$${Number(balance).toLocaleString()}`, highlight: true },
+              { label: 'Total Bounties Paid', value: `$${totalPaid.toLocaleString()}` },
               { label: 'Active Reports', value: String(reports.length) },
-              { label: 'Unresolved', value: String(pendingCount) },
             ].map(s => (
               <div key={s.label}>
                 <p className="mono" style={{ fontSize: 10, color: '#444', letterSpacing: '0.06em', marginBottom: 6, textTransform: 'uppercase' }}>{s.label}</p>
-                <p style={{ fontWeight: 700, fontSize: 28, letterSpacing: '-0.03em', color: s.highlight ? '#fff' : '#888' }}>{s.value}</p>
+                <p style={{ fontWeight: 700, fontSize: 28, letterSpacing: '-0.03em', color: s.highlight ? '#33d6e5' : '#888' }}>{s.value}</p>
               </div>
             ))}
           </div>
@@ -159,15 +169,115 @@ export default function CompanyDashboard() {
               }}>Manage Policy</Link>
             </div>
           ))}
-          <div style={{ 
-            padding: 24, borderRadius: 16, border: '1px dashed #444', background: 'transparent',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, cursor: 'pointer'
-          }}>
+          <div 
+            onClick={() => setShowNewProgram(true)}
+            style={{ 
+              padding: 24, borderRadius: 16, border: '1px dashed #444', background: 'transparent',
+              display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 16, cursor: 'pointer'
+            }}
+          >
             <p style={{ color: '#444', fontSize: 14 }}>Deployment Ready</p>
             <button className="metallic-button" style={{ padding: '10px 20px', fontSize: 12 }}>+ New Bug Bounty Program</button>
           </div>
         </div>
       )}
+
+      {/* ── New Program Modal ── */}
+      <AnimatePresence>
+        {showNewProgram && (
+          <NewProgramModal onClose={() => setShowNewProgram(false)} />
+        )}
+      </AnimatePresence>
     </motion.div>
+  );
+}
+
+function NewProgramModal({ onClose }: { onClose: () => void }) {
+  const [formData, setFormData] = useState({ name: '', description: '', reward_min: 0, reward_max: 0 });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    try {
+      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL}/api/programs`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData)
+      });
+      if (res.ok) {
+        onClose();
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/80 backdrop-blur-sm p-6">
+      <motion.div 
+        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        className="glass-panel w-full max-w-lg p-8 rounded-3xl border border-white/10"
+      >
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-2xl font-black tracking-tight">Deploy New Program</h2>
+          <button onClick={onClose} className="text-gray-500 hover:text-white">✕</button>
+        </div>
+
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="space-y-2">
+            <label className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Program Name</label>
+            <input 
+              required
+              className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white focus:border-blue-500 transition-colors"
+              value={formData.name}
+              onChange={e => setFormData({ ...formData, name: e.target.value })}
+              placeholder="e.g. Debugr VDP"
+            />
+          </div>
+          <div className="space-y-2">
+            <label className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Scope & Instructions</label>
+            <textarea 
+              required
+              className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white h-32 focus:border-blue-500 transition-colors"
+              value={formData.description}
+              onChange={e => setFormData({ ...formData, description: e.target.value })}
+              placeholder="Describe what is in scope and reward criteria..."
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Min Reward ($)</label>
+              <input 
+                type="number"
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white"
+                value={formData.reward_min}
+                onChange={e => setFormData({ ...formData, reward_min: Number(e.target.value) })}
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-[10px] uppercase font-bold text-gray-500 tracking-wider">Max Reward ($)</label>
+              <input 
+                type="number"
+                className="w-full bg-white/5 border border-white/10 rounded-xl p-4 text-white"
+                value={formData.reward_max}
+                onChange={e => setFormData({ ...formData, reward_max: Number(e.target.value) })}
+              />
+            </div>
+          </div>
+          <button 
+            type="submit"
+            disabled={isSubmitting}
+            className="w-full p-4 bg-white text-black font-black rounded-xl hover:bg-gray-200 transition-all uppercase tracking-widest text-sm"
+          >
+            {isSubmitting ? 'Deploying...' : 'Initialize Program'}
+          </button>
+        </form>
+      </motion.div>
+    </div>
   );
 }

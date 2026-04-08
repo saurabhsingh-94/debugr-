@@ -28,12 +28,8 @@ export default function SignIn() {
       const data = await res.json();
       if (data.success) {
         setCookie('debugr_token', data.token);
-        // Redirect based on role
-        if (data.user.role === 'company') {
-          router.push('/dashboard/company');
-        } else {
-          router.push('/dashboard');
-        }
+        // Redirect to unified dashboard route
+        router.push('/dashboard');
       } else {
         setError(data.error || data.message || 'Authentication failed');
       }

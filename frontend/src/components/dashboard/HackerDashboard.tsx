@@ -37,13 +37,25 @@ export default function HackerDashboard() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Severity | 'All'>('All');
   const [isLive, setIsLive] = useState(false);
+  const [balance, setBalance] = useState('0');
 
   useEffect(() => {
     async function loadData() {
       try {
-        const res = await fetchWithAuth(API_ENDPOINTS.MY_REPORTS);
-        if (res.ok) {
-          const data = await res.json();
+        const [reportsRes, profileRes] = await Promise.all([
+          fetchWithAuth(API_ENDPOINTS.MY_REPORTS),
+          fetchWithAuth(API_ENDPOINTS.PROFILE)
+        ]);
+
+        if (profileRes.ok) {
+          const profileData = await profileRes.json();
+          if (profileData.success) {
+            setBalance(profileData.user.wallet_balance || '0');
+          }
+        }
+
+        if (reportsRes.ok) {
+          const data = await reportsRes.json();
           if (data.success) {
             const transformed = data.reports.map((r: any) => ({
               id: r.id.substring(0, 8).toUpperCase(),
@@ -69,7 +81,6 @@ export default function HackerDashboard() {
   }, []);
 
   const filtered = filter === 'All' ? reports : reports.filter(r => r.severity === filter);
-  const total = reports.reduce((s, r) => s + Number(r.earned.replace(/[$,]/g, '')), 0);
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} style={{ width: '100%' }}>
@@ -88,7 +99,7 @@ export default function HackerDashboard() {
 
           <div style={{ display: 'flex', gap: 32 }}>
             {[
-              { label: 'Total revenue', value: `$${total.toLocaleString()}`, highlight: true },
+              { label: 'Wallet Balance', value: `$${Number(balance).toLocaleString()}`, highlight: true },
               { label: 'Vulnerabilities', value: String(reports.length) },
               { label: 'Signal strength', value: '88%' },
             ].map(s => (

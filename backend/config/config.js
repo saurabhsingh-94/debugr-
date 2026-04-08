@@ -27,7 +27,7 @@ if (missingEnv.length > 0) {
 
 export const config = {
   env: process.env.NODE_ENV || "development",
-  port: process.env.PORT || 3000,
+  port: process.env.PORT || 5000,
   dbUrl: process.env.DATABASE_URL,
   redisUrl: process.env.REDIS_URL,
   jwtSecret: process.env.JWT_SECRET,

@@ -1,5 +1,5 @@
 'use client';
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
@@ -25,6 +25,10 @@ export default function SignUp() {
     
     // Step 2 Validation: Must match backend requirements
     if (step === 2) {
+      if (!formData.handle || !formData.handle.match(/^[a-z0-9_]{3,20}$/)) {
+        setError('Identity handle is required (3-20 lowercase alphanumeric characters)');
+        return;
+      }
       if (!formData.email || !formData.email.includes('@')) {
         setError('A valid email protocol is required');
         return;
@@ -52,18 +56,23 @@ export default function SignUp() {
     setError('');
 
     try {
+      // 1. Register User
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ ...formData, role }),
       });
 
-      const data = await res.json();
-      if (data.success) {
+      const registerData = await res.json();
+      if (registerData.success) {
+        // 2. Auto-login using handle or email
         const loginRes = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ username: formData.email, password: formData.password }),
+          body: JSON.stringify({ 
+            username: formData.handle || formData.email, 
+            password: formData.password 
+          }),
         });
         const loginData = await loginRes.json();
         
@@ -74,7 +83,7 @@ export default function SignUp() {
           router.push('/signin');
         }
       } else {
-        const errorMsg = data.error || data.message || (data.errors && data.errors[0]?.message) || 'Registration failed';
+        const errorMsg = registerData.error || registerData.message || (registerData.errors && registerData.errors[0]?.message) || 'Registration failed';
         setError(errorMsg);
       }
     } catch (err) {
@@ -158,50 +167,22 @@ export default function SignUp() {
                     {[
                       { 
                         id: 'hacker', title: 'Hacker', desc: 'Hunt bugs, uncover flaws, and earn reputation + rewards.', icon: '⚡',
-                        fullEffect: <LightningField />
+                        Effect: LightningField
                       },
                       { 
                         id: 'company', title: 'Organization', desc: 'Secure your assets through world-class security intelligence.', icon: '🛡️',
-                        fullEffect: <ShieldWall />
+                        Effect: ShieldWall
                       }
                     ].map(r => (
-                      <motion.button 
+                      <RoleButton 
                         key={r.id} 
-                        onClick={() => { setRole(r.id as Role); nextStep(); }} 
-                        whileHover="hover"
-                        initial="initial"
-                        className="glass-panel hover-glow"
-                        style={{ 
-                          textAlign: 'left', padding: '40px 32px', borderRadius: 32, cursor: 'pointer',
-                          display: 'flex', flexDirection: 'column', gap: 20,
-                          background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
-                          position: 'relative', overflow: 'hidden'
-                        }}
-                        variants={{
-                          hover: { y: -8, scale: 1.02, transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } },
-                          initial: { y: 0, scale: 1 }
-                        }}
-                      >
-                        {/* Immersive Full-Board Effect */}
-                        <AnimatePresence>
-                          {r.fullEffect}
-                        </AnimatePresence>
-
-                        <motion.div 
-                          style={{ fontSize: 32, display: 'inline-block', width: 'fit-content', position: 'relative', zIndex: 2 }}
-                        >
-                          {r.icon}
-                        </motion.div>
-                        <div>
-                          <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800, marginBottom: 10 }}>{r.title}</h3>
-                          <p style={{ fontSize: 14, color: 'var(--t3)', lineHeight: 1.5 }}>{r.desc}</p>
-                        </div>
-                        <div style={{ 
-                          position: 'absolute', top: 0, right: 0, padding: '12px 20px', 
-                          background: 'rgba(255,255,255,0.05)', borderBottomLeftRadius: 20,
-                          fontSize: 10, fontWeight: 900, letterSpacing: '0.1em', opacity: 0.4
-                        }}>SELECT</div>
-                      </motion.button>
+                        id={r.id as Role}
+                        title={r.title}
+                        desc={r.desc}
+                        icon={r.icon}
+                        Effect={r.Effect}
+                        onSelect={() => { setRole(r.id as Role); nextStep(); }}
+                      />
                     ))}
                   </div>
                 </div>
@@ -221,6 +202,7 @@ export default function SignUp() {
                       <h2 className="hero-title" style={{ fontSize: 32, fontWeight: 800, marginTop: 16 }}>Establish Credentials</h2>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                      <Input label="Identity Handle (@)" value={formData.handle} onChange={v => setFormData({...formData, handle: v.replace(/[^a-z0-9_]/g, '')})} placeholder="e.g. shadow_walker" />
                       <Input label="Email Protocol" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="hacker@debugr.ops" />
                       <Input label="Secure Passcode" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} />
                       <Input label="Confirm Passcode" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} />
@@ -265,9 +247,6 @@ export default function SignUp() {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
                       {role === 'hacker' ? (
                         <>
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <Input label="Public Handle" value={formData.handle} onChange={v => setFormData({...formData, handle: v})} placeholder="e.g. shadow_walker" />
-                          </div>
                           <Input label="Operational Base" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="e.g. Neo Tokyo" />
                           <Input label="Command Center (URL)" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/hacker" />
                           
@@ -430,15 +409,57 @@ function Input({ label, type = 'text', value, onChange, placeholder }: InputProp
   );
 }
 
+function RoleButton({ title, desc, icon, Effect, onSelect }: { 
+  id: Role, title: string, desc: string, icon: string, Effect: React.ComponentType, onSelect: () => void 
+}) {
+  const [isHovered, setIsHovered] = useState(false);
+
+  return (
+    <motion.button 
+      onClick={onSelect}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover="hover"
+      initial="initial"
+      className="glass-panel hover-glow"
+      style={{ 
+        textAlign: 'left', padding: '40px 32px', borderRadius: 32, cursor: 'pointer',
+        display: 'flex', flexDirection: 'column', gap: 20,
+        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
+        position: 'relative', overflow: 'hidden'
+      }}
+      variants={{
+        hover: { y: -8, scale: 1.02, transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } },
+        initial: { y: 0, scale: 1 }
+      }}
+    >
+      {/* Immersive Full-Board Effect - Triggered only on hover */}
+      <AnimatePresence>
+        {isHovered && <Effect />}
+      </AnimatePresence>
+
+      <motion.div 
+        style={{ fontSize: 32, display: 'inline-block', width: 'fit-content', position: 'relative', zIndex: 2 }}
+      >
+        {icon}
+      </motion.div>
+      <div style={{ position: 'relative', zIndex: 2 }}>
+        <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800, marginBottom: 10 }}>{title}</h3>
+        <p style={{ fontSize: 14, color: 'var(--t3)', lineHeight: 1.5 }}>{desc}</p>
+      </div>
+      <div style={{ 
+        position: 'absolute', top: 0, right: 0, padding: '12px 20px', 
+        background: 'rgba(255,255,255,0.05)', borderBottomLeftRadius: 20,
+        fontSize: 10, fontWeight: 900, letterSpacing: '0.1em', opacity: 0.4,
+        zIndex: 2
+      }}>SELECT</div>
+    </motion.button>
+  );
+}
+
 // --- Immersive Effects Components ---
 
 function LightningField() {
-  const bolts = useMemo(() => [
-    { id: 1, delay: 0.5, duration: 5, left: 15, path: "M 50 0 L 45 30 L 55 60 L 48 100" },
-    { id: 2, delay: 2.0, duration: 6, left: 50, path: "M 50 0 L 58 35 L 42 65 L 50 100" },
-    { id: 3, delay: 3.5, duration: 4.5, left: 85, path: "M 50 0 L 42 40 L 58 70 L 52 100" }
-  ], []);
-
   return (
     <motion.div 
       initial={{ opacity: 0 }}
@@ -447,44 +468,62 @@ function LightningField() {
       className="absolute inset-0 pointer-events-none"
       style={{ overflow: 'hidden' }}
     >
-      {/* Dynamic Lightning Bolts - Slow & Smooth */}
-      {bolts.map((bolt) => (
-        <motion.svg 
-          key={bolt.id}
-          viewBox="0 0 100 100" 
-          strokeLinecap="round"
-          style={{ position: 'absolute', top: 0, left: `${bolt.left}%`, width: '30%', height: '100%', opacity: 0.3 }}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        {/* Main Bolt Strike */}
+        <motion.path
+          d="M 85 0 L 78 15 L 85 30 L 70 50 L 80 65 L 45 85 L 55 92 L 15 100"
+          fill="none"
+          stroke="#fff"
+          strokeWidth="1.5"
+          initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
-            opacity: [0, 0.6, 0.2, 0.8, 0],
-            scale: [1, 1.05, 1],
-            filter: ['blur(1px)', 'blur(3px)', 'blur(1px)']
+            pathLength: [0, 1, 1],
+            opacity: [0, 1, 0, 1, 0, 0.8, 0],
+            strokeWidth: [1, 2, 1, 3, 1],
           }}
           transition={{ 
-            duration: bolt.duration, 
-            repeat: Infinity, 
-            delay: bolt.delay,
-            ease: "easeInOut"
+            duration: 0.8,
+            times: [0, 0.1, 0.15, 0.2, 0.25, 0.3, 1],
+            ease: "easeOut"
           }}
-        >
-          <path 
-            d={bolt.path} 
-            fill="none" 
-            stroke="rgba(191, 123, 255, 0.8)" 
-            strokeWidth="0.8"
-            style={{ filter: 'drop-shadow(0 0 15px rgba(191, 123, 255, 0.6))' }}
-          />
-        </motion.svg>
-      ))}
-      
-      {/* Slow Background Pulse */}
+          style={{ filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 30px rgba(100, 200, 255, 0.8))' }}
+        />
+        
+        {/* Secondary Branches */}
+        <motion.path
+          d="M 70 50 L 85 55 M 45 85 L 65 88 M 78 15 L 60 18"
+          fill="none"
+          stroke="rgba(200, 230, 255, 0.8)"
+          strokeWidth="0.8"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ 
+            pathLength: [0, 1],
+            opacity: [0, 0.7, 0]
+          }}
+          transition={{ 
+            duration: 0.4, 
+            delay: 0.1
+          }}
+        />
+
+        {/* The Glow Core */}
+        <motion.path
+          d="M 85 0 L 78 15 L 85 30 L 70 50 L 80 65 L 45 85 L 55 92 L 15 100"
+          fill="none"
+          stroke="rgba(100, 200, 255, 0.3)"
+          strokeWidth="8"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: [0, 0.4, 0] }}
+          transition={{ duration: 0.5, times: [0, 0.2, 1] }}
+        />
+      </svg>
+
+      {/* Extreme Flash */}
       <motion.div 
-        animate={{ opacity: [0.03, 0.1, 0.03] }}
-        transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-        style={{ 
-          position: 'absolute', inset: 0, 
-          background: 'radial-gradient(circle at center, rgba(147, 51, 234, 0.15) 0%, transparent 80%)',
-          mixBlendMode: 'plus-lighter' 
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.3, 0] }}
+        transition={{ duration: 0.15, times: [0, 0.1, 1] }}
+        style={{ position: 'absolute', inset: 0, background: '#fff', mixBlendMode: 'overlay', zIndex: 10 }}
       />
     </motion.div>
   );
@@ -497,40 +536,56 @@ function ShieldWall() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="absolute inset-0 pointer-events-none"
-      style={{ 
-        background: `
-          radial-gradient(circle at center, rgba(59, 130, 246, 0.08) 0%, transparent 80%),
-          url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z' fill='none' stroke='white' stroke-opacity='0.05' stroke-width='1'/%3E%3C/svg%3E")
-        `,
-        backgroundSize: '100% 100%, 40px 45px'
-      }}
+      style={{ overflow: 'hidden' }}
     >
-      {/* Slow Ripple Effect */}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
+        {/* Hex Grid Background (Azure) */}
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 0.15 }}
+          style={{ 
+            position: 'absolute', inset: 0,
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z' fill='none' stroke='%233b82f6' stroke-opacity='0.5' stroke-width='1'/%3E%3C/svg%3E")`,
+            backgroundSize: '20px 24px'
+          }}
+        />
+
+        {/* The Azure Strike (Organization Thunderbolt) */}
+        <motion.path
+          d="M 90 0 L 82 20 L 95 35 L 75 55 L 88 70 L 40 90 L 10 100"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="1.8"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ 
+            pathLength: [0, 1, 1],
+            opacity: [0, 1, 0, 1, 0, 0.9, 0],
+            strokeWidth: [1, 3, 1, 4, 1.5],
+          }}
+          transition={{ 
+            duration: 0.9,
+            times: [0, 0.1, 0.15, 0.2, 0.25, 0.3, 1],
+            ease: "easeOut"
+          }}
+          style={{ filter: 'drop-shadow(0 0 15px #3b82f6) drop-shadow(0 0 30px rgba(0, 100, 255, 0.5))' }}
+        />
+
+        {/* Energy Displacement Field */}
+        <motion.circle
+          cx="40" cy="90" r="10"
+          fill="rgba(59, 130, 246, 0.1)"
+          initial={{ scale: 0, opacity: 0 }}
+          animate={{ scale: [0.5, 2], opacity: [0, 0.4, 0] }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        />
+      </svg>
+
+      {/* Azure Flash */}
       <motion.div 
-        animate={{ 
-          scale: [0.9, 1.3, 0.9],
-          opacity: [0.05, 0.2, 0.05],
-          rotate: [0, 5, 0]
-        }}
-        transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
-        style={{ 
-          position: 'absolute', inset: -100, 
-          background: 'radial-gradient(circle at center, rgba(37, 99, 235, 0.2) 0%, transparent 60%)',
-          filter: 'blur(40px)'
-        }}
-      />
-      
-      {/* Surface Glimmer */}
-      <motion.div 
-        animate={{ 
-          x: ['-100%', '100%'],
-          opacity: [0, 0.2, 0]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-        style={{ 
-          position: 'absolute', inset: 0, 
-          background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent)'
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: [0, 0.2, 0] }}
+        transition={{ duration: 0.2 }}
+        style={{ position: 'absolute', inset: 0, background: '#3b82f6', mixBlendMode: 'color-dodge', zIndex: 10 }}
       />
     </motion.div>
   );

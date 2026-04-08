@@ -110,15 +110,14 @@ router.post("/login", loginValidation, async (req, res, next) => {
 
     const user = result.rows[0];
 
-    // Check password if provided
-    if (password) {
-      const isMatch = await bcrypt.compare(password, user.password);
-      if (!isMatch) {
-        throw new ApiError(401, "Invalid credentials");
-      }
-    } else {
-      // If password not provided, allow login (Frictionless mode requested)
-      console.log(`🔓 Frictionless login for user: ${user.handle || user.email}`);
+    // Enforce mandatory password check
+    if (!password) {
+      throw new ApiError(400, "Password is required");
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      throw new ApiError(401, "Invalid credentials");
     }
 
     // Generate JWT

@@ -23,7 +23,7 @@ router.get("/profile/me", authMiddleware, cache(30), async (req, res, next) => {
       throw new ApiError(404, "User not found");
     }
 
-    // 2. Get detailed stats
+    // 2. Get detailed stats (Report-based)
     const statsResult = await pool.query(`
       SELECT 
         COUNT(*) as total_submissions,
@@ -34,11 +34,19 @@ router.get("/profile/me", authMiddleware, cache(30), async (req, res, next) => {
       WHERE user_id = $1
     `, [userId]);
 
+    // 3. Get real Wallet Balance (Transaction-based)
+    const balanceResult = await pool.query(`
+      SELECT COALESCE(SUM(amount), 0) as balance 
+      FROM transactions 
+      WHERE user_id = $1 AND status = 'completed'
+    `, [userId]);
+
     res.json({
       success: true,
       user: {
         ...userResult.rows[0],
-        stats: statsResult.rows[0]
+        stats: statsResult.rows[0],
+        balance: parseFloat(balanceResult.rows[0].balance)
       }
     });
   } catch (err) {

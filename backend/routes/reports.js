@@ -152,15 +152,25 @@ router.patch("/:id/status", authMiddleware, async (req, res, next) => {
 
     const report = updatedReport.rows[0];
 
-    // If bounty is awarded and status is resolved, record a transaction
+    // If bounty is awarded and status is resolved, record a transaction (Double Entry)
     if (report.status === 'resolved' && report.bounty > 0) {
+      // 1. Credit the Hacker
       await pool.query(
         `INSERT INTO transactions (user_id, type, amount, status, reference_id, details) 
          VALUES ($1, 'payout', $2, 'completed', $3, $4)
          ON CONFLICT DO NOTHING`,
-        [report.user_id, report.bounty, `report_${report.id}_payout`, JSON.stringify({ program_id: report.program_id, report_title: report.title })]
+        [report.user_id, report.bounty, `report_${report.id}_hacker_payout`, JSON.stringify({ type: 'hacker_credit', report_id: report.id })]
       );
-      logger.info(`💸 Bountry payout of ${report.bounty} recorded for user ${report.user_id} on report ${report.id}`);
+
+      // 2. Debit the Company (Negative Amount)
+      await pool.query(
+        `INSERT INTO transactions (user_id, type, amount, status, reference_id, details) 
+         VALUES ($1, 'payout', $2, 'completed', $3, $4)
+         ON CONFLICT DO NOTHING`,
+        [companyId, 'payout', -report.bounty, 'completed', `report_${report.id}_company_debit`, JSON.stringify({ type: 'company_debit', report_id: report.id })]
+      );
+
+      logger.info(`💸 Bountry payout of ${report.bounty} settled between Company ${companyId} and Hacker ${report.user_id}`);
     }
 
     // Log the triage action
