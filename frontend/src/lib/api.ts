@@ -2,7 +2,7 @@ const API_BASE = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API
   ? process.env.NEXT_PUBLIC_API_URL 
   : ''; // Relative to current domain or hardcoded
 
-export const API_URL = API_BASE || 'http://localhost:5000';
+export const API_URL = API_BASE || 'https://debugr-backend-production.up.railway.app';
 
 // Cookie Helpers
 export function setCookie(name: string, value: string, days: number = 7) {
