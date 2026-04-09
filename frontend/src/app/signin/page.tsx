@@ -61,25 +61,25 @@ export default function SignIn() {
             className="max-w-xl space-y-12 relative z-10"
           >
             <motion.div variants={blurReveal}>
-              <p className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4 font-black italic">Network Entry Point</p>
+              <p className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4 font-black italic">Access Your Account</p>
               <h1 className="text-7xl font-black italic tracking-tighter leading-[0.9] uppercase">
-                System<br /><span className="text-white/20">Access.</span>
+                Welcome<br /><span className="text-white/20">Back.</span>
               </h1>
             </motion.div>
 
             <motion.div variants={blurReveal} className="space-y-8">
               <div className="flex gap-6 items-start">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">⚡</div>
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">🤝</div>
                 <div>
-                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Operational Node</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Secure gateway to high-stakes vulnerability research and mission analytics.</p>
+                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Secure Sign-In</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Your data is safe with us. We use industry-standard encryption to keep your account secure.</p>
                 </div>
               </div>
               <div className="flex gap-6 items-start">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">👁️</div>
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">📈</div>
                 <div>
-                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Elite Privacy</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Your identity is shielded by hardened zero-knowledge authentication layers.</p>
+                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Track Progress</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Check your latest bounties and rankings across the platform.</p>
                 </div>
               </div>
             </motion.div>
@@ -115,21 +115,21 @@ export default function SignIn() {
               <form onSubmit={handleSubmit} className="flex flex-col gap-8">
                 <div className="flex flex-col gap-3">
                   <label className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">
-                    Identity Handle
+                    Username or email
                   </label>
                   <input 
                     type="text" 
                     required
                     value={formData.username}
                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    placeholder="Username or Email"
+                    placeholder="Enter your username"
                     className="input-focus-glow w-full py-5 px-7 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner placeholder:text-white/10"
                   />
                 </div>
 
                 <div className="flex flex-col gap-3">
                   <label className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">
-                    Access Key
+                    Password
                   </label>
                   <input 
                     type="password" 
@@ -161,7 +161,7 @@ export default function SignIn() {
                   disabled={loading}
                   className="w-full py-6 text-sm font-black bg-white text-black rounded-2xl shadow-xl transition-all uppercase tracking-[0.2em] italic hover:bg-white/90"
                 >
-                  {loading ? 'Authenticating...' : 'Enter Grid'}
+                  {loading ? 'Signing in...' : 'Sign In'}
                 </motion.button>
               </form>
             </motion.div>

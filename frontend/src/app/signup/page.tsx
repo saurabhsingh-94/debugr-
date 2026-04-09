@@ -120,18 +120,18 @@ export default function SignUp() {
                   <div className="text-center">
                     <span className="text-white/40 font-black uppercase tracking-widest text-[10px] sm:text-xs">Step 0{step}</span>
                     <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
-                      {step === 1 ? 'Choose Your Identity' : step === 2 ? 'Tell Us About Yourself' : 'Secure Your Account'}
+                      {step === 1 ? 'How will you use Debugr?' : step === 2 ? 'Account information' : 'Tell us about yourself'}
                     </h2>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
                       { 
-                        id: 'hacker', title: 'Hacker', desc: 'Find vulnerabilities and earn bounties.', icon: '⚡',
+                        id: 'hacker', title: 'Security Researcher', desc: 'I want to find vulnerabilities and earn bounties.', icon: '⚡',
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Organization', desc: 'Launch your bug bounty program and collaborate with hackers.', icon: '🛡️',
+                        id: 'company', title: 'Organization', desc: 'We want to launch a bug bounty program.', icon: '🛡️',
                         Effect: ShieldWall
                       }
                     ].map(r => (
@@ -160,7 +160,7 @@ export default function SignUp() {
                       >
                         <span className="text-lg">←</span> Go Back
                       </motion.button>
-                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Account<br /><span className="text-white/20">Details.</span></h2>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Basic<br /><span className="text-white/20">Info.</span></h2>
                     </div>
 
                     <div className="flex flex-col gap-8">
@@ -186,7 +186,7 @@ export default function SignUp() {
                       onClick={nextStep} 
                       className="w-full py-6 text-base font-black bg-white text-black rounded-3xl shadow-2xl transition-all uppercase tracking-widest italic hover:bg-white/90"
                     >
-                      Continue to Profile
+                      Next Step
                     </motion.button>
                   </div>
                 </div>
@@ -203,7 +203,7 @@ export default function SignUp() {
                       >
                         ← Login Details
                       </motion.button>
-                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">About<br /><span className="text-white/20">You.</span></h2>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Profile<br /><span className="text-white/20">Setup.</span></h2>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -220,11 +220,11 @@ export default function SignUp() {
                               onChange={e => setFormData({...formData, specialization: e.target.value})}
                               className="input-focus-glow w-full py-4 px-5 rounded-xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
-                              <option className="bg-bg">Web Infrastructure</option>
-                              <option className="bg-bg">Cloud Architecture</option>
-                              <option className="bg-bg">Legacy Mining</option>
-                              <option className="bg-bg">Smart Contracts</option>
-                              <option className="bg-bg">Zero-Day Research</option>
+                              <option className="bg-bg">Web Applications</option>
+                              <option className="bg-bg">Cloud Infrastructure</option>
+                              <option className="bg-bg">Network Security</option>
+                              <option className="bg-bg">Mobile Apps</option>
+                              <option className="bg-bg">Cryptography</option>
                             </select>
                           </div>
                           <div>
@@ -246,7 +246,7 @@ export default function SignUp() {
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
-                              placeholder="Briefly describe your methodology and mission..."
+                              placeholder="Tell us a bit about your experience and what you're looking for..."
                               className="input-focus-glow w-full min-h-[100px] p-5 rounded-2xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>
@@ -306,7 +306,7 @@ export default function SignUp() {
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
-                              placeholder="e.g. Web Security, Mobile, Cloud"
+                              placeholder="Describe your organization's security goals..."
                               className="input-focus-glow w-full min-h-[100px] p-5 rounded-2xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>

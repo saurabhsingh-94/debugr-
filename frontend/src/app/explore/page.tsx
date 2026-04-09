@@ -40,9 +40,9 @@ export default function ExplorePage() {
   }, []);
 
   const categories = [
-    { title: 'Web Infra', icon: '🌐', count: 24, color: 'indigo' },
-    { title: 'Cloud Ops', icon: '☁️', count: 12, color: 'emerald' },
-    { title: 'Embedded', icon: '📟', count: 8, color: 'rose' },
+    { title: 'Web Apps', icon: '🌐', count: 24, color: 'indigo' },
+    { title: 'Cloud Security', icon: '☁️', count: 12, color: 'emerald' },
+    { title: 'Mobile Apps', icon: '📱', count: 8, color: 'rose' },
     { title: 'Blockchain', icon: '⛓️', count: 15, color: 'amber' }
   ];
 
@@ -55,12 +55,12 @@ export default function ExplorePage() {
         {/* Hero Section */}
         <section className="mb-24">
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible">
-            <motion.p variants={blurReveal} className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4">Discovery Hub</motion.p>
+            <motion.p variants={blurReveal} className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4">Discovery</motion.p>
             <motion.h1 
               variants={blurReveal} 
               className="text-6xl md:text-8xl font-black italic tracking-tighter leading-[0.9] uppercase"
             >
-              Scan the <br /><span className="text-white/20">Frontier.</span>
+              Find your next <br /><span className="text-white/20">Target.</span>
             </motion.h1>
           </motion.div>
         </section>
@@ -89,8 +89,8 @@ export default function ExplorePage() {
         <section className="mb-32">
           <div className="flex justify-between items-end mb-12">
             <div>
-              <p className="subtle-mono text-white/20 text-[10px] uppercase tracking-widest mb-2 font-black">Tier 01</p>
-              <h2 className="text-4xl font-black italic uppercase tracking-tighter">High Impact Ops.</h2>
+              <p className="subtle-mono text-white/20 text-[10px] uppercase tracking-widest mb-2 font-black">Top Tiers</p>
+              <h2 className="text-4xl font-black italic uppercase tracking-tighter">Featured <span className="text-white/20">Programs.</span></h2>
             </div>
             <Link href="/programs" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors pb-1 border-b border-white/10">View Directory →</Link>
           </div>
@@ -119,7 +119,7 @@ export default function ExplorePage() {
                     <p className="text-3xl font-black text-white tracking-tighter italic">${Number(p.reward_max).toLocaleString()}</p>
                   </div>
                   <Link href={`/programs/${p.id}`}>
-                    <button className="mt-8 w-full py-4 bg-white/5 hover:bg-white text-white hover:text-black font-black text-[10px] uppercase tracking-widest rounded-2xl transition-all italic border border-white/5">Enter Mission</button>
+                    <button className="mt-8 w-full py-4 bg-white/5 hover:bg-white text-white hover:text-black font-black text-[10px] uppercase tracking-widest rounded-2xl transition-all italic border border-white/5">View Details</button>
                   </Link>
                 </motion.div>
               ))
@@ -131,10 +131,10 @@ export default function ExplorePage() {
         <section className="py-20">
            <div className="glass-panel p-16 rounded-[60px] border border-white/5 bg-white/[0.01] flex flex-col items-center text-center relative overflow-hidden">
              <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.1),transparent_70%)]" />
-             <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 relative z-10">Can't find a <span className="text-white/20">Target?</span></h2>
-             <p className="text-white/30 text-sm italic font-medium max-w-lg mb-8 relative z-10">Join our private network for exclusive, non-indexed bounty operations.</p>
+             <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 relative z-10">Looking for <span className="text-white/20">More?</span></h2>
+             <p className="text-white/30 text-sm italic font-medium max-w-lg mb-8 relative z-10">Join our private network for access to exclusive, invitation-only bounty programs.</p>
              <Link href="/signup" className="relative z-10">
-               <button className="px-10 py-5 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-2xl hover:scale-105 transition-all italic shadow-2xl">Apply for Elite Tier</button>
+               <button className="px-10 py-5 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-2xl hover:scale-105 transition-all italic shadow-2xl">Join Private Network</button>
              </Link>
            </div>
         </section>

@@ -52,12 +52,12 @@ export default function Home() {
           </motion.div>
 
           <motion.h1 variants={fadeInUp()} className="text-6xl md:text-9xl font-black tracking-tight leading-[0.85] uppercase italic">
-            <span className="block text-white/20">The Elite</span>
-            <span className="block bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">Grid.</span>
+            <span className="block text-white/20">Welcome To</span>
+            <span className="block bg-gradient-to-b from-white to-white/40 bg-clip-text text-transparent">Debugr.</span>
           </motion.h1>
 
           <motion.p variants={fadeInUp()} className="text-lg md:text-2xl text-white/40 max-w-2xl mx-auto font-medium leading-relaxed italic">
-            Next-gen decentralized security terminal. Connect with organizations, discover vulnerabilities, and earn rewards in a deep matte ecosystem.
+            A simple, secure platform to find bugs and earn bounties. Join thousands of researchers protecting the web every day.
           </motion.p>
 
           <motion.div variants={fadeInUp()} className="flex flex-wrap items-center justify-center gap-6 pt-6">
@@ -67,7 +67,7 @@ export default function Home() {
                 whileTap={{ scale: 0.95 }}
                 className="px-12 py-6 bg-white text-black font-black text-sm uppercase tracking-[0.2em] rounded-2xl shadow-[0_20px_40px_rgba(255,255,255,0.1)] transition-all"
               >
-                Initialize Account
+                Create Account
               </motion.button>
             </Link>
             <Link href="/explore">
@@ -76,7 +76,7 @@ export default function Home() {
                 whileTap={{ scale: 0.95 }}
                 className="px-12 py-6 bg-white/5 hover:bg-white/10 text-white font-black text-sm uppercase tracking-[0.2em] rounded-2xl border border-white/5 transition-all"
               >
-                Scan Operations
+                Browse Programs
               </motion.button>
             </Link>
           </motion.div>
@@ -110,7 +110,7 @@ export default function Home() {
       <section className="py-32 px-6">
         <div className="max-w-[1200px] mx-auto">
           <div className="text-center mb-24">
-            <p className="subtle-mono text-indigo-400 mb-4 tracking-[0.4em] uppercase text-[10px]">The Methodology</p>
+            <p className="subtle-mono text-indigo-400 mb-4 tracking-[0.4em] uppercase text-[10px]">The Process</p>
             <h2 className="text-5xl md:text-7xl font-black uppercase italic tracking-tighter">How it <span className="text-white/20">Works.</span></h2>
           </div>
 
@@ -203,10 +203,10 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto">
           <div className="flex justify-between items-end mb-16 px-4">
             <div>
-              <p className="subtle-mono text-indigo-400 mb-4 tracking-[0.4em] uppercase text-[10px]">High Impact</p>
-              <h2 className="text-5xl font-black uppercase italic tracking-tighter">Live Ops.</h2>
+              <p className="subtle-mono text-indigo-400 mb-4 tracking-[0.4em] uppercase text-[10px]">Active Rewards</p>
+              <h2 className="text-5xl font-black uppercase italic tracking-tighter">Featured <span className="text-white/20">Bounties.</span></h2>
             </div>
-            <Link href="/explore" className="text-white/20 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest border-b border-white/10 pb-2 italic">View All Targets →</Link>
+            <Link href="/explore" className="text-white/20 hover:text-white transition-colors text-[10px] font-black uppercase tracking-widest border-b border-white/10 pb-2 italic">View All Programs →</Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -237,8 +237,8 @@ export default function Home() {
       <section className="py-24 px-6">
          <div className="max-w-4xl mx-auto glass-panel p-20 rounded-[80px] border border-white/5 text-center relative overflow-hidden bg-white/[0.01]">
             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(99,102,241,0.1),transparent_70%)] opacity-50" />
-            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 relative z-10">Start Your <span className="text-white/20">Descent.</span></h2>
-            <p className="text-white/40 text-lg mb-12 relative z-10 font-medium italic">Join the most advanced bounty grid in the security landscape.</p>
+            <h2 className="text-4xl md:text-6xl font-black uppercase italic mb-8 relative z-10">Start Hunting <span className="text-white/20">Bugs.</span></h2>
+            <p className="text-white/40 text-lg mb-12 relative z-10 font-medium italic">Join a community of researchers and secure the digital world.</p>
             <div className="flex flex-wrap justify-center gap-6 relative z-10">
               <Link href="/signup">
                 <button className="px-12 py-6 bg-white text-black font-black text-sm uppercase tracking-[0.2em] rounded-2xl hover:scale-105 transition-all">Get Started</button>
