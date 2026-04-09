@@ -7,6 +7,7 @@ import {
   fadeInUp, 
   staggerContainer, 
   blurIn,
+  inView,
   hoverScale, 
   tapScale,
 } from '@/lib/animations';

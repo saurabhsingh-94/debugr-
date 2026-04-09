@@ -109,13 +109,14 @@ export default function CompanyDashboard() {
 
       {/* ── Sub Navigation ── */}
       <div className="flex gap-12 border-b border-white/5 pb-0.5">
-        {[
-          { id: 'inbox', label: 'Security Inbox', count: pendingCount },
-          { id: 'programs', label: 'Active Programs', count: programs.length }
-        ].map(tab => (
-          <button 
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
+        {(['inbox', 'programs'] as const).map(tabId => {
+          const tab = tabId === 'inbox' 
+            ? { id: 'inbox', label: 'Security Inbox', count: pendingCount }
+            : { id: 'programs', label: 'Active Programs', count: programs.length };
+          return (
+            <button 
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as 'inbox' | 'programs')}
             className={`
               relative py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all
               ${activeTab === tab.id ? 'text-white' : 'text-white/20 hover:text-white/40'}
