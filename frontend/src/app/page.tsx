@@ -63,7 +63,7 @@ export default function Home() {
               </motion.div>
 
               <motion.h1 variants={fadeInUp()} className="text-7xl md:text-[130px] font-black tracking-tighter leading-[0.85] uppercase italic">
-                <span className="block text-white/5">Coordinated</span>
+                <span className="block text-white/5">Precision</span>
                 <span className="block bg-linear-to-b from-white via-white to-white/40 bg-clip-text text-transparent -mt-2">Security.</span>
               </motion.h1>
 
@@ -108,11 +108,6 @@ export default function Home() {
                        <span className="text-[10px] font-mono text-white/20 tracking-widest uppercase">Live Activity</span>
                     </div>
                     <div className="space-y-6">
-                       {[
-                         { id: 'usr_8b2..val', type: 'Critical', reward: '$12,500', target: 'Core Infra' },
-                         { id: 'usr_1a9..val', type: 'High', reward: '$4,500', target: 'Fintech API' },
-                         { id: 'usr_4c2..val', type: 'Medium', reward: '$1,200', target: 'Auth Node' },
-                       ].map((item, i) => (
                          <div key={i} className="flex items-center justify-between p-5 rounded-3xl bg-white/[0.02] border border-white/5 group hover:border-white/10 transition-all">
                             <div className="flex flex-col">
                                <span className="text-[9px] font-mono text-white/20 mb-1">{item.id}</span>
@@ -129,7 +124,7 @@ export default function Home() {
                  <div className="pt-10 border-t border-white/5 space-y-6">
                     <div className="flex items-center gap-4 text-indigo-400/40 animate-pulse">
                        <Activity size={14} />
-                       <span className="text-[9px] font-mono uppercase tracking-[0.4em]">System Active</span>
+                       <span className="text-[9px] font-mono uppercase tracking-[0.4em]">Researcher Network Active</span>
                     </div>
                     <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                        <motion.div 
@@ -163,9 +158,9 @@ export default function Home() {
                    </div>
                    <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
                    <div className="flex items-center gap-6">
-                      <span className="text-indigo-400/30">VALIDATION_XP</span>
-                      <span className="text-white/40">Principal_Researcher</span>
-                      <span className="text-indigo-400/60">+2,400_CR</span>
+                      <span className="text-indigo-400/30">VERIFICATION_XP</span>
+                      <span className="text-white/40">Expert_Researcher</span>
+                      <span className="text-indigo-400/60">+2,400 CR</span>
                    </div>
                    <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
                 </div>
@@ -192,18 +187,18 @@ export default function Home() {
              <div className="lg:col-span-6 space-y-12">
                 {[
                   { 
-                    title: 'Provision Identity', 
-                    desc: 'Secure your secure handle within minutes. We prioritize privacy-preserving authentication layers to keep your research activity confidential.',
+                    title: 'Secure Onboarding', 
+                    desc: 'Claim your handle and build your profile in minutes. We prioritize privacy and security to keep your research activity professional.',
                     icon: <Fingerprint className="text-indigo-400/60" size={28} />
                   },
                   { 
-                    title: 'Analyze Assets', 
-                    desc: 'Access exclusive attack surfaces across high-stakes financial and technical infrastructure. Submit reports via our unified triage bridge.',
+                    title: 'Expert Analysis', 
+                    desc: 'Access exclusive review surfaces across high-stakes infrastructure. Submit findings via our simplified technical gateway.',
                     icon: <Monitor className="text-indigo-400/60" size={28} />
                   },
                   { 
-                    title: 'Scale Reputation', 
-                    desc: 'Earn credit based on the verified impact of your findings. Unlock private programs and higher bounty tiers as your technical authority grows.',
+                    title: 'Career Growth', 
+                    desc: 'Build your reputation based on verified impact. Unlock specialized programs and higher earnings as your technical expertise is proven.',
                     icon: <TrendingUp className="text-indigo-400/60" size={28} />
                   }
                 ].map((item, i) => (
@@ -242,10 +237,10 @@ export default function Home() {
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                   {[
-                    { label: 'Network Integrity', value: 'Level 04', sub: 'Protocol Grade' },
-                    { label: 'Triage Latency', value: '4.2h', sub: 'Avg Response' },
-                    { label: 'Validated Flow', value: '99.9%', sub: 'Accuracy Rate' },
-                    { label: 'Global Capacity', value: '180+', sub: 'Asset Owners' }
+                    { label: 'Network Quality', value: 'Level 04', sub: 'Pro Grade' },
+                    { label: 'Impact Response', value: '4.2h', sub: 'Avg Review' },
+                    { label: 'Impact Verified', value: '99.9%', sub: 'Accuracy Rate' },
+                    { label: 'Global Network', value: '180+', sub: 'Impact Partners' }
                   ].map((s, i) => (
                     <div key={i} className="p-10 rounded-[32px] bg-[#080808] border border-white/5 group hover:border-white/10 transition-all shadow-xl">
                         <span className="block text-[8px] font-mono text-white/20 uppercase tracking-[0.5em] mb-4 italic">{s.label}</span>
@@ -284,11 +279,11 @@ export default function Home() {
                   <div className="grid grid-cols-2 gap-6">
                      <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 text-center group hover:bg-white/[0.05] transition-all">
                         <Monitor size={20} className="mx-auto mb-4 text-white/10 group-hover:text-indigo-400/50 transition-colors" />
-                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Validation Bridge</span>
+                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Secure Gateway</span>
                      </div>
                      <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 text-center group hover:bg-white/[0.05] transition-all">
                         <Code2 size={20} className="mx-auto mb-4 text-white/10 group-hover:text-indigo-400/50 transition-colors" />
-                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Binary Analysis</span>
+                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Technical Review</span>
                      </div>
                   </div>
                </div>

@@ -182,7 +182,7 @@ export default function SignUp() {
               animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -30, scale: 0.98, filter: 'blur(15px)' }}
               transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
-              className={`w-full ${step === 3 ? 'max-w-[640px]' : 'max-w-[440px]'} relative z-10`}
+              className={`w-full ${step === 1 ? 'max-w-[1000px]' : step === 3 ? 'max-w-[600px]' : 'max-w-[400px]'} relative z-10`}
             >
               
               {step === 1 && (
@@ -195,26 +195,32 @@ export default function SignUp() {
                     <p className="text-white/30 text-[13px] font-medium italic">Select how you want to participate.</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {[
                       { 
-                        id: 'hacker', title: 'Researcher', desc: 'I identify vulnerabilities and report findings.', icon: <Zap size={40} />,
+                        id: 'hacker', title: 'Researcher', desc: 'I identify vulnerabilities and report findings with technical impact.', icon: <Zap size={56} />,
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Organization', desc: 'We deploy assets for continuous testing.', icon: <Shield size={40} />,
+                        id: 'company', title: 'Organization', desc: 'We deploy assets for continuous verification and securing logic.', icon: <Shield size={56} />,
                         Effect: ShieldWall
                       }
-                    ].map(r => (
-                      <RoleButton 
-                        key={r.id} 
-                        id={r.id as Role}
-                        title={r.title}
-                        desc={r.desc}
-                        icon={r.icon}
-                        Effect={r.Effect}
-                        onSelect={() => { setRole(r.id as Role); nextStep(); }}
-                      />
+                    ].map((r, i) => (
+                      <motion.div
+                        key={r.id}
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 + (i * 0.1) }}
+                      >
+                        <RoleButton 
+                          id={r.id as Role}
+                          title={r.title}
+                          desc={r.desc}
+                          icon={r.icon}
+                          Effect={r.Effect}
+                          onSelect={() => { setRole(r.id as Role); nextStep(); }}
+                        />
+                      </motion.div>
                     ))}
                   </div>
                 </div>
@@ -239,11 +245,15 @@ export default function SignUp() {
                       <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">Step 02/03</span>
                     </div>
 
-                    <div className="flex flex-col gap-8">
-                      <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
-                      <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@email.com" icon={<Mail size={18} />} />
-                      <Input label="Password" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} icon={<Lock size={18} />} />
-                      <Input label="Confirm Password" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} icon={<Lock size={18} />} />
+                    <div className="flex flex-col gap-6">
+                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-6">
+                        <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
+                        <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@email.com" icon={<Mail size={18} />} />
+                      </motion.div>
+                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
+                        <Input label="Password" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} icon={<Lock size={18} />} />
+                        <Input label="Confirm Password" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} icon={<Lock size={18} />} />
+                      </motion.div>
                     </div>
 
                     {error && (
@@ -280,9 +290,9 @@ export default function SignUp() {
                           type="button" onClick={prevStep} 
                           className="text-white/20 text-[9px] font-mono font-black tracking-[0.3em] flex items-center gap-2 uppercase italic hover:text-white transition-all mb-4"
                         >
-                          <ChevronLeft size={12} /> Return to config
+                          <ChevronLeft size={12} /> Account Details
                         </motion.button>
-                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Your<br /><span className="text-white/20">Profile.</span></h2>
+                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Your <br /><span className="text-white/20">Profile.</span></h2>
                       </div>
                        <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">Step 03/03</span>
                     </div>
@@ -290,13 +300,17 @@ export default function SignUp() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       {role === 'hacker' ? (
                         <>
-                          <Input label="Job Title" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
-                          <Input label="Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
-                          <div className="col-span-1 md:col-span-2">
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
+                            <Input label="Job Title" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                            <Input label="Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="col-span-1 md:col-span-2">
                              <Input label="GitHub Profile" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" icon={<Globe size={16} />} />
-                          </div>
+                          </motion.div>
                           
-                          <div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Primary Skill</label>
                             <select 
                               value={formData.specialization} 
@@ -309,8 +323,8 @@ export default function SignUp() {
                               <option className="bg-neutral-900">Mobile Runtime</option>
                               <option className="bg-neutral-900">Cryptography</option>
                             </select>
-                          </div>
-                          <div>
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Experience Level</label>
                             <select 
                               value={formData.experience_level} 
@@ -322,55 +336,64 @@ export default function SignUp() {
                               <option className="bg-neutral-900 text-white">Strategic</option>
                               <option className="bg-neutral-900 text-white">Principal</option>
                             </select>
-                          </div>
+                          </motion.div>
 
-                          <div className="col-span-1 md:col-span-2">
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="col-span-1 md:col-span-2">
                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">About You</label>
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
                               placeholder="Brief overview of research history..."
-                              className="w-full min-h-[120px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                              className="w-full min-h-[100px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
                             />
-                          </div>
+                          </motion.div>
 
-                          <div className="col-span-1 md:col-span-2">
-                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-5">Your Skills</label>
-                            <div className="flex flex-wrap gap-3">
-                              {['XSS', 'SQLi', 'RCE', 'SSRF', 'Auth Bypass', 'Business Logic', 'Crypto', 'API Sec'].map(skill => (
-                                <motion.button 
-                                  key={skill}
-                                  type="button"
-                                  whileHover={{ scale: 1.05 }}
-                                  whileTap={{ scale: 0.95 }}
-                                  onClick={() => {
-                                    const newSkills = formData.skills.includes(skill) 
-                                      ? formData.skills.filter(s => s !== skill)
-                                      : [...formData.skills, skill];
-                                    setFormData({...formData, skills: newSkills});
-                                  }}
-                                  className={`px-5 py-3 rounded-xl text-[10px] font-mono font-black cursor-pointer transition-all border ${
-                                    formData.skills.includes(skill) 
-                                      ? 'bg-white text-black border-white shadow-xl' 
-                                      : 'bg-white/[0.03] text-white/20 border-white/5 hover:text-white hover:border-white/20'
-                                  } uppercase tracking-widest`}
-                                >
-                                  {skill}
-                                </motion.button>
-                              ))}
-                            </div>
-                          </div>
+                           <div className="col-span-1 md:col-span-2">
+                              <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-5">Your Skills</label>
+                             <div className="flex flex-wrap gap-3">
+                               {['XSS', 'SQLi', 'RCE', 'SSRF', 'Auth Bypass', 'Business Logic', 'Crypto', 'API Sec'].map((skill, i) => (
+                                 <motion.button 
+                                   key={skill}
+                                   type="button"
+                                   initial={{ opacity: 0, scale: 0.8 }}
+                                   animate={{ opacity: 1, scale: 1 }}
+                                   transition={{ delay: 0.4 + (i * 0.05) }}
+                                   whileHover={{ scale: 1.05 }}
+                                   whileTap={{ scale: 0.95 }}
+                                   onClick={() => {
+                                     const newSkills = formData.skills.includes(skill) 
+                                       ? formData.skills.filter(s => s !== skill)
+                                       : [...formData.skills, skill];
+                                     setFormData({...formData, skills: newSkills});
+                                   }}
+                                   className={`px-5 py-3 rounded-xl text-[10px] font-mono font-black cursor-pointer transition-all border ${
+                                     formData.skills.includes(skill) 
+                                       ? 'bg-white text-black border-white shadow-xl' 
+                                       : 'bg-white/[0.03] text-white/20 border-white/5 hover:text-white hover:border-white/20'
+                                   } uppercase tracking-widest`}
+                                 >
+                                   {skill}
+                                 </motion.button>
+                               ))}
+                             </div>
+                           </div>
                         </>
                       ) : (
-                        <>
-                          <div className="col-span-1 md:col-span-2">
+                         <>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="col-span-1 md:col-span-2">
                             <Input label="Company Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="Company Name" icon={<Briefcase size={16} />} />
-                          </div>
-                          <Input label="Business Email" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@company.com" icon={<Mail size={16} />} />
-                          <Input label="Website" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://website.com" icon={<Globe size={16} />} />
-                          <Input label="Industry" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Finance" />
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
+                            <Input label="Business Email" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@company.com" icon={<Mail size={16} />} />
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
+                            <Input label="Website" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://website.com" icon={<Globe size={16} />} />
+                          </motion.div>
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25 }}>
+                            <Input label="Industry" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Finance" />
+                          </motion.div>
                           
-                          <div className="col-span-1 md:col-span-2">
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="col-span-1 md:col-span-2">
                              <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Company Size</label>
                             <select 
                               value={formData.company_size} 
@@ -382,17 +405,17 @@ export default function SignUp() {
                               <option className="bg-neutral-900">501 - 5000 Associates</option>
                               <option className="bg-neutral-900">Enterprise Scale</option>
                             </select>
-                          </div>
+                          </motion.div>
 
-                          <div className="col-span-1 md:col-span-2">
+                          <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="col-span-1 md:col-span-2">
                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Description</label>
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
                               placeholder="Briefly describe the assets requiring testing..."
-                              className="w-full min-h-[120px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                              className="w-full min-h-[100px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
                             />
-                          </div>
+                          </motion.div>
                         </>
                       )}
                     </div>

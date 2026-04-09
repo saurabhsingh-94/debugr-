@@ -78,7 +78,7 @@ export default function Leaderboard() {
                </h1>
             </div>
             <p className="text-white/30 text-lg leading-relaxed font-medium italic">
-              A real-time cryptographic audit of researcher impact across the global security decentralized layer. Rankings are determined by verified valuation protected.
+              The leading minds in global security, ranked by their verified impact and contribution to the ecosystem.
             </p>
           </motion.div>
 
@@ -97,7 +97,7 @@ export default function Leaderboard() {
                     }
                   `}
                 >
-                  {m === 'earned' ? 'Valuation Protected' : 'Validated Impacts'}
+                  {m === 'earned' ? 'Earnings' : 'Impacts'}
                 </button>
               ))}
             </div>
@@ -105,12 +105,12 @@ export default function Leaderboard() {
 
           <div className="mt-auto grid grid-cols-2 gap-6">
             <div className="p-8 bg-white/[0.01] border border-white/5 rounded-[32px] group transition-all hover:bg-white/[0.03] hover:border-indigo-500/20 shadow-xl">
-              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">AVG REWARD</p>
-              <p className="text-3xl font-black text-white italic tracking-tighter">$1,240</p>
+              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">AVG BOUNTY</p>
+              <p className="text-3xl font-black text-white italic tracking-tighter">$2,450</p>
             </div>
             <div className="p-8 bg-white/[0.01] border border-white/5 rounded-[32px] group transition-all hover:bg-white/[0.03] hover:border-indigo-500/20 shadow-xl">
-              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL IMPACT</p>
-              <p className="text-3xl font-black text-white italic tracking-tighter">482</p>
+              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL RESOLVED</p>
+              <p className="text-3xl font-black text-white italic tracking-tighter">1,894</p>
             </div>
           </div>
         </section>
@@ -120,8 +120,8 @@ export default function Leaderboard() {
           <div className="hidden md:grid grid-cols-[100px_1fr_160px_160px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
             <span>Rank</span>
             <span>Researcher</span>
-            <span className="text-right">Impacts</span>
-            <span className="text-right">Valuation</span>
+            <span className="text-right">Total Impacts</span>
+            <span className="text-right">Total Earnings</span>
           </div>
 
           <div className="flex flex-col gap-6">
@@ -146,8 +146,10 @@ export default function Leaderboard() {
                     transition={{ delay: idx * 0.05 }}
                     className={`
                       grid grid-cols-1 md:grid-cols-[100px_1fr_160px_160px] items-center p-8 md:px-12 md:py-10 rounded-[48px] border transition-all duration-700 gap-8 md:gap-0 group
-                      ${isTop3 
-                        ? 'bg-white/[0.03] border-white/10 shadow-3xl relative z-10' 
+                      ${idx === 0
+                        ? 'bg-indigo-500/10 border-indigo-500/20 shadow-[0_0_50px_rgba(99,102,241,0.1)]' 
+                        : isTop3 
+                        ? 'bg-white/[0.03] border-white/10 shadow-3xl' 
                         : 'bg-white/[0.01] border-white/5 hover:bg-white/[0.02] hover:border-indigo-500/20'
                       }
                     `}
@@ -157,6 +159,7 @@ export default function Leaderboard() {
                          text-2xl font-mono font-black italic tracking-tighter
                          ${idx === 0 ? 'text-indigo-400' : idx === 1 ? 'text-white/60' : idx === 2 ? 'text-white/40' : 'text-white/10'}
                        `}>
+                         {idx === 0 ? <Trophy size={18} className="mb-2" /> : null}
                          {String(idx + 1).padStart(2, '0')}
                        </span>
                     </div>
@@ -170,8 +173,8 @@ export default function Leaderboard() {
                           {h.email.split('@')[0]}
                         </p>
                         <div className="flex items-center gap-3">
-                           <Fingerprint size={10} className="text-white/10" />
-                           <p className="text-[9px] text-white/10 font-mono uppercase tracking-[0.3em] italic">Validated Signature</p>
+                           <ShieldCheck size={10} className="text-white/10" />
+                           <p className="text-[9px] text-white/20 font-mono uppercase tracking-[0.3em] font-black italic">Verified Expert</p>
                         </div>
                       </div>
                     </div>
@@ -183,7 +186,7 @@ export default function Leaderboard() {
                       `}>
                         {Number(h.resolved_count).toLocaleString()}
                       </p>
-                      <p className="md:hidden font-mono text-[8px] text-white/5 uppercase tracking-widest italic">Impact Units</p>
+                      <p className="md:hidden font-mono text-[8px] text-white/5 uppercase tracking-widest italic">Success Rate</p>
                     </div>
 
                     <div className="md:text-right space-y-1">
@@ -193,7 +196,7 @@ export default function Leaderboard() {
                       `}>
                         ${Number(h.total_earned).toLocaleString()}
                       </p>
-                      <p className="md:hidden font-mono text-[8px] text-white/5 uppercase tracking-widest italic">Valuation Prot.</p>
+                      <p className="md:hidden font-mono text-[8px] text-white/5 uppercase tracking-widest italic">Total Verified</p>
                     </div>
                   </motion.div>
                 );
