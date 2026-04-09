@@ -34,40 +34,63 @@ export default function SignIn() {
       }
     } catch (err) {
       console.error(err);
-      setError('Connection refused. Is the backend running?');
+      setError('Connection failed. Please check your internet.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden">
-      {/* Background Aurora Effect */}
+    <div className="min-h-screen bg-transparent text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30">
       <div className="aurora-bg">
-        <div className="aurora-blob animate-breathing opacity-40 blur-3xl shadow-[0_0_100px_rgba(157,80,187,0.3)]" style={{ background: '#9d50bb', top: '-10%', left: '-10%' }} />
-        <div className="aurora-blob animate-breathing opacity-30 delay-[-4s] blur-2xl" style={{ background: '#c084fc', bottom: '-10%', right: '-10%' }} />
-        <div className="aurora-blob animate-breathing opacity-50 delay-[-2s] blur-3xl shadow-[0_0_100px_rgba(31,31,31,0.5)]" style={{ background: '#050505', top: '30%', right: '20%' }} />
+        <div className="aurora-blob blob-1" />
+        <div className="aurora-blob blob-2" />
+        <div className="aurora-blob blob-3" />
       </div>
-
       <Navbar />
 
-      <main className="w-full flex items-center justify-center min-h-screen px-[5%] pt-[100px] pb-[50px] relative z-10">
-        <motion.div 
-          variants={staggerContainer(0.12, 0.2)}
-          initial="hidden"
-          animate="visible"
-          className="glass-panel w-full max-w-[480px] p-[48px] rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
-        >
-          <motion.div variants={blurReveal} className="mb-[40px] text-center">
-            <p className="subtle-mono mb-[16px] text-indigo-400">Secure Access</p>
-            <h1 className="hero-title text-[42px] mb-[12px] leading-tight uppercase italic font-black">Welcome Back</h1>
-            <p className="text-[#a1a1a6] text-[15px] font-medium italic opacity-60">Authentication required to access the perimeter.</p>
+      <main className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] min-h-screen relative z-10">
+        
+        {/* Left Side: Modern Context Panel */}
+        <section className="hidden lg:flex flex-col gap-10 p-[160px_8%_60px_12%] border-r border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 h-screen">
+          <motion.div variants={staggerContainer(0.1, 0.3)} initial="hidden" animate="visible">
+            <motion.div variants={blurReveal} className="flex items-center gap-3 mb-8">
+              <span className="h-px w-8 bg-indigo-500" />
+              <p className="subtle-mono text-indigo-400">
+                Sign In
+              </p>
+            </motion.div>
+            
+            <motion.h1 
+              variants={blurReveal}
+              className="hero-title text-7xl font-black italic tracking-tighter mb-8 leading-[0.8] uppercase"
+            >
+              Welcome<br /><span className="text-white/20">Back.</span>
+            </motion.h1>
+            
+            <motion.p variants={blurReveal} className="text-t2 text-xl font-medium tracking-tight leading-relaxed max-w-[440px] italic">
+              Log in to continue securing platforms and earning bounties. Let's make the internet safer together.
+            </motion.p>
           </motion.div>
+        </section>
+
+        {/* Right Side: Form */}
+        <section className="flex flex-col items-center justify-center p-[40px] md:p-[60px] lg:p-[100px] min-h-screen">
+          <motion.div 
+            variants={staggerContainer(0.12, 0.2)}
+            initial="hidden"
+            animate="visible"
+            className="w-full max-w-[500px] glass-panel p-[48px] rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
+          >
+            <motion.div variants={blurReveal} className="mb-[40px] text-center lg:hidden">
+              <p className="subtle-mono mb-[16px] text-indigo-400">Sign In</p>
+              <h1 className="hero-title text-[42px] mb-[12px] leading-tight uppercase italic font-black">Welcome Back</h1>
+            </motion.div>
 
           <form onSubmit={handleSubmit} className="flex flex-col gap-[32px]">
             <motion.div variants={blurReveal} className="flex flex-col gap-[12px]">
               <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-[4px]">
-                Researcher Identity
+                Username
               </label>
               <input 
                 type="text" 
@@ -82,7 +105,7 @@ export default function SignIn() {
             <motion.div variants={blurReveal} className="flex flex-col gap-[12px]">
               <div className="flex justify-between items-center pr-[4px]">
                 <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-[4px]">
-                  Passcode
+                  Password
                 </label>
               </div>
               <input 
@@ -120,16 +143,17 @@ export default function SignIn() {
               disabled={loading}
               className="w-full py-[24px] text-[15px] font-black bg-white text-black rounded-[24px] shadow-2xl transition-all uppercase tracking-widest hover:italic"
             >
-              {loading ? 'Verifying Identity...' : 'Login Now'}
+              {loading ? 'Signing In...' : 'Sign In'}
             </motion.button>
 
             <motion.div variants={blurReveal} className="text-center mt-[10px]">
               <p className="text-[13px] text-white/20 font-medium tracking-tight">
-                New researcher? <Link href="/signup" className="text-white font-black hover:text-indigo-400 transition-colors">Apply for access</Link>
+                New here? <Link href="/signup" className="text-white font-black hover:text-indigo-400 transition-colors">Create your account</Link>
               </p>
             </motion.div>
           </form>
-        </motion.div>
+          </motion.div>
+        </section>
       </main>
 
       {/* Security Status Pill */}
@@ -141,7 +165,7 @@ export default function SignIn() {
       >
         <div className="glass-panel py-[12px] px-[24px] rounded-full flex items-center gap-[12px] border border-white/5 shadow-2xl">
           <div className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
-          <span className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase">Perimeter Secure</span>
+          <span className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase">System Secure</span>
         </div>
       </motion.div>
     </div>

@@ -991,3 +991,19 @@
 2026-04-09 14:01:02:12 info: ::1 - - [09/Apr/2026:08:31:02 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
 2026-04-09 14:01:02:12 info: [CORS Check] Incoming request from origin: http://localhost:3000
 2026-04-09 14:01:02:12 info: ::1 - - [09/Apr/2026:08:31:02 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:53:17:5317 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 14:53:17:5317 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 14:53:18:5318 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 14:53:20:5320 info: ✅ Database initialized successfully
+2026-04-09 15:22:00:220 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 15:22:00:220 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 15:22:01:221 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 15:22:04:224 info: ✅ Database initialized successfully
+2026-04-09 16:44:04:444 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 16:44:04:444 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 16:44:05:445 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 16:44:07:447 info: ✅ Database initialized successfully
+2026-04-09 16:44:12:4412 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 16:44:12:4412 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 16:44:13:4413 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 16:44:15:4415 info: ✅ Database initialized successfully

@@ -60,7 +60,7 @@ export default function HackerDashboard() {
         if (reportsRes.ok) {
           const data = await reportsRes.json();
           if (data.success) {
-            const transformed = data.reports.map((r: any) => ({
+            const transformed = data.reports.map((r: { id: string; title: string; severity: string; status: string; bounty: number; company: string; created_at: string }) => ({
               id: r.id.substring(0, 8).toUpperCase(),
               title: r.title,
               severity: r.severity.charAt(0).toUpperCase() + r.severity.slice(1),
@@ -90,20 +90,20 @@ export default function HackerDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-12 border-b border-white/5">
         <div>
           <div className="flex items-center gap-4 mb-6">
-            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.3em]">Researcher Operations</span>
+            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.3em]">Hacker Activity</span>
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
               <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Feed Active</span>
             </div>
           </div>
-          <h1 className="hero-title text-4xl md:text-6xl tracking-tighter leading-none mb-4">Command Center.</h1>
+          <h1 className="hero-title text-4xl md:text-6xl tracking-tighter leading-none mb-4">Dashboard.</h1>
           <p className="text-t2 text-sm font-medium opacity-60">Manage your vulnerability reports, earnings, and reputation across all programs.</p>
         </div>
 
         <div className="flex gap-12 items-end">
           {[
-            { label: 'Intelligence Assets', value: `$${Number(balance).toLocaleString()}`, highlight: true },
-            { label: 'Total Disclosures', value: String(reports.length) },
+            { label: 'Bounty Earnings', value: `$${Number(balance).toLocaleString()}`, highlight: true },
+            { label: 'Total Reports', value: String(reports.length) },
             { label: 'Success Rate', value: '94.2%' },
           ].map((s, i) => (
             <motion.div 
@@ -143,7 +143,7 @@ export default function HackerDashboard() {
         </div>
         <div className="flex items-center gap-6">
            <span className="subtle-mono text-[9px] text-white/30 uppercase tracking-[0.2em]">
-            Identified: <span className="text-white ml-2">{filtered.length} Disclosures</span>
+            Total: <span className="text-white ml-2">{filtered.length} Reports</span>
           </span>
           <Link href="/submit">
             <motion.button 
@@ -151,7 +151,7 @@ export default function HackerDashboard() {
               whileTap={{ scale: 0.95 }}
               className="px-8 py-3.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-500 transition-all shadow-2xl shadow-indigo-600/20"
             >
-              + Submit Disclosure
+              + Submit Report
             </motion.button>
           </Link>
         </div>
@@ -160,7 +160,7 @@ export default function HackerDashboard() {
       {/* ── Reports Grid ── */}
       <div className="glass-panel rounded-[32px] overflow-hidden border border-white/5 shadow-2xl">
         <div className="hidden lg:grid grid-cols-[140px_1fr_160px_100px_150px_120px] px-10 py-5 bg-white/3 border-b border-white/5">
-          {['Ref ID', 'Disclosure Title', 'Program', 'Toxicity', 'Status', 'Reward'].map(h => (
+          {['ID', 'Report Title', 'Program', 'Severity', 'Status', 'Reward'].map(h => (
             <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black">{h}</span>
           ))}
         </div>
@@ -169,11 +169,11 @@ export default function HackerDashboard() {
           {loading ? (
             <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-4">
               <div className="w-8 h-8 border-2 border-white/5 border-t-white/20 rounded-full animate-spin" />
-              <p className="subtle-mono text-[9px] text-white/10 italic">Synchronizing feeds...</p>
+              <p className="subtle-mono text-[9px] text-white/10 italic">Loading reports...</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-32 text-center">
-              <p className="text-white/20 text-lg font-medium italic">No disclosure records found.</p>
+              <p className="text-white/20 text-lg font-medium italic">No reports found.</p>
               <button 
                 onClick={() => setFilter('All')} 
                 className="mt-4 text-indigo-400 text-xs font-bold uppercase tracking-widest font-mono"
@@ -199,7 +199,7 @@ export default function HackerDashboard() {
                     <span className="subtle-mono text-[11px] text-white/20 hover:text-white/40 transition-colors cursor-pointer">{r.id}</span>
                     <div className="pr-12">
                       <p className="text-[15px] font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{r.title}</p>
-                      <p className="subtle-mono text-[9px] text-white/10 mt-2">TIMESTAMP: {r.submitted}</p>
+                      <p className="subtle-mono text-[9px] text-white/10 mt-2">SUBMITTED: {r.submitted}</p>
                     </div>
                     <span className="text-sm font-bold text-white/40 tracking-tight">{r.company}</span>
                     <div className="flex items-center gap-2">

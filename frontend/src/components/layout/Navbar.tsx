@@ -70,7 +70,7 @@ export default function Navbar() {
           <nav className="hidden lg:flex items-center">
             {[
               { label: 'Programs', href: '/programs' },
-              { label: 'Intelligence', href: '/bounties' },
+              { label: 'Bounties', href: '/bounties' },
               { label: 'Rankings', href: '/leaderboard' },
             ].map((item) => (
               <Link 
@@ -142,7 +142,7 @@ export default function Navbar() {
               <div className="flex items-center gap-4">
                 <Link href="/signin">
                   <span className="text-[13px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
-                    Login
+                    Sign In
                   </span>
                 </Link>
                 <Link href="/signup">
@@ -151,7 +151,7 @@ export default function Navbar() {
                     whileTap={{ scale: 0.95 }}
                     className="px-8 py-3 bg-white text-black text-[13px] font-black uppercase tracking-widest rounded-xl hover:bg-white/90 transition-all shadow-2xl"
                   >
-                    Join Now
+                    Sign Up
                   </motion.div>
                 </Link>
               </div>

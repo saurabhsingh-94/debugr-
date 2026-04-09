@@ -26,7 +26,7 @@ function PaymentStatusContent() {
     const verifyPayment = async () => {
       try {
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/payments/verify`,
+          `${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/payments/verify`,
           { orderId },
           { withCredentials: true }
         );

@@ -26,20 +26,20 @@ export default function Home() {
 
   const features = [
     {
-      title: 'Precision Analytics',
-      desc: 'Real-time insight into vulnerability impact and resolution metrics.',
+      title: 'Real-time Metrics',
+      desc: 'Instant insight into vulnerability impact and resolution status.',
       icon: '📊',
       color: '#c084fc'
     },
     {
-      title: 'Expert Network',
+      title: 'Hacker Network',
       desc: 'Connect with a global community of elite security researchers.',
       icon: '🌍',
       color: '#60a5fa'
     },
     {
-      title: 'Streamlined Verification',
-      desc: 'Rapid triage and verification process backed by security experts.',
+      title: 'Fast Verification',
+      desc: 'Rapid triage and verification process handled by security experts.',
       icon: '⚡',
       color: '#f472b6'
     }
@@ -50,28 +50,7 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
         {/* Animated Background Blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <motion.div
-            animate={{ 
-              scale: [1, 1.2, 1],
-              x: [0, 50, 0],
-              y: [0, -30, 0],
-              opacity: [0.15, 0.25, 0.15]
-            }}
-            transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            className="absolute top-[10%] left-[10%] w-[40vw] h-[40vw] bg-purple-500/10 blur-[100px] rounded-full"
-          />
-          <motion.div
-            animate={{ 
-              scale: [1.2, 1, 1.2],
-              x: [0, -40, 0],
-              y: [0, 40, 0],
-              opacity: [0.15, 0.25, 0.15]
-            }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            className="absolute bottom-[10%] right-[10%] w-[45vw] h-[45vw] bg-indigo-500/10 blur-[100px] rounded-full"
-          />
-        </div>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none" />
 
         <motion.div 
           variants={staggerContainer(0.15, 0.2)}
@@ -93,7 +72,7 @@ export default function Home() {
             variants={fadeInUp(0.3)}
             className="text-t2 text-base md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
           >
-            The world&apos;s most advanced crowdsourced security platform. Partner with elite security analysts to protect your infrastructure.
+            The world&apos;s premier bug bounty platform. Partner with elite hackers to protect your infrastructure.
           </motion.p>
 
           <motion.div 
@@ -115,7 +94,7 @@ export default function Home() {
                 whileTap={tapScale}
                 className="px-10 py-5 bg-white/5 border border-white/10 text-white font-black text-sm uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all backdrop-blur-xl"
               >
-                Join as Researcher
+                Hacker Sign Up
               </motion.div>
             </Link>
           </motion.div>
@@ -163,7 +142,7 @@ export default function Home() {
                 variants={fadeInUp()}
                 onMouseEnter={() => setHoveredFeature(idx)}
                 onMouseLeave={() => setHoveredFeature(null)}
-                className="group p-10 rounded-[40px] bg-white/1 border border-white/5 relative overflow-hidden transition-all duration-500 hover:bg-white/2 hover:border-white/10"
+                className="group p-10 rounded-[40px] bg-white/1 border border-white/5 relative overflow-hidden transition-all duration-300 hover:bg-white/2 hover:border-white/10 neon-edge-hover"
               >
                 <div className="text-4xl mb-8 group-hover:scale-110 transition-transform duration-500 origin-left">
                   {feature.icon}
@@ -209,7 +188,7 @@ export default function Home() {
             Join the <br /> Vanguard.
           </h2>
           <p className="text-t2 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
-            Partner with elite security analysts and industry leaders to build a safer digital future.
+            Partner with elite hackers and industry leaders to build a safer digital future.
           </p>
           <Link href="/signup">
             <motion.div 

@@ -92,14 +92,12 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30">
-      {/* Background Aurora Effect */}
+    <div className="min-h-screen bg-transparent text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30">
       <div className="aurora-bg">
-        <div className="aurora-blob animate-breathing opacity-40 blur-3xl shadow-[0_0_100px_rgba(157,80,187,0.3)]" style={{ background: '#9d50bb', top: '-10%', left: '-10%' }} />
-        <div className="aurora-blob animate-breathing opacity-30 delay-[-4s] blur-2xl font-black italic" style={{ background: '#c084fc', bottom: '-10%', right: '-10%' }} />
-        <div className="aurora-blob animate-breathing opacity-50 delay-[-2s] blur-3xl shadow-[0_0_100px_rgba(31,31,31,0.5)]" style={{ background: '#050505', top: '30%', right: '20%' }} />
+        <div className="aurora-blob blob-1" />
+        <div className="aurora-blob blob-2" />
+        <div className="aurora-blob blob-3" />
       </div>
-
       <Navbar />
 
       <main className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] min-h-screen relative z-10">
@@ -110,7 +108,7 @@ export default function SignUp() {
             <motion.div variants={blurReveal} className="flex items-center gap-3 mb-8">
               <span className="h-px w-8 bg-indigo-500" />
               <p className="subtle-mono text-indigo-400">
-                Phase 0{step}
+                Step 0{step}
               </p>
             </motion.div>
             
@@ -118,15 +116,15 @@ export default function SignUp() {
               variants={blurReveal}
               className="hero-title text-7xl font-black italic tracking-tighter mb-8 leading-[0.8] uppercase"
             >
-              Start Your<br /><span className="text-white/20">Journey.</span>
+              Join the<br /><span className="text-white/20">Community.</span>
             </motion.h1>
             
-            <motion.p variants={blurReveal} className="text-[#a1a1a6] text-xl font-medium tracking-tight leading-relaxed max-w-[440px] italic">
+            <motion.p variants={blurReveal} className="text-t2 text-xl font-medium tracking-tight leading-relaxed max-w-[440px] italic">
               {role === 'hacker' 
-                ? "Gain access to high-value intelligence opportunities and elite disclosure tools." 
+                ? "Gain access to high-value bounty programs and standard reporting tools." 
                 : role === 'company' 
-                ? "Deploy your security perimeter and collaborate with the world's most talented researchers." 
-                : "Choose your path to begin collaborating with the elite security collective."}
+                ? "Launch your bug bounty program and collaborate with talented security researchers." 
+                : "Choose your role to get started on the platform."}
             </motion.p>
           </motion.div>
 
@@ -152,28 +150,30 @@ export default function SignUp() {
           <AnimatePresence mode="wait">
             <motion.div 
               key={step} 
-              initial={{ opacity: 0, x: 20, filter: 'blur(20px)' }}
-              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-              exit={{ opacity: 0, x: -20, filter: 'blur(20px)' }}
-              transition={springSoft}
-              className={`w-full ${step === 3 ? 'max-w-[840px]' : 'max-w-[540px]'}`}
+              initial={{ opacity: 0, y: 30, scale: 0.95, filter: 'blur(15px)' }}
+              animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, y: -30, scale: 0.95, filter: 'blur(15px)' }}
+              transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
+              className={`w-full ${step === 3 ? 'max-w-[640px]' : 'max-w-[500px]'}`}
             >
               
               {step === 1 && (
                 <div className="flex flex-col gap-16">
                   <div className="text-center">
-                    <h2 className="text-5xl font-black italic tracking-tighter mb-4 uppercase">Identity Type</h2>
-                    <p className="text-white/30 text-lg font-medium italic">Select your professional path to continue.</p>
+                    <span className="text-white/40 font-black uppercase tracking-widest text-[10px] sm:text-xs">Step 0{step}</span>
+                    <h2 className="text-xl sm:text-2xl font-black text-white leading-tight">
+                      {step === 1 ? 'Choose Your Identity' : step === 2 ? 'Tell Us About Yourself' : 'Secure Your Account'}
+                    </h2>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
                       { 
-                        id: 'hacker', title: 'Security Researcher', desc: 'Find vulnerabilities, join elite programs, and earn bounties.', icon: '⚡',
+                        id: 'hacker', title: 'Hacker', desc: 'Find vulnerabilities and earn bounties.', icon: '⚡',
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Security Partner', desc: 'Manage your assets, triage disclosures, and secure your perimeter.', icon: '🛡️',
+                        id: 'company', title: 'Organization', desc: 'Launch your bug bounty program and collaborate with hackers.', icon: '🛡️',
                         Effect: ShieldWall
                       }
                     ].map(r => (
@@ -192,17 +192,17 @@ export default function SignUp() {
               )}
 
               {step === 2 && (
-                <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl">
-                  <div className="bg-white/1 backdrop-blur-3xl p-12 md:p-16 rounded-[44px] border border-white/5 flex flex-col gap-12">
+                <div className="glass-panel p-1 border-white/5 rounded-[36px] shadow-2xl">
+                  <div className="bg-white/1 backdrop-blur-3xl p-8 md:p-10 rounded-[32px] border border-white/5 flex flex-col gap-8">
                     <div>
                       <motion.button 
                         whileHover={{ x: -4 }}
                         onClick={prevStep} 
                         className="text-white/20 text-[10px] font-black tracking-[0.3em] flex items-center gap-3 uppercase italic hover:text-white transition-all"
                       >
-                        <span className="text-lg">←</span> Previous Phase
+                        <span className="text-lg">←</span> Go Back
                       </motion.button>
-                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Secure<br /><span className="text-white/20">Credentials.</span></h2>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Account<br /><span className="text-white/20">Details.</span></h2>
                     </div>
 
                     <div className="flex flex-col gap-8">
@@ -235,31 +235,31 @@ export default function SignUp() {
               )}
 
               {step === 3 && (
-                <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl">
-                  <form onSubmit={handleSubmit} className="bg-white/1 backdrop-blur-3xl p-12 md:p-16 rounded-[44px] border border-white/5 flex flex-col gap-12">
+                <div className="glass-panel p-1 border-white/5 rounded-[36px] shadow-2xl">
+                  <form onSubmit={handleSubmit} className="bg-white/1 backdrop-blur-3xl p-8 md:p-10 rounded-[32px] border border-white/5 flex flex-col gap-8">
                     <div>
                       <motion.button 
                         whileHover={{ x: -4 }}
                         type="button" onClick={prevStep} 
                         className="text-white/20 text-[10px] font-black tracking-[0.3em] flex items-center gap-3 uppercase italic hover:text-white transition-all"
                       >
-                        ← Update Credentials
+                        ← Login Details
                       </motion.button>
-                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Establish<br /><span className="text-white/20">Identity.</span></h2>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">About<br /><span className="text-white/20">You.</span></h2>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {role === 'hacker' ? (
                         <>
                           <Input label="Current Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="e.g. San Francisco, CA" />
-                          <Input label="GitHub Identity" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" />
+                          <Input label="GitHub Profile" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" />
                           
                           <div>
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Professional Focus</label>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">What do you focus on?</label>
                             <select 
                               value={formData.specialization} 
                               onChange={e => setFormData({...formData, specialization: e.target.value})}
-                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
+                              className="input-focus-glow w-full py-4 px-5 rounded-xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
                               <option className="bg-bg">Web Infrastructure</option>
                               <option className="bg-bg">Cloud Architecture</option>
@@ -269,11 +269,11 @@ export default function SignUp() {
                             </select>
                           </div>
                           <div>
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Field Experience</label>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Experience Level</label>
                             <select 
                               value={formData.experience_level} 
                               onChange={e => setFormData({...formData, experience_level: e.target.value})}
-                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
+                              className="input-focus-glow w-full py-4 px-5 rounded-xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
                               <option className="bg-bg text-white">Entry</option>
                               <option className="bg-bg text-white">Intermediate</option>
@@ -288,12 +288,12 @@ export default function SignUp() {
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
                               placeholder="Briefly describe your methodology and mission..."
-                              className="input-focus-glow w-full min-h-[140px] p-6 rounded-3xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
+                              className="input-focus-glow w-full min-h-[100px] p-5 rounded-2xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>
 
                           <div className="col-span-1 md:col-span-2">
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-5">Primary Arsenal</label>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-5">Your Skills</label>
                             <div className="flex flex-wrap gap-3">
                               {['XSS', 'SQLi', 'RCE', 'SSRF', 'Auth Bypass', 'Logic', 'Cryptographic', 'API'].map(skill => (
                                 <motion.button 
@@ -322,7 +322,7 @@ export default function SignUp() {
                       ) : (
                         <>
                           <div className="col-span-1 md:col-span-2">
-                            <Input label="Organization Legal Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Vanguard Security Group" />
+                            <Input label="Organization Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Vanguard Security Group" />
                           </div>
                           <Input label="Official Domain" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://vanguard.sh" />
                           <Input label="Industry Sector" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Next-Gen Infrastructure" />
@@ -332,7 +332,7 @@ export default function SignUp() {
                             <select 
                               value={formData.company_size} 
                               onChange={e => setFormData({...formData, company_size: e.target.value})}
-                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
+                              className="input-focus-glow w-full py-4 px-5 rounded-xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
                               <option className="bg-bg">1-10 Members</option>
                               <option className="bg-bg">11-100 Members</option>
@@ -342,12 +342,12 @@ export default function SignUp() {
                           </div>
 
                           <div className="col-span-1 md:col-span-2">
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Security Mission</label>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">About the Organization</label>
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
-                              placeholder="Describe your security goals and values..."
-                              className="input-focus-glow w-full min-h-[160px] p-6 rounded-3xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
+                              placeholder="e.g. Web Security, Mobile, Cloud"
+                              className="input-focus-glow w-full min-h-[100px] p-5 rounded-2xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>
                         </>
@@ -367,14 +367,14 @@ export default function SignUp() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-7 text-base font-black bg-indigo-600 text-white rounded-3xl shadow-2xl shadow-indigo-600/30 transition-all uppercase tracking-[0.2em] italic hover:bg-indigo-500"
                     >
-                      {loading ? 'Transmitting...' : 'Complete Phase 3'}
+                      {loading ? 'Creating Account...' : 'Create Account'}
                     </motion.button>
                   </form>
                 </div>
               )}
 
               <p className="text-center text-white/20 font-medium text-[13px] tracking-tight mt-16">
-                Already part of the collective? <Link href="/signin" className="text-white font-black hover:text-indigo-400 underline underline-offset-8 decoration-white/10 transition-all">Authenticate now</Link>
+                Already have an account? <Link href="/signin" className="text-white font-black hover:text-indigo-400 transition-colors uppercase tracking-widest text-[10px] sm:text-xs">Sign In</Link>
               </p>
             </motion.div>
           </AnimatePresence>
@@ -394,13 +394,13 @@ interface InputProps {
 
 function Input({ label, type = 'text', value, onChange, placeholder }: InputProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2 relative">
       <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block">{label}</label>
       <input 
         type={type} required value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner placeholder:text-white/10"
+        className="input-focus-glow w-full py-4 px-5 rounded-xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner placeholder:text-white/10"
       />
     </div>
   );
@@ -418,26 +418,24 @@ function RoleButton({ title, desc, icon, Effect, onSelect }: {
       onMouseLeave={() => setIsHovered(false)}
       whileHover="hover"
       initial="initial"
-      className="glass-panel p-10 rounded-[48px] border border-white/5 text-left cursor-pointer transition-all relative overflow-hidden flex flex-col gap-8 shadow-2xl group"
+      className="glass-panel aspect-square p-6 md:p-8 rounded-[40px] border border-white/5 cursor-pointer transition-all relative overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl group hover:border-indigo-500/50"
       variants={{
-        hover: { y: -10, scale: 1.02, transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] } },
+        hover: { y: -8, scale: 1.02, transition: { duration: 0.3, ease: "easeOut" } },
         initial: { y: 0, scale: 1 }
       }}
     >
-      <AnimatePresence>
-        {isHovered && <Effect />}
-      </AnimatePresence>
+      <div className={`absolute inset-0 transition-opacity duration-700 ${isHovered ? 'opacity-100' : 'opacity-[0.15]'}`}>
+        <Effect />
+      </div>
 
-      <div className="text-5xl relative z-10 w-fit p-5 rounded-3xl bg-white/5 border border-white/5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
-        {icon}
-      </div>
-      <div className="relative z-10">
-        <h3 className="text-white text-2xl font-black mb-3 tracking-tighter uppercase italic">{title}</h3>
-        <p className="text-sm text-white/30 font-medium leading-relaxed group-hover:text-white/50 transition-colors uppercase tracking-tight">{desc}</p>
-      </div>
-      
-      <div className="absolute top-0 right-0 p-6 bg-white/5 rounded-bl-[20px] text-[8px] font-black tracking-widest text-indigo-400 uppercase opacity-0 group-hover:opacity-100 transition-opacity z-10 scale-0 group-hover:scale-100 duration-500 origin-top-right">
-        Select
+      <div className="relative z-10 flex flex-col items-center gap-4 transition-transform duration-300">
+        <div className="text-6xl group-hover:scale-110 transition-transform duration-300">
+          {icon}
+        </div>
+        <div>
+          <h3 className="text-white text-2xl font-black mb-2 tracking-tighter uppercase italic">{title}</h3>
+          <p className="text-xs text-white/30 font-medium leading-relaxed group-hover:text-white/60 transition-colors uppercase tracking-widest">{desc}</p>
+        </div>
       </div>
     </motion.button>
   );
@@ -451,12 +449,13 @@ function LightningField() {
       exit={{ opacity: 0 }}
       className="absolute inset-0 pointer-events-none"
     >
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 bg-gradient-to-tr from-indigo-500/10 via-transparent to-purple-500/10 opacity-50" />
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full opacity-40">
         <motion.path
           d="M 85 0 L 78 15 L 85 30 L 70 50 L 80 65 L 45 85 L 55 92 L 15 100"
           fill="none"
-          stroke="#fff"
-          strokeWidth="1"
+          stroke="#a855f7"
+          strokeWidth="1.5"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
             pathLength: [0, 1, 1],
@@ -465,16 +464,37 @@ function LightningField() {
           transition={{ 
             duration: 0.6,
             times: [0, 0.1, 0.15, 0.2, 0.25, 0.3, 1],
-            ease: "easeOut"
+            ease: "easeOut",
+            repeat: Infinity,
+            repeatDelay: 1.5
           }}
-          className="shadow-[0_0_20px_#fff]"
+          style={{ filter: "drop-shadow(0 0 8px #a855f7) drop-shadow(0 0 20px #c084fc)" }}
+        />
+        <motion.path
+          d="M 90 0 L 80 20 L 90 40 L 60 70 L 70 85 L 20 100"
+          fill="none"
+          stroke="#818cf8"
+          strokeWidth="1"
+          initial={{ pathLength: 0, opacity: 0 }}
+          animate={{ 
+            pathLength: [0, 1, 1],
+            opacity: [0, 1, 0, 1, 0],
+          }}
+          transition={{ 
+            duration: 0.5,
+            times: [0, 0.1, 0.2, 0.3, 1],
+            ease: "easeOut",
+            repeat: Infinity,
+            repeatDelay: 2.2
+          }}
+          style={{ filter: "drop-shadow(0 0 5px #818cf8)" }}
         />
       </svg>
       <motion.div 
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.1, 0] }}
-        transition={{ duration: 0.15 }}
-        className="absolute inset-0 bg-white mix-blend-overlay"
+        animate={{ opacity: [0, 0.08, 0, 0.04, 0] }}
+        transition={{ duration: 0.2, repeat: Infinity, repeatDelay: 1.5 }}
+        className="absolute inset-0 bg-indigo-400 mix-blend-overlay"
       />
     </motion.div>
   );
@@ -488,24 +508,41 @@ function ShieldWall() {
       exit={{ opacity: 0 }}
       className="absolute inset-0 pointer-events-none overflow-hidden"
     >
-      <div 
-        className="absolute inset-0 opacity-10"
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 via-transparent to-cyan-500/5" />
+      <motion.div 
+        className="absolute inset-0 opacity-20"
+        animate={{ opacity: [0.1, 0.3, 0.1] }}
+        transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
         style={{ 
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z' fill='none' stroke='%233b82f6' stroke-width='1'/%3E%3C/svg%3E")`,
-          backgroundSize: '30px 36px',
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z' fill='none' stroke='%233b82f6' stroke-width='1.5'/%3E%3C/svg%3E")`,
+          backgroundSize: '40px 48px',
         }}
       />
-      <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full">
+      <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full opacity-40">
         <motion.circle
           cx="200" cy="200" r="100"
           fill="none"
+          stroke="#60a5fa"
+          strokeWidth="2"
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1.8, opacity: [0, 0.4, 0] }}
+          transition={{ duration: 2.5, repeat: Infinity, ease: "easeOut" }}
+          style={{ filter: "drop-shadow(0 0 10px #60a5fa)" }}
+        />
+        <motion.circle
+          cx="200" cy="200" r="140"
+          fill="none"
           stroke="#3b82f6"
           strokeWidth="1"
-          initial={{ scale: 0.5, opacity: 0 }}
-          animate={{ scale: 1.5, opacity: [0.5, 0] }}
-          transition={{ duration: 2, repeat: Infinity }}
+          strokeDasharray="4 8"
+          initial={{ rotate: 0 }}
+          animate={{ rotate: 360 }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          style={{ originX: "50%", originY: "50%", filter: "drop-shadow(0 0 5px #3b82f6)" }}
         />
       </svg>
+      <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-[#3b82f6]/10 to-transparent blur-xl" />
     </motion.div>
   );
 }
+

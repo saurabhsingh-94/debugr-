@@ -60,22 +60,22 @@ export default function BountyExplorer() {
         <div className="max-w-7xl mx-auto px-6 mb-16">
           <motion.div variants={fadeInUp(0.1)} initial="hidden" animate="visible">
             <h1 className="hero-title text-[clamp(40px,5vw,64px)] mb-6 leading-[1.1]">
-              Hunt the <br /><span className="text-white/20">Untraceable.</span>
+              Find your next <br /><span className="text-white/20">Target.</span>
             </h1>
             <p className="text-t2 text-lg max-w-2xl leading-relaxed font-medium">
-              Discover high-impact targets and earn rewards for uncovering legitimate vulnerabilities. 
-              Debugr provides a transparent pathway from discovery to compensation.
+              Discover high-impact bug bounty programs and get rewarded for finding vulnerabilities. 
+              Debugr provides a simple, direct path from discovery to payout.
             </p>
           </motion.div>
         </div>
 
-        {/* Intelligence Hub */}
+        {/* Bounties Hub */}
         <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-12">
           
           {/* Filters Sidebar */}
           <aside className="space-y-10 lg:sticky lg:top-32 self-start">
             <div className="space-y-4">
-              <label className="subtle-mono text-[10px] text-white/30 ml-1">Vulnerability Search</label>
+              <label className="subtle-mono text-[10px] text-white/30 ml-1">Search Programs</label>
               <div className="relative group">
                 <input 
                   type="text" 
@@ -88,7 +88,7 @@ export default function BountyExplorer() {
             </div>
 
             <div className="space-y-4">
-              <label className="subtle-mono text-[10px] text-white/30 ml-1">Access Tier</label>
+              <label className="subtle-mono text-[10px] text-white/30 ml-1">Program Type</label>
               <div className="flex gap-2 p-1.5 bg-white/3 border border-white/5 rounded-2xl">
                 {(['all', 'public', 'private'] as const).map(t => (
                   <button 
@@ -125,8 +125,8 @@ export default function BountyExplorer() {
             </div>
 
             <div className="p-8 rounded-[32px] bg-linear-to-br from-white/5 to-transparent border border-white/5 group transition-all duration-500 hover:bg-white/5">
-              <p className="text-sm font-black text-white mb-3">Professional Insight</p>
-              <p className="text-xs text-t2 leading-loose font-medium opacity-60">Private intelligence programs are unlocked by proving impact on public assets. Start broad, then specialize.</p>
+              <p className="text-sm font-black text-white mb-3">Hunting Tips</p>
+              <p className="text-xs text-t2 leading-loose font-medium opacity-60">Private bug bounty programs are unlocked by proving impact on public targets. Start broad, then specialize.</p>
             </div>
           </aside>
 
@@ -135,7 +135,7 @@ export default function BountyExplorer() {
             {loading && (
               <div className="py-24 text-center">
                 <div className="w-10 h-10 border-2 border-white/5 border-t-white/40 rounded-full animate-spin mx-auto mb-6" />
-                <p className="subtle-mono text-white/20">Scanning intelligence feeds...</p>
+                <p className="subtle-mono text-white/20">Loading programs...</p>
               </div>
             )}
 
@@ -175,7 +175,7 @@ export default function BountyExplorer() {
                       </div>
 
                       <div className="w-full md:w-auto text-left md:text-right p-6 md:p-0 rounded-3xl bg-white/3 md:bg-transparent border border-white/5 md:border-none">
-                        <p className="subtle-mono text-[9px] text-white/20 mb-2 uppercase">Reward Ceiling</p>
+                        <p className="subtle-mono text-[9px] text-white/20 mb-2 uppercase">Max Reward</p>
                         <p className="hero-title text-4xl font-black tracking-tighter text-white group-hover:scale-105 transition-transform duration-500 origin-right">
                           ${Number(p.reward_max).toLocaleString()}
                         </p>
@@ -188,12 +188,12 @@ export default function BountyExplorer() {
 
             {!loading && filtered.length === 0 && (
               <div className="py-24 text-center border-2 border-dashed border-white/5 rounded-[48px]">
-                <p className="text-white/20 text-lg font-medium italic">No intelligence matching your criteria.</p>
+                <p className="text-white/20 text-lg font-medium italic">No programs matching your criteria.</p>
                 <button 
                   onClick={() => {setSearch(''); setFilterType('all'); setMinBounty(0);}} 
                   className="mt-6 text-indigo-400 text-sm font-bold border-b border-indigo-400/20 pb-1 hover:border-indigo-400 transition-all font-mono tracking-widest uppercase"
                 >
-                  Clear Protocols
+                  Clear Filters
                 </button>
               </div>
             )}

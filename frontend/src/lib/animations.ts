@@ -4,19 +4,19 @@ import { Variants, Easing, TargetAndTransition, Transition } from "framer-motion
  * Premium easings for high-end UI feel.
  * Based on Apple/Luxury design standards.
  */
-export const easeStandard: Easing = [0.25, 0.1, 0.25, 1] as [number, number, number, number];
-export const easeOutExpo: Easing = [0.16, 1, 0.3, 1] as [number, number, number, number];
-export const easeOutQuart: Easing = [0.25, 1, 0.5, 1] as [number, number, number, number];
-export const easeSmooth: Easing = [0.23, 1, 0.32, 1] as [number, number, number, number];
-export const easeInertia: Easing = [0.08, 0.82, 0.17, 1] as [number, number, number, number];
+export const easeStandard: Easing = [0.25, 0.1, 0.25, 1];
+export const easeOutExpo: Easing = [0.19, 1, 0.22, 1];
+export const easeOutQuart: Easing = [0.165, 0.84, 0.44, 1];
+export const easeSmooth: Easing = [0.4, 0, 0.2, 1];
+export const easeInertia: Easing = [0.23, 1, 0.32, 1];
 
 /**
  * Spring configurations for interactive elements.
  */
-export const springMedium: Transition = { type: "spring", stiffness: 260, damping: 20 };
-export const springSoft: Transition = { type: "spring", stiffness: 80, damping: 20, mass: 1.2 };
-export const springQuick: Transition = { type: "spring", stiffness: 450, damping: 30 };
-export const springBouncy: Transition = { type: "spring", stiffness: 300, damping: 12 };
+export const springMedium: Transition = { type: "spring", stiffness: 300, damping: 25 };
+export const springSoft: Transition = { type: "spring", stiffness: 100, damping: 20, mass: 1 };
+export const springQuick: Transition = { type: "spring", stiffness: 500, damping: 35 };
+export const springBouncy: Transition = { type: "spring", stiffness: 400, damping: 15 };
 
 /**
  * Standard fade-in and slide-up animation.

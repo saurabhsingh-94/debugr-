@@ -12,8 +12,8 @@ interface CashfreeCheckoutProps {
     customer_email?: string;
     customer_phone: string;
   };
-  onSuccess?: (data: any) => void;
-  onError?: (error: any) => void;
+  onSuccess?: (data: Record<string, unknown>) => void;
+  onError?: (error: string) => void;
 }
 
 export default function CashfreeCheckout({ amount, customerDetails, onSuccess, onError }: CashfreeCheckoutProps) {
@@ -27,7 +27,7 @@ export default function CashfreeCheckout({ amount, customerDetails, onSuccess, o
     try {
       // 1. Create order on our backend to get payment_session_id
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/payments/create-order`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/payments/create-order`,
         {
           orderAmount: amount,
           orderCurrency: 'INR',
@@ -52,8 +52,10 @@ export default function CashfreeCheckout({ amount, customerDetails, onSuccess, o
 
       cashfree.checkout(checkoutOptions);
 
-    } catch (error: any) {
-      const msg = error.response?.data?.error || error.message || 'Failed to initiate payment';
+    } catch (error: unknown) {
+      const msg = axios.isAxiosError(error) 
+        ? error.response?.data?.error || error.message 
+        : (error instanceof Error ? error.message : 'Failed to initiate payment');
       setErrorMsg(msg);
       if (onError) onError(msg);
     } finally {

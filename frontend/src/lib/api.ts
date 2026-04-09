@@ -1,8 +1,6 @@
-const API_BASE = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined') 
+export const API_URL = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined') 
   ? process.env.NEXT_PUBLIC_API_URL 
-  : ''; // Relative to current domain or hardcoded
-
-export const API_URL = API_BASE || 'https://debugr-backend-production.up.railway.app';
+  : 'https://debugr-backend-production.up.railway.app';
 
 if (typeof window !== 'undefined') {
   console.log('🌐 [Debugr] Using API URL:', API_URL);

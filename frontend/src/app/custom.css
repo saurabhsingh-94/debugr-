@@ -21,15 +21,53 @@
   width: 60vw;
   height: 60vw;
   filter: blur(120px);
-  opacity: 0.15;
+  opacity: 0.35;
   border-radius: 50%;
   pointer-events: none;
   animation: blob-float 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
 }
 
-.blob-1 { background: #e2e2e7; top: -20%; left: -10%; animation-delay: 0s; }
-.blob-2 { background: #a1a1a6; bottom: -10%; right: -10%; animation-delay: -5s; }
-.blob-3 { background: #6e6e73; top: 30%; right: 20%; animation-delay: -10s; }
+.blob-1 { background: #9d50bb; top: -20%; left: -10%; animation-delay: 0s; box-shadow: 0 0 150px rgba(157, 80, 187, 0.4); }
+.blob-2 { background: #6e7aff; bottom: -10%; right: -10%; animation-delay: -5s; box-shadow: 0 0 120px rgba(110, 122, 255, 0.3); }
+.blob-3 { background: #d442f5; top: 30%; right: 20%; animation-delay: -10s; box-shadow: 0 0 180px rgba(212, 66, 245, 0.3); }
+
+/* Neon Gradient Edge (Subtle) */
+.neon-edge-hover {
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  z-index: 1;
+}
+
+.neon-edge-hover::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  background: linear-gradient(90deg, #9d50bb, #6e7aff, #d442f5, #9d50bb);
+  background-size: 300% 100%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.neon-edge-hover:hover::before {
+  opacity: 1;
+  animation: border-flow 4s linear infinite;
+}
+
+.neon-edge-hover::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  background: var(--bg);
+  border-radius: inherit;
+  z-index: -1;
+}
+
+@keyframes border-flow {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 100% 50%; }
+}
 
 @keyframes blob-float {
   0% { transform: translate(0, 0) scale(1); }
@@ -91,5 +129,5 @@
 }
 
 .animate-breathing {
-  animation: breathing 8s ease-in-out infinite;
+  animation: breathing 12s ease-in-out infinite;
 }

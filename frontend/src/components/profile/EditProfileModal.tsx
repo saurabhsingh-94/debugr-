@@ -131,7 +131,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
               <textarea 
                 value={formData.bio}
                 onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                placeholder="Security researcher at... passionate about..."
+                placeholder="Hacker at... expert in..."
                 style={{ width: '100%', minHeight: 80, background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, padding: '12px 16px', color: '#fff', fontSize: 14, resize: 'vertical' }}
               />
             </div>
@@ -159,7 +159,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
             </div>
 
             <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Professional Skills</label>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Skills</label>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '12px 16px', background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, minHeight: 48 }}>
                 {formData.skills.map(skill => (
                   <span key={skill} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818cf8', fontSize: 12, borderRadius: 8, fontWeight: 600 }}>
@@ -172,7 +172,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
                   value={newSkill}
                   onChange={e => setNewSkill(e.target.value)}
                   onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                  placeholder={formData.skills.length === 0 ? "Add skills (e.g. Web App Pentesting)..." : ""}
+                  placeholder={formData.skills.length === 0 ? "Add skills (e.g. SQL Injection)..." : ""}
                   style={{ flex: 1, minWidth: 100, background: 'none', border: 'none', color: '#fff', fontSize: 14, outline: 'none' }}
                 />
               </div>

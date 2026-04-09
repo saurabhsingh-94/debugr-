@@ -185,9 +185,9 @@ export default function MyProfile() {
               className="grid grid-cols-2 md:grid-cols-4 gap-4"
             >
               {[
-                { label: 'Verified Findings', value: profile.stats?.total_submissions || '0', icon: '📝' },
-                { label: 'Impact Score', value: profile.stats?.triaged_bugs || '0', icon: '⚡' },
-                { label: 'Security Fixes', value: profile.stats?.resolved_bugs || '0', icon: '🛡️' },
+                { label: 'Total Findings', value: profile.stats?.total_submissions || '0', icon: '📝' },
+                { label: 'Reputation', value: profile.stats?.triaged_bugs || '0', icon: '⚡' },
+                { label: 'Resolved', value: profile.stats?.resolved_bugs || '0', icon: '🛡️' },
                 { label: 'Earnings (USD)', value: `$${totalEarned.toLocaleString()}`, icon: '💎' },
               ].map((stat) => (
                 <motion.div 
@@ -221,12 +221,12 @@ export default function MyProfile() {
               </motion.div>
 
               <motion.div variants={fadeInUp(0.15)} className="glass-panel p-10 rounded-[40px] border border-white/5">
-                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 mb-8 ml-2">Researcher Profile</h3>
+                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 mb-8 ml-2">Identity</h3>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center p-5 rounded-3xl bg-white/3 border border-white/5 hover:bg-white/5 transition-all">
                     <span className="text-xs font-bold text-white/30 uppercase tracking-widest">Designation</span>
                     <span className="text-sm font-black text-white italic">
-                      {profile.role === 'HACKER' ? 'Security Specialist' : profile.role}
+                      {profile.role === 'HACKER' ? 'Elite Hacker' : profile.role}
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-5 rounded-3xl bg-white/3 border border-white/5 hover:bg-white/5 transition-all">
@@ -249,9 +249,9 @@ export default function MyProfile() {
               >
                 📁
               </motion.div>
-              <h3 className="text-3xl font-black italic mb-4 tracking-tight">Recent Engagement</h3>
+              <h3 className="text-3xl font-black italic mb-4 tracking-tight">Activity</h3>
               <p className="text-white/20 max-w-sm text-sm font-bold leading-relaxed mb-10">
-                Synchronizing with the global security network. Your contributions and activity logs will materialize here shortly.
+                Fetching your recent hacker activity. Your reports and rewards will show up here.
               </p>
               <Link href="/programs">
                 <motion.div

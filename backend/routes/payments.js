@@ -29,7 +29,7 @@ router.post("/create-order", authenticate, async (req, res, next) => {
       order_id: orderId,
       customer_details: customerDetails,
       order_meta: {
-        return_url: `${req.headers.origin || 'http://localhost:3000'}/add-funds/status?order_id={order_id}`
+        return_url: `${req.headers.origin || 'https://debugr-one.vercel.app'}/add-funds/status?order_id={order_id}`
       }
     };
 

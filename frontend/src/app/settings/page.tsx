@@ -29,10 +29,10 @@ interface SettingTab {
 }
 
 const TABS: SettingTab[] = [
-  { id: 'account', label: 'My Identity', icon: '👤', description: 'Your professional handle and contact point.' },
-  { id: 'security', label: 'Verification', icon: '🛡️', description: 'Manage login access and security protocols.' },
-  { id: 'privacy', label: 'Stealth Mode', icon: '🔒', description: 'Control how you appear in the collective.' },
-  { id: 'notifications', label: 'Alert Center', icon: '🔔', description: 'disclosure updates and system intel.' }
+  { id: 'account', label: 'My Profile', icon: '👤', description: 'Your professional handle and contact point.' },
+  { id: 'security', label: 'Security', icon: '🛡️', description: 'Manage login access and passwords.' },
+  { id: 'privacy', label: 'Privacy', icon: '🔒', description: 'Control how you appear on the platform.' },
+  { id: 'notifications', label: 'Alert Center', icon: '🔔', description: 'Platform updates and report notifications.' }
 ];
 
 export default function SettingsPage() {
@@ -157,10 +157,10 @@ export default function SettingsPage() {
         >
           <div className="flex items-center gap-3 mb-6">
             <span className="h-px w-8 bg-indigo-500" />
-            <p className="subtle-mono text-indigo-400">Settings / Account Center</p>
+            <p className="subtle-mono text-indigo-400">Settings / Profile</p>
           </div>
           <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8]">
-            Manage <span className="text-white/20">Identity.</span>
+            Manage <span className="text-white/20">Profile.</span>
           </h1>
         </motion.div>
 
@@ -259,7 +259,7 @@ export default function SettingsPage() {
                             whileTap={tapScale}
                             className="px-12 py-5 bg-white text-black rounded-3xl font-black text-sm shadow-2xl hover:bg-white/90 transition-all disabled:opacity-50 uppercase tracking-widest italic"
                           >
-                            {saving ? 'Transmitting...' : 'Update Identity'}
+                            {saving ? 'Saving...' : 'Update Profile'}
                           </motion.button>
                         </div>
                       </form>
@@ -369,7 +369,7 @@ export default function SettingsPage() {
                               whileHover={{ x: 8, color: '#f43f5e' }}
                               className="text-rose-500/40 font-black text-xs uppercase tracking-[0.3em] transition-all flex items-center gap-4 italic"
                               onClick={() => {
-                                if (confirm('Initiate account purge? This cannot be undone.')) {
+                                if (confirm('Delete your account? This cannot be undone.')) {
                                   fetchWithAuth(`${API_URL}/api/users/account`, { method: 'DELETE' }).then(() => {
                                     localStorage.removeItem('token');
                                     router.push('/');
@@ -377,7 +377,7 @@ export default function SettingsPage() {
                                 }
                               }}
                             >
-                              Purge Identity From Collective →
+                              Delete Account →
                             </motion.button>
                           </div>
                         </div>
@@ -397,8 +397,8 @@ export default function SettingsPage() {
                         >
                           🔔
                         </motion.div>
-                        <h3 className="text-3xl font-black italic mb-6 uppercase tracking-tighter">Notification Engine</h3>
-                        <p className="text-white/20 text-base font-medium italic max-w-[340px] leading-relaxed">System alert protocols and push intelligence are currently being recalibrated for optimized delivery.</p>
+                        <h3 className="text-3xl font-black italic mb-6 uppercase tracking-tighter">Notifications</h3>
+                        <p className="text-white/20 text-base font-medium italic max-w-[340px] leading-relaxed">System notifications and email alerts are currently being updated for better delivery.</p>
                       </div>
                     )}
                   </div>
