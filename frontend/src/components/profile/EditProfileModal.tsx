@@ -119,24 +119,24 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
             transition={{ type: 'spring', stiffness: 300, damping: 25, mass: 0.8 }}
-            className="relative w-full max-w-[640px] glass-panel rounded-[40px] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col bg-[#0e0e10] max-h-[90vh]"
+            className="relative w-full max-w-[800px] glass-panel rounded-[56px] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col bg-[#0e0e10] max-h-[90vh]"
           >
             {/* Header */}
-            <header className="px-10 py-8 border-b border-white/5 flex items-center justify-between">
+            <header className="px-12 py-10 border-b border-white/5 flex items-center justify-between">
               <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-1">Preferences</p>
-                <h2 className="text-2xl font-black italic tracking-tighter uppercase">Edit Profile</h2>
+                <p className="text-[10px] font-black uppercase tracking-[0.4em] text-indigo-400 mb-2 italic">Registry Preferences</p>
+                <h2 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Edit Identity</h2>
               </div>
               <button 
                 onClick={onClose}
-                className="w-10 h-10 rounded-full flex items-center justify-center text-white/20 hover:text-white hover:bg-white/5 transition-all text-2xl"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-white/20 hover:text-white hover:bg-white/5 transition-all text-3xl font-light"
               >
                 ×
               </button>
             </header>
 
             {/* Scrollable Content */}
-            <div className="p-8 md:p-12 overflow-y-auto scrollbar-hide space-y-12">
+            <div className="p-12 md:p-16 overflow-y-auto scrollbar-hide space-y-16">
               {/* Avatar Upload Section */}
               <div className="flex flex-col items-center gap-6 mb-4">
                 <div className="relative group">
@@ -158,75 +158,75 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
                   </label>
                 </div>
                 <div className="text-center">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30 italic">Tactical Signature</p>
-                  <p className="text-[9px] text-white/20 mt-1 uppercase tracking-tight">Image files up to 5MB</p>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30 italic">Profile Picture</p>
+                  <p className="text-[9px] text-white/20 mt-1 uppercase tracking-tight">JPG, PNG, OR GIF UP TO 5MB</p>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div className="md:col-span-2 space-y-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+                <div className="md:col-span-2 space-y-4">
                   <div className="flex items-center justify-between mb-1 px-2">
-                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Full Identity Name</label>
+                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Full Name</label>
                   </div>
                   <input 
                     type="text" 
                     value={formData.name}
                     onChange={e => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="E. Hunter"
-                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] font-bold outline-none transition-all"
+                    placeholder="e.g. Alex Hunter"
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-8 py-5 text-white text-[14px] font-bold outline-none transition-all"
                   />
                 </div>
 
-                <div className="md:col-span-2 space-y-3">
+                <div className="md:col-span-2 space-y-4">
                   <div className="flex items-center justify-between mb-1 px-2">
-                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Operational Alias</label>
-                    <span className="text-[9px] font-black text-indigo-400/50 uppercase tracking-widest italic">Permanent Identity</span>
+                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Username</label>
+                    <span className="text-[9px] font-black text-indigo-400/50 uppercase tracking-widest italic">Registered Handle</span>
                   </div>
-                  <div className="w-full bg-white/1 border border-white/5 rounded-2xl px-6 py-4 text-white/30 text-[14px] font-mono flex items-center gap-2">
+                  <div className="w-full bg-white/1 border border-white/5 rounded-2xl px-8 py-5 text-white/30 text-[14px] font-mono flex items-center gap-2">
                     <span className="opacity-20">@</span>
                     {(initialData as any).handle}
                   </div>
                 </div>
 
-                <div className="md:col-span-2 space-y-3">
-                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Researcher Bio</label>
+                <div className="md:col-span-2 space-y-4">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Bio</label>
                   <textarea 
                     value={formData.bio}
                     onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                    placeholder="Focused on infrastructure security and SQLi research..."
-                    className="input-focus-glow w-full min-h-[100px] bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] font-medium outline-none transition-all resize-none"
+                    placeholder="Tell us about your background and interests..."
+                    className="input-focus-glow w-full min-h-[120px] bg-white/2 border border-white/5 rounded-2xl px-8 py-5 text-white text-[14px] font-medium outline-none transition-all resize-none"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Operational Base</label>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Location</label>
                   <input 
                     type="text" 
                     value={formData.location}
                     onChange={e => setFormData({ ...formData, location: e.target.value })}
-                    placeholder="Remote / Global"
-                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] outline-none transition-all"
+                    placeholder="City, Country"
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-8 py-5 text-white text-[14px] outline-none transition-all"
                   />
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Secure Link</label>
+                <div className="space-y-4">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Website</label>
                   <input 
                     type="text" 
                     value={formData.website}
                     onChange={e => setFormData({ ...formData, website: e.target.value })}
-                    placeholder="https://..."
-                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] outline-none transition-all"
+                    placeholder="https://yourlink.com"
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-8 py-5 text-white text-[14px] outline-none transition-all"
                   />
                 </div>
 
-                <div className="md:col-span-2 space-y-3">
-                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Skill Arsenal</label>
-                  <div className="flex flex-wrap gap-2 p-4 bg-white/2 border border-white/5 rounded-2xl min-h-[60px]">
+                <div className="md:col-span-2 space-y-4">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Specialties</label>
+                  <div className="flex flex-wrap gap-3 p-6 bg-white/2 border border-white/5 rounded-2xl min-h-[80px]">
                     {formData.skills.map(skill => (
-                      <span key={skill} className="flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[11px] font-black rounded-xl italic">
+                      <span key={skill} className="flex items-center gap-2 px-5 py-2.5 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[11px] font-black rounded-xl italic">
                         {skill}
-                        <button onClick={() => removeSkill(skill)} className="hover:text-white text-lg leading-none mt-[-2px]">×</button>
+                        <button onClick={() => removeSkill(skill)} className="hover:text-white text-lg leading-none">×</button>
                       </span>
                     ))}
                     <input 
@@ -234,8 +234,8 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
                       value={newSkill}
                       onChange={e => setNewSkill(e.target.value)}
                       onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                      placeholder={formData.skills.length === 0 ? "Add tactical skills..." : ""}
-                      className="flex-1 min-w-[120px] bg-transparent border-none text-white text-[13px] font-bold outline-none placeholder:text-white/10"
+                      placeholder={formData.skills.length === 0 ? "Add your skills..." : "+ Add More"}
+                      className="flex-1 min-w-[150px] bg-transparent border-none text-white text-[13px] font-bold outline-none placeholder:text-white/10"
                     />
                   </div>
                 </div>
@@ -269,7 +269,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
                   whileTap={{ scale: 0.95 }}
                   className="px-10 py-4 bg-white text-black rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl disabled:opacity-50 italic"
                 >
-                  {saving ? 'Syncing...' : 'Commit Changes'}
+                  {saving ? 'Saving...' : 'Save Profile'}
                 </motion.button>
               </div>
             </footer>

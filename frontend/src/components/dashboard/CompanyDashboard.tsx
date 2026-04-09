@@ -89,26 +89,26 @@ export default function CompanyDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-16 border-b border-white/5">
         <div className="space-y-8">
           <div className="flex items-center gap-4">
-            <span className="subtle-mono text-[9px] text-indigo-400 tracking-[0.4em] uppercase italic">[ PERIMETER.NODE ]</span>
+            <span className="subtle-mono text-[9px] text-indigo-400 tracking-[0.4em] uppercase italic">DASHBOARD OVERVIEW</span>
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/5 border border-indigo-500/10">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-              <span className="text-[8px] font-black text-indigo-400/60 uppercase tracking-widest">Surveillance_Active</span>
+              <span className="text-[8px] font-black text-indigo-400/60 uppercase tracking-widest">LIVE</span>
             </div>
           </div>
           <h1 className="text-6xl font-black italic tracking-tighter uppercase leading-[0.8]">
-            Security <br />
-            <span className="text-white/5 italic">Perimeter.</span>
+            Company <br />
+            <span className="text-white/5 italic">Dashboard.</span>
           </h1>
           <p className="text-white/30 text-sm font-medium italic max-w-lg leading-relaxed">
-            Consolidating vulnerability telemetry and specialized research coordination across managed registries.
+            Manage your vulnerability reports and coordinate security programs on the platform.
           </p>
         </div>
 
         <div className="flex gap-12 items-end">
           {[
-            { label: 'Available Liquidity', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
-            { label: 'Cumulative Yield', value: `$${totalPaid.toLocaleString()}`, icon: <Layers size={14} /> },
-            { label: 'Triage Queue', value: String(pendingCount), icon: <Inbox size={14} /> },
+            { label: 'Wallet Balance', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
+            { label: 'Total Paid', value: `$${totalPaid.toLocaleString()}`, icon: <Layers size={14} /> },
+            { label: 'Pending Reports', value: String(pendingCount), icon: <Inbox size={14} /> },
           ].map((s, i) => (
             <motion.div 
               key={s.label}
@@ -129,12 +129,12 @@ export default function CompanyDashboard() {
         </div>
       </div>
 
-      {/* ── Context Navigation ── */}
+      {/* ── Dashboard Tabs ── */}
       <div className="flex gap-16 border-b border-white/5 pb-0.5">
         {(['inbox', 'programs'] as const).map(tabId => {
           const tab = tabId === 'inbox' 
-            ? { id: 'inbox', label: 'Vulnerability Feed', count: pendingCount, icon: <Activity size={12} /> }
-            : { id: 'programs', label: 'Program Registry', count: programs.length, icon: <Layers size={12} /> };
+            ? { id: 'inbox', label: 'Recent Reports', count: pendingCount, icon: <Activity size={12} /> }
+            : { id: 'programs', label: 'Managed Programs', count: programs.length, icon: <Layers size={12} /> };
           return (
             <button 
               key={tab.id}
@@ -177,7 +177,7 @@ export default function CompanyDashboard() {
             className="glass-panel rounded-[40px] overflow-hidden border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
           >
             <div className="hidden lg:grid grid-cols-[1fr_180px_120px_160px_140px] px-12 py-6 bg-white/[0.02] border-b border-white/5">
-              {['Vulnerability_Vector', 'Researcher_ID', 'Sev_Index', 'Triage_State', 'Valuation'].map(h => (
+              {['Report Title', 'Researcher', 'Severity', 'Status', 'Bounty Paid'].map(h => (
                 <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black italic">{h}</span>
               ))}
             </div>
@@ -185,12 +185,12 @@ export default function CompanyDashboard() {
               {loading ? (
                 <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-6">
                   <div className="w-8 h-8 border border-white/5 border-t-white/40 rounded-full animate-spin" />
-                  <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Polling secure feeds...</p>
+                  <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Loading reports...</p>
                 </div>
               ) : reports.length === 0 ? (
                 <div className="py-40 text-center space-y-4">
-                  <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">Perimeter Secure.</p>
-                  <p className="subtle-mono text-[10px] text-white/10 uppercase tracking-[0.4em]">All Vectors Neutralized.</p>
+                  <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">Everything is quiet.</p>
+                  <p className="subtle-mono text-[10px] text-white/10 uppercase tracking-[0.4em]">No reports yet.</p>
                 </div>
               ) : (
                 reports.map((r, i) => (
@@ -228,7 +228,7 @@ export default function CompanyDashboard() {
 
                     <div className="flex flex-col items-end lg:items-start group/reward">
                        <span className="text-2xl font-black text-white tracking-tighter italic group-hover:scale-110 transition-transform origin-left">${Number(r.bounty || 0).toLocaleString()}</span>
-                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Allocation_USD</span>
+                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Bounty Paid</span>
                     </div>
                   </motion.div>
                 ))
@@ -268,8 +268,8 @@ export default function CompanyDashboard() {
 
                 <div className="space-y-6 relative z-10">
                    <div className="flex justify-between items-center py-4 border-y border-white/5">
-                      <span className="subtle-mono text-[8px] text-white/20 uppercase tracking-widest italic">Vulnerability Flow</span>
-                      <span className="text-[10px] font-black text-white italic group-hover:text-indigo-400">Synced</span>
+                      <span className="subtle-mono text-[8px] text-white/20 uppercase tracking-widest italic">Activity Status</span>
+                      <span className="text-[10px] font-black text-white italic group-hover:text-indigo-400">Active</span>
                    </div>
                    <Link href={`/programs/${p.id}/manage`} className="block">
                     <motion.div 
@@ -277,7 +277,7 @@ export default function CompanyDashboard() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-5 text-center rounded-[24px] bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] shadow-xl hover:bg-neutral-200 transition-all italic flex items-center justify-center gap-3"
                     >
-                      <Terminal size={12} /> Manage Policy
+                      <Terminal size={12} /> Manage Program
                     </motion.div>
                   </Link>
                 </div>
@@ -294,9 +294,9 @@ export default function CompanyDashboard() {
                  <div className="absolute inset-0 bg-indigo-500/5 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
               <div className="text-center space-y-4">
-                <p className="text-white/20 font-black text-xs uppercase tracking-[0.4em] italic group-hover:text-white/40">Initialize Registry</p>
+                <p className="text-white/20 font-black text-xs uppercase tracking-[0.4em] italic group-hover:text-white/40">Create Program</p>
                 <p className="text-white/10 text-[10px] font-medium italic max-w-[200px] mx-auto leading-relaxed">
-                  Provision a new coordination channel for specialized security research.
+                  Start a new security program for independent research.
                 </p>
               </div>
             </motion.div>
@@ -354,9 +354,9 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
           <div className="space-y-4">
             <div className="flex items-center gap-3">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
-              <p className="subtle-mono text-[10px] text-indigo-400 tracking-[0.4em] font-black uppercase italic">[ VANGUARD_DEPLOYMENT ]</p>
+              <p className="subtle-mono text-[10px] text-indigo-400 tracking-[0.4em] font-black uppercase italic">PROGRAM SETUP</p>
             </div>
-            <h2 className="text-5xl font-black tracking-tighter text-white uppercase italic leading-none">Config <br /><span className="text-white/5">Registry.</span></h2>
+            <h2 className="text-5xl font-black tracking-tighter text-white uppercase italic leading-none">Program <br /><span className="text-white/5">Setup.</span></h2>
           </div>
           <motion.button 
             whileHover={{ scale: 1.1, rotate: 90 }}
@@ -367,7 +367,7 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
 
         <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
           <div className="space-y-4">
-            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Program.Identifier</label>
+            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Program Name</label>
             <div className="relative group">
                <Server className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-hover:text-indigo-400 transition-colors" size={18} />
                <input 
@@ -375,13 +375,13 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
                  className="w-full bg-white/[0.03] border border-white/5 rounded-[32px] pl-16 pr-8 py-6 text-white text-base font-medium outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all shadow-2xl"
                  value={formData.name}
                  onChange={e => setFormData({ ...formData, name: e.target.value })}
-                 placeholder="e.g. DEBUGR_VDP_PRO"
+                 placeholder="e.g. Security Rewards Program"
                />
             </div>
           </div>
 
           <div className="space-y-4">
-            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Management.Directives</label>
+            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Program Description</label>
             <div className="relative group">
                <Cpu className="absolute left-6 top-8 text-white/10 group-hover:text-indigo-400 transition-colors" size={18} />
                <textarea 
@@ -389,14 +389,14 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
                  className="w-full bg-white/[0.03] border border-white/5 rounded-[40px] pl-16 pr-8 py-8 text-white text-base font-medium h-48 outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all shadow-2xl resize-none leading-relaxed"
                  value={formData.description}
                  onChange={e => setFormData({ ...formData, description: e.target.value })}
-                 placeholder="Scope definition, validation criteria, and rewards protocol..."
+                 placeholder="Scope definition, validation criteria, and reward structure..."
                />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-8">
             <div className="space-y-4">
-              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Lower Floor ($)</label>
+              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Min Bounty ($)</label>
               <input 
                 type="number"
                 className="w-full bg-white/[0.03] border border-white/5 rounded-[28px] px-8 py-6 text-white text-base font-black italic transition-all outline-none focus:border-indigo-500/40"
@@ -405,7 +405,7 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
               />
             </div>
             <div className="space-y-4">
-              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Upper Ceiling ($)</label>
+              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Max Bounty ($)</label>
               <input 
                 type="number"
                 className="w-full bg-white/[0.03] border border-white/5 rounded-[28px] px-8 py-6 text-white text-base font-black italic transition-all outline-none focus:border-indigo-500/40"
@@ -423,7 +423,7 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
               disabled={isSubmitting}
               className="w-full py-7 bg-white text-black font-black rounded-[32px] hover:bg-neutral-100 transition-all uppercase tracking-[0.4em] text-xs shadow-[0_30px_60px_rgba(255,255,255,0.1)] mt-4 flex items-center justify-center gap-4 italic"
             >
-              <Cloud size={16} /> {isSubmitting ? 'Deploying...' : 'Initialize Program'}
+              <Cloud size={16} /> {isSubmitting ? 'Creating...' : 'Create Program'}
             </motion.button>
           </div>
         </form>

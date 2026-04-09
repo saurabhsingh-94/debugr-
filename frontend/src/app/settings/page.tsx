@@ -159,10 +159,10 @@ export default function SettingsPage() {
               <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.3em] font-black">Control Panel</p>
             </div>
             <h1 className="text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8] mb-8">
-              User <span className="text-white/20">Protocol.</span>
+              User <span className="text-white/20">Settings.</span>
             </h1>
             <p className="text-t2 text-lg font-medium leading-relaxed max-w-sm">
-              Adjust your operational parameters and security verification tokens.
+              Adjust your account preferences and security credentials.
             </p>
           </motion.div>
 
@@ -206,7 +206,7 @@ export default function SettingsPage() {
             >
               <div className="p-10 md:p-20">
                 <header className="mb-16">
-                  <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.3em] mb-4">Module / {activeTab}</p>
+                  <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.3em] mb-4">Setting / {activeTab}</p>
                   <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none mb-4">
                      {TABS.find(t => t.id === activeTab)?.label}
                   </h2>
@@ -219,22 +219,22 @@ export default function SettingsPage() {
                   <form onSubmit={handleUpdateAccount} className="space-y-12 max-w-xl">
                     <div className="space-y-8">
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Identity Handle</label>
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Username</label>
                         <input 
                           className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 text-white font-black text-lg outline-none focus:border-white/20 focus:bg-white/5 transition-all" 
                           value={accountForm.handle}
                           readOnly
                         />
-                        <p className="text-white/10 text-[9px] ml-2 font-black uppercase tracking-widest italic">Immutable Identifier.</p>
+                        <p className="text-white/10 text-[9px] ml-2 font-black uppercase tracking-widest italic">Permanent Username.</p>
                       </div>
                       <div className="space-y-3">
-                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Contact Link</label>
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Email Address</label>
                         <input 
                           className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 text-white font-medium outline-none focus:border-white/20 focus:bg-white/5 transition-all" 
                           type="email"
                           value={accountForm.email}
                           onChange={e => setAccountForm({ ...accountForm, email: e.target.value })}
-                          placeholder="identity@vanguard.sh"
+                          placeholder="your@email.com"
                         />
                       </div>
                     </div>
@@ -246,7 +246,7 @@ export default function SettingsPage() {
                         whileTap={tapScale}
                         className="px-12 py-5 bg-white text-black rounded-[24px] font-black text-xs shadow-2xl hover:bg-white/90 transition-all disabled:opacity-50 uppercase tracking-widest"
                       >
-                        {saving ? 'Transmitting...' : 'Save Parameters'}
+                        {saving ? 'Saving...' : 'Save Changes'}
                       </motion.button>
                     </div>
                   </form>
@@ -254,9 +254,9 @@ export default function SettingsPage() {
 
                 {activeTab === 'security' && (
                   <div className="space-y-16 max-w-xl">
-                    <form onSubmit={handleChangePassword} className="space-y-10">
+                     <form onSubmit={handleChangePassword} className="space-y-10">
                       <div className="space-y-4">
-                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Current Verification Key</label>
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Current Password</label>
                         <input 
                           className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
                           type="password"
@@ -267,7 +267,7 @@ export default function SettingsPage() {
                       </div>
                       <div className="grid grid-cols-1 gap-8">
                         <div className="space-y-4">
-                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">New Security Token</label>
+                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">New Password</label>
                           <input 
                             className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
                             type="password"
@@ -277,11 +277,11 @@ export default function SettingsPage() {
                           />
                         </div>
                         <div className="space-y-4">
-                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Confirm Token</label>
+                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Confirm Password</label>
                           <input 
                             className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
                             type="password"
-                            placeholder="Match new token"
+                            placeholder="Match new password"
                             value={pwForm.confirmPassword}
                             onChange={e => setPwForm({ ...pwForm, confirmPassword: e.target.value })}
                           />
@@ -295,25 +295,25 @@ export default function SettingsPage() {
                           whileTap={tapScale}
                           className="px-12 py-5 border border-white/10 bg-white/5 text-white/60 hover:text-white rounded-[24px] font-black text-xs hover:bg-white/10 transition-all shadow-xl uppercase tracking-widest"
                         >
-                          Update Key
+                          Update Password
                         </motion.button>
                       </div>
                     </form>
 
-                    <div className="pt-16 border-t border-white/5">
-                      <h3 className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-10 ml-2 italic">Access Logs</h3>
+                       <div className="pt-16 border-t border-white/5">
+                      <h3 className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-10 ml-2 italic">Security Activity</h3>
                       <div className="space-y-4">
                         {activity.length === 0 ? (
-                          <div className="py-20 text-center text-white/5 text-[10px] font-black uppercase tracking-widest italic">Zero Logs Detected.</div>
+                          <div className="py-20 text-center text-white/5 text-[10px] font-black uppercase tracking-widest italic">No activity detected.</div>
                         ) : (
                           activity.map((item, idx) => (
                             <div key={item.id || idx} className="flex items-center justify-between p-6 rounded-3xl bg-white/[0.01] border border-white/5 group hover:border-white/10 transition-all">
                               <div className="flex items-center gap-6">
                                 <span className="text-xl opacity-30 group-hover:opacity-100 transition-opacity">💻</span>
                                 <div>
-                                  <div className="font-black text-sm uppercase tracking-tight text-white/60 group-hover:text-white transition-colors">{item.device || 'Unidentified Node'}</div>
+                                  <div className="font-black text-sm uppercase tracking-tight text-white/60 group-hover:text-white transition-colors">{item.device || 'Unknown Device'}</div>
                                   <div className="text-[9px] text-white/20 uppercase tracking-widest font-black mt-1">
-                                    {item.location || 'Dark Sector'} • {item.ip_address}
+                                    {item.location || 'Unknown Location'} • {item.ip_address}
                                   </div>
                                 </div>
                               </div>
@@ -330,10 +330,10 @@ export default function SettingsPage() {
 
                 {activeTab === 'privacy' && (
                   <div className="space-y-16 max-w-2xl">
-                    <div className="flex items-center justify-between gap-12 p-10 rounded-[40px] bg-white/[0.01] border border-white/5 hover:border-white/10 transition-all">
+                     <div className="flex items-center justify-between gap-12 p-10 rounded-[40px] bg-white/[0.01] border border-white/5 hover:border-white/10 transition-all">
                       <div>
-                        <h3 className="text-2xl font-black italic mb-2 uppercase tracking-tight">Stealth Configuration</h3>
-                        <p className="text-white/20 text-sm font-medium leading-relaxed italic max-w-sm">Conceal identity metrics from public indices.</p>
+                        <h3 className="text-2xl font-black italic mb-2 uppercase tracking-tight">Private Profile</h3>
+                        <p className="text-white/20 text-sm font-medium leading-relaxed italic max-w-sm">Conceal your activity from public rankings.</p>
                       </div>
                       <div 
                         className={`w-20 h-10 rounded-full p-1.5 cursor-pointer transition-all duration-700 ${privacy.is_private ? 'bg-indigo-600' : 'bg-white/5'}`}
@@ -347,13 +347,13 @@ export default function SettingsPage() {
                       </div>
                     </div>
 
-                    <div className="pt-20 border-t border-white/5">
-                      <h4 className="text-rose-500 font-black italic text-2xl mb-4 uppercase tracking-tighter">Decommission Data</h4>
-                      <p className="text-white/20 text-sm font-medium italic mb-10 max-w-lg leading-relaxed">Permanently purge all metadata and reputation assets. This action cannot be reversed.</p>
+                     <div className="pt-20 border-t border-white/5">
+                      <h4 className="text-rose-500 font-black italic text-2xl mb-4 uppercase tracking-tighter">Delete Account</h4>
+                      <p className="text-white/20 text-sm font-medium italic mb-10 max-w-lg leading-relaxed">Permanently delete all your data and progress. This action cannot be reversed.</p>
                       <button 
                         className="text-rose-500/40 hover:text-rose-500 font-black text-[10px] uppercase tracking-[0.3em] transition-all italic border-b border-rose-500/0 hover:border-rose-500/20 pb-1"
                         onClick={() => {
-                          if (confirm('Decommission identity?')) {
+                          if (confirm('Delete account?')) {
                             fetchWithAuth(`${API_URL}/api/users/account`, { method: 'DELETE' }).then(() => {
                               deleteCookie('debugr_token');
                               window.location.href = '/';
@@ -361,17 +361,17 @@ export default function SettingsPage() {
                           }
                         }}
                       >
-                        Initiate Decommission →
+                        Delete Account →
                       </button>
                     </div>
                   </div>
                 )}
 
                 {activeTab === 'notifications' && (
-                  <div className="py-32 flex flex-col items-center justify-center text-center opacity-20">
+                   <div className="py-32 flex flex-col items-center justify-center text-center opacity-20">
                     <div className="text-6xl mb-10">🔔</div>
-                    <h3 className="text-2xl font-black italic mb-4 uppercase">Signal Protocol</h3>
-                    <p className="text-xs font-bold uppercase tracking-widest max-w-[280px] leading-relaxed italic">Updating communication relays for optimal delivery.</p>
+                    <h3 className="text-2xl font-black italic mb-4 uppercase">Notification Settings</h3>
+                    <p className="text-xs font-bold uppercase tracking-widest max-w-[280px] leading-relaxed italic">Updating communication methods for optimal delivery.</p>
                   </div>
                 )}
               </div>

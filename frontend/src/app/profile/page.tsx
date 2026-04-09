@@ -109,15 +109,15 @@ export default function MyProfile() {
       
       <Navbar />
 
-      <main className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 relative z-10">
-        <div className="flex flex-col lg:grid lg:grid-cols-[420px_1fr] gap-16">
+      <main className="w-full px-8 md:px-16 lg:px-24 pt-44 pb-32 relative z-10">
+        <div className="flex flex-col xl:grid xl:grid-cols-[440px_1fr] gap-20">
           
           {/* Identity Sidebar - Left Panel */}
           <motion.aside 
             variants={fadeInUp(0.05)}
             initial="hidden"
             animate="visible"
-            className="lg:sticky lg:top-40 h-fit space-y-10"
+            className="xl:sticky xl:top-40 h-fit space-y-10"
           >
             <div className="glass-panel rounded-[56px] border border-white/5 overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.5)]">
               {/* Cover Area */}
@@ -197,13 +197,13 @@ export default function MyProfile() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-1 h-1 rounded-full bg-indigo-500" />
-                    <p className="subtle-mono text-[8px] font-black uppercase tracking-[0.3em] text-white/20 italic">Reputation</p>
+                    <p className="subtle-mono text-[8px] font-black uppercase tracking-[0.3em] text-white/20 italic">Registry Score</p>
                   </div>
-                  <h3 className="text-3xl font-black tracking-tighter uppercase italic">Level A</h3>
+                  <h3 className="text-3xl font-black tracking-tighter uppercase italic">Active Researcher</h3>
                 </div>
                 <div className="text-right">
                   <span className="text-[9px] font-mono text-white/10 uppercase tracking-widest italic leading-none">Status</span>
-                  <div className="text-2xl font-black text-indigo-400 italic">SECURE</div>
+                  <div className="text-2xl font-black text-indigo-400 italic">ONLINE</div>
                 </div>
               </div>
               <div className="h-1.5 bg-white/[0.02] rounded-full overflow-hidden border border-white/5 p-px">
@@ -214,7 +214,7 @@ export default function MyProfile() {
                   className="h-full bg-linear-to-r from-indigo-500 to-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.5)] rounded-full"
                 />
               </div>
-              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] text-center italic">Trust Score: 98.42%</p>
+              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] text-center italic">Reliability: 98.42%</p>
             </div>
           </motion.aside>
 
@@ -313,7 +313,7 @@ export default function MyProfile() {
                   whileHover={{ x: 8 }}
                   className="text-[11px] font-black text-indigo-400 uppercase tracking-[0.4em] flex items-center gap-4 cursor-pointer italic"
                 >
-                  View Programs <ChevronRight size={14} />
+                  Explore Programs <ChevronRight size={14} />
                 </motion.div>
               </Link>
             </motion.div>

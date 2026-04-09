@@ -98,30 +98,30 @@ export default function HackerDashboard() {
 
   return (
     <div className="space-y-16">
-      {/* ── Operational Metrics ── */}
+      {/* ── Dashboard Overview ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-16 border-b border-white/5">
         <div className="space-y-8">
           <div className="flex items-center gap-4">
-            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.4em] uppercase italic">[ SYSTEM.INDEX ]</span>
+            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.4em] uppercase italic">DASHBOARD OVERVIEW</span>
             <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10">
               <Activity size={10} className="text-emerald-500 animate-pulse" />
-              <span className="text-[8px] font-black text-emerald-400/60 uppercase tracking-widest">Feed_Synced</span>
+              <span className="text-[8px] font-black text-emerald-400/60 uppercase tracking-widest">LIVE</span>
             </div>
           </div>
           <h1 className="text-6xl font-black italic tracking-tighter uppercase leading-[0.8]">
-            Operational <br />
-            <span className="text-white/5 italic">Hub.</span>
+            Hacker <br />
+            <span className="text-white/5 italic">Dashboard.</span>
           </h1>
           <p className="text-white/30 text-sm font-medium italic max-w-lg leading-relaxed">
-            Coordinating vulnerability lifecycles and reputation growth across the decentralized registry.
+            Manage your vulnerability reports and track your progress across the platform.
           </p>
         </div>
 
         <div className="flex gap-12 items-end">
           {[
-            { label: 'Calculated Yield', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
-            { label: 'Impact Vectors', value: String(reports.length), icon: <Shield size={14} /> },
-            { label: 'Validated Rate', value: '94.2%', icon: <BarChart3 size={14} /> },
+            { label: 'Total Earnings', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
+            { label: 'Total Reports', value: String(reports.length), icon: <Shield size={14} /> },
+            { label: 'Success Rate', value: '94.2%', icon: <BarChart3 size={14} /> },
           ].map((s, i) => (
             <motion.div 
               key={s.label}
@@ -142,7 +142,7 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── Triage Terminal Controls ── */}
+      {/* ── Report Filters ── */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <div className="flex items-center gap-2 p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] overflow-x-auto">
           {(['All', 'Critical', 'High', 'Medium', 'Low'] as const).map(s => (
@@ -165,7 +165,7 @@ export default function HackerDashboard() {
         <div className="flex items-center gap-8">
           <div className="hidden sm:flex items-center gap-4 px-6 py-3 rounded-full border border-white/5 bg-white/[0.01]">
              <Search size={14} className="text-white/10" />
-             <span className="subtle-mono text-[9px] text-white/20 uppercase tracking-widest font-black italic">Search Index...</span>
+             <span className="subtle-mono text-[9px] text-white/20 uppercase tracking-widest font-black italic">Search reports...</span>
           </div>
           <Link href="/submit">
             <motion.button 
@@ -173,16 +173,16 @@ export default function HackerDashboard() {
               whileTap={{ scale: 0.95 }}
               className="px-10 py-4 bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-neutral-200 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center gap-4 italic"
             >
-              <Plus size={14} /> Initialize Report
+              <Plus size={14} /> Submit Report
             </motion.button>
           </Link>
         </div>
       </div>
 
-      {/* ── Operational Feed Grid ── */}
+      {/* ── Dashboard Activity ── */}
       <div className="glass-panel rounded-[40px] overflow-hidden border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]">
         <div className="hidden lg:grid grid-cols-[160px_1fr_180px_120px_160px_140px] px-12 py-6 bg-white/[0.02] border-b border-white/5">
-          {['Vector_ID', 'Vulnerability Title', 'Identity_Registry', 'Sev.Index', 'Status.Vector', 'Valuation'].map(h => (
+          {['Report ID', 'Vulnerability Title', 'Organization', 'Severity', 'Status', 'Bounty'].map(h => (
             <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black italic">{h}</span>
           ))}
         </div>
@@ -194,16 +194,16 @@ export default function HackerDashboard() {
                 <div className="absolute inset-0 border border-white/5 rounded-full" />
                 <div className="absolute inset-0 border border-t-white/40 rounded-full animate-spin" />
               </div>
-              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Polling secure streams...</p>
+              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Loading reports...</p>
             </div>
           ) : filtered.length === 0 ? (
             <div className="py-40 text-center space-y-4">
-              <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">No Active Protocols.</p>
+              <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">No reports found.</p>
               <button 
                 onClick={() => setFilter('All')} 
                 className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] font-mono hover:text-white transition-colors italic"
               >
-                Reset_Filter
+                Clear Filters
               </button>
             </div>
           ) : (
@@ -229,7 +229,7 @@ export default function HackerDashboard() {
                       <p className="text-lg font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight italic select-none">{r.title}</p>
                       <div className="flex items-center gap-3">
                          <span className="w-1 h-1 rounded-full bg-white/10" />
-                         <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">INDEXED: {r.submitted}</p>
+                         <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">SUBMITTED: {r.submitted}</p>
                       </div>
                     </div>
 
@@ -253,7 +253,7 @@ export default function HackerDashboard() {
 
                     <div className="flex flex-col items-end lg:items-start group/reward">
                        <span className="text-2xl font-black text-white tracking-tighter italic group-hover:scale-110 transition-transform origin-left">{r.earned}</span>
-                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Validated_USD</span>
+                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Validated</span>
                     </div>
                   </motion.div>
                 );
@@ -263,20 +263,15 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── System Status Bar ── */}
+      {/* ── Status Bar ── */}
       <div className="flex items-center justify-between px-10 py-6 rounded-[32px] bg-white/[0.01] border border-white/5">
          <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Network Protocols Stable</span>
+               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Status: Online</span>
             </div>
-            <div className="h-4 w-[1px] bg-white/5" />
-            <div className="flex items-center gap-3">
-               <Terminal size={12} className="text-white/10" />
-               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">V2.4.b491</span>
-            </div>
-         </div>
-         <div className="flex items-center gap-6">
+          </div>
+          <div className="flex items-center gap-6">
             <span className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">Session expires in: <span className="text-white/40 ml-2">4h 12m</span></span>
          </div>
       </div>

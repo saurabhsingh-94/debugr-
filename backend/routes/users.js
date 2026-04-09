@@ -340,22 +340,43 @@ router.patch("/avatar", authMiddleware, upload.single("avatar"), async (req, res
   try {
     const userId = req.user.id;
     if (!req.file) {
+      logger.error(`Avatar upload failed for user ${userId}: No file in request`);
       throw new ApiError(400, "No file uploaded");
     }
 
-    const avatarUrl = await uploadToCloudinary(req.file.buffer);
+    logger.info(`Attempting avatar upload for user ${userId}. File size: ${req.file.size} bytes`);
 
-    await pool.query(
-      "UPDATE users SET avatar_url = $1 WHERE id = $2",
-      [avatarUrl, userId]
-    );
+    let avatarUrl;
+    try {
+      avatarUrl = await uploadToCloudinary(req.file.buffer);
+      logger.info(`Cloudinary upload successful for user ${userId}: ${avatarUrl}`);
+    } catch (cloudinaryErr) {
+      logger.error(`Cloudinary upload failed for user ${userId}: ${cloudinaryErr.message}`);
+      throw new ApiError(500, `Image storage failure: ${cloudinaryErr.message}`);
+    }
+
+    try {
+      const result = await pool.query(
+        "UPDATE users SET avatar_url = $1 WHERE id = $2 RETURNING id",
+        [avatarUrl, userId]
+      );
+      if (result.rows.length === 0) {
+        logger.error(`Avatar DB update failed: User ${userId} not found`);
+        throw new ApiError(404, "User not found in registry");
+      }
+      logger.info(`User ${userId} avatar updated in DB`);
+    } catch (dbErr) {
+      logger.error(`Database error updating avatar for user ${userId}: ${dbErr.message}`);
+      throw new ApiError(500, "Profile synchronization error");
+    }
 
     res.json({
       success: true,
       avatar_url: avatarUrl,
-      message: "Avatar synchronized with tactical grid"
+      message: "Profile picture synchronized"
     });
   } catch (err) {
+    logger.error(`Top-level error in /avatar route: ${err.message}`);
     next(err);
   }
 });

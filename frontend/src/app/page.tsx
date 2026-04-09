@@ -60,7 +60,7 @@ export default function Home() {
               <motion.div variants={fadeInUp()} className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
                 <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">DEBUGR</span>
                 <span className="w-1 h-1 rounded-full bg-indigo-400 animate-pulse" />
-                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">SECURITY REIMAGINED</span>
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">REGISTERED SECURITY PLATFORM</span>
               </motion.div>
 
               <motion.h1 variants={fadeInUp()} className="text-7xl md:text-[130px] font-black tracking-tighter leading-[0.85] uppercase italic">
@@ -95,85 +95,11 @@ export default function Home() {
                 </div>
               </motion.div>
            </motion.div>
-
-           <motion.div 
-             initial={{ opacity: 0, x: 40, filter: 'blur(10px)' }}
-             animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-             transition={{ duration: 1.2, delay: 0.6 }}
-             className="lg:col-span-4 hidden lg:block"
-           >
-              <div className="relative aspect-[4/5] glass-panel border border-white/5 rounded-[48px] p-10 flex flex-col justify-between overflow-hidden bg-white/[0.01]">
-                 <div className="space-y-8">
-                    <div className="flex justify-between items-start">
-                       <Terminal className="text-indigo-400/40" size={20} />
-                       <span className="text-[10px] font-mono text-white/20 tracking-widest uppercase">Live Activity</span>
-                    </div>
-                    <div className="space-y-6">
-                       {[
-                         { id: 'Artemis', type: 'Critical', reward: '$12,500', target: 'Core Infra' },
-                         { id: 'Cipher', type: 'High', reward: '$4,500', target: 'Fintech API' },
-                         { id: 'Ghost_Protocol', type: 'Medium', reward: '$1,200', target: 'Auth Node' },
-                       ].map((item, i) => (
-                         <div key={i} className="flex items-center justify-between p-5 rounded-3xl bg-white/[0.02] border border-white/5 group hover:border-white/10 transition-all">
-                            <div className="flex flex-col">
-                               <span className="text-[9px] font-mono text-white/20 mb-1">{item.id}</span>
-                               <span className="text-xs font-black uppercase italic tracking-wider text-white/50">{item.target}</span>
-                            </div>
-                            <div className="text-right">
-                               <span className="block text-sm font-black text-indigo-400 italic">{item.reward}</span>
-                               <span className={`text-[8px] font-mono uppercase tracking-widest ${item.type === 'Critical' ? 'text-rose-500/50' : 'text-white/10'}`}>{item.type}</span>
-                            </div>
-                         </div>
-                       ))}
-                    </div>
-                 </div>
-                 <div className="pt-10 border-t border-white/5 space-y-6">
-                    <div className="flex items-center gap-4 text-indigo-400/40 animate-pulse">
-                       <Activity size={14} />
-                       <span className="text-[9px] font-mono uppercase tracking-[0.4em]">Researcher Network Active</span>
-                    </div>
-                    <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
-                       <motion.div 
-                         initial={{ x: '-100%' }}
-                         animate={{ x: '100%' }}
-                         transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-                         className="w-1/4 h-full bg-linear-to-r from-transparent via-indigo-500 to-transparent"
-                       />
-                    </div>
-                 </div>
-                 <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-indigo-500/5 pointer-events-none" />
-              </div>
-           </motion.div>
         </div>
       </section>
 
       {/* Activity Bar - Bespoke Replacement for Ticker */}
-      <section className="border-y border-white/5 bg-[#080808] backdrop-blur-sm relative overflow-hidden">
-        <div className="max-w-[1400px] mx-auto flex items-center h-16 px-12 overflow-hidden whitespace-nowrap">
-           <motion.div 
-             animate={{ x: [0, -1200] }}
-             transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
-             className="flex items-center gap-24"
-           >
-              {[1,2,3,4,5,6].map((_, i) => (
-                <div key={i} className="flex items-center gap-16 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/20">
-                   <div className="flex items-center gap-6">
-                      <span className="text-indigo-400/30">Secure Transfer</span>
-                      <Shield size={14} className="text-indigo-400/30" />
-                      <span className="text-indigo-400/30">Verified Impact</span>
-                   </div>
-                   <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
-                   <div className="flex items-center gap-6">
-                      <span className="text-indigo-400/30">VERIFICATION_XP</span>
-                      <span className="text-white/40">Expert_Researcher</span>
-                      <span className="text-indigo-400/60">+2,400 CR</span>
-                   </div>
-                   <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
-                </div>
-              ))}
-           </motion.div>
-        </div>
-      </section>
+
 
       {/* Philosophy - Asymmetric Stacked Content */}
       <section className="py-56 px-6 lg:px-12 relative overflow-hidden">
@@ -237,16 +163,16 @@ export default function Home() {
                 <div className="space-y-6">
                   <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Platform Performance</p>
                   <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8]">
-                    Operational <br />
-                    <span className="text-white/5 italic">Authority.</span>
+                    Hacker <br />
+                    <span className="text-white/5 italic">Leaderboard.</span>
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
                   {[
-                    { label: 'Network Quality', value: 'Level 04', sub: 'Pro Grade' },
-                    { label: 'Impact Response', value: '4.2h', sub: 'Avg Review' },
-                    { label: 'Impact Verified', value: '99.9%', sub: 'Accuracy Rate' },
-                    { label: 'Global Network', value: '180+', sub: 'Impact Partners' }
+                    { label: 'Platform Status', value: 'Active', sub: 'Verified' },
+                    { label: 'Review Speed', value: 'Fast', sub: 'Human Triage' },
+                    { label: 'Expert Network', value: 'Global', sub: 'Growing' },
+                    { label: 'Verified Impacts', value: 'Live', sub: 'Updated' }
                   ].map((s, i) => (
                     <div key={i} className="p-10 rounded-[32px] bg-[#080808] border border-white/5 group hover:border-white/10 transition-all shadow-xl">
                         <span className="block text-[8px] font-mono text-white/20 uppercase tracking-[0.5em] mb-4 italic">{s.label}</span>
@@ -265,10 +191,10 @@ export default function Home() {
                <div className="relative z-10 w-full max-w-sm space-y-12">
                   <div className="flex items-center justify-between pb-4 border-b border-white/5">
                       <div className="space-y-1">
-                         <p className="text-[10px] font-mono tracking-[0.4em] text-indigo-400 uppercase">System Status: Stable</p>
-                         <p className="text-[8px] font-mono text-white/10 uppercase">Production v2.4.0</p>
+                         <p className="text-[10px] font-mono tracking-[0.4em] text-indigo-400 uppercase">Status: Online</p>
+                         <p className="text-[8px] font-mono text-white/10 uppercase">Registry v1.0</p>
                       </div>
-                      <Cpu className="text-white/10" size={18} />
+                      <ShieldCheck className="text-white/10" size={18} />
                   </div>
 
                   <div className="py-16 px-10 rounded-[40px] bg-white/[0.02] border border-white/5 backdrop-blur-3xl shadow- inner flex flex-col items-center gap-10 group relative overflow-hidden">
@@ -278,18 +204,18 @@ export default function Home() {
                      </div>
                      <div className="text-center space-y-4">
                         <p className="text-4xl font-black italic tracking-tighter uppercase leading-none">Secure.</p>
-                        <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.6em] italic">Hardened Infrastructure</p>
+                        <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.6em] italic">Secure Platform</p>
                      </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-6">
                      <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 text-center group hover:bg-white/[0.05] transition-all">
                         <Monitor size={20} className="mx-auto mb-4 text-white/10 group-hover:text-indigo-400/50 transition-colors" />
-                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Secure Gateway</span>
+                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Secure Access</span>
                      </div>
                      <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 text-center group hover:bg-white/[0.05] transition-all">
                         <Code2 size={20} className="mx-auto mb-4 text-white/10 group-hover:text-indigo-400/50 transition-colors" />
-                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Technical Review</span>
+                        <span className="block text-[8px] font-mono uppercase tracking-[0.3em] text-white/30">Validation System</span>
                      </div>
                   </div>
                </div>
@@ -349,7 +275,7 @@ export default function Home() {
                    <motion.button 
                      className="w-full py-6 rounded-full bg-white/[0.03] border border-white/5 text-[11px] font-black uppercase tracking-[0.3em] group-hover:bg-white group-hover:text-black transition-all shadow-xl italic"
                    >
-                     View Protocol
+                     View Details
                    </motion.button>
                 </div>
               </motion.div>
@@ -398,10 +324,10 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex items-center gap-6 group cursor-pointer">
              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center font-black italic transition-all group-hover:bg-indigo-500 group-hover:text-white shadow-xl">D</div>
-             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20 group-hover:text-white/40">Debugr Network</p>
+             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20 group-hover:text-white/40">Debugr Registry</p>
           </div>
           <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.5em] italic order-3 md:order-2">
-            Security Platform v2.4.0
+            Platform Version v1.0
           </p>
           <div className="flex gap-10 order-2 md:order-3">
              <span className="text-[9px] font-mono text-white/10 hover:text-white transition-all cursor-pointer uppercase tracking-[0.4em] italic">Twitter</span>

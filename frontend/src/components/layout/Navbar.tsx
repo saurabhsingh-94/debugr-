@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
@@ -18,6 +19,7 @@ import { springSoft } from '@/lib/animations';
 import ProfileAvatar from '@/components/profile/ProfileAvatar';
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   
@@ -62,15 +64,22 @@ export default function Navbar() {
         
         {/* Back & Brand Logo */}
         <div className="flex-1 flex items-center gap-2 sm:gap-4">
-          <motion.button
-            whileHover={{ scale: 1.1, x: -2 }}
-            whileTap={{ scale: 0.9 }}
-            onClick={() => window.history.back()}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all"
-            title="Go Back"
-          >
-            <ArrowLeft size={16} />
-          </motion.button>
+          <AnimatePresence>
+            {!['/', '/dashboard', '/leaderboard'].includes(pathname) && (
+              <motion.button
+                initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                whileHover={{ scale: 1.1, x: -2 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={() => window.history.back()}
+                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all mr-2"
+                title="Go Back"
+              >
+                <ArrowLeft size={16} />
+              </motion.button>
+            )}
+          </AnimatePresence>
 
           <Link href="/" className="group">
             <motion.div 

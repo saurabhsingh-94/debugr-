@@ -82,7 +82,7 @@ export default function BountyDirectory() {
                </h1>
             </div>
             <p className="text-white/30 text-base leading-relaxed font-medium italic">
-              Access the validated registry of technical assets and infrastructure units. Filter by operational tier or asset protocol.
+              Access the verified directory of security programs and bug bounties. Filter by program type or specific requirements.
             </p>
           </motion.div>
 
@@ -128,12 +128,57 @@ export default function BountyDirectory() {
 
           <div className="mt-auto flex items-center gap-4 p-8 rounded-[32px] bg-white/[0.01] border border-white/5">
              <Activity size={16} className="text-indigo-500 animate-pulse" />
-             <p className="text-[10px] font-mono font-black text-white/20 uppercase tracking-[0.2em] italic">{filtered.length} Validated Assets Online</p>
+             <p className="text-[10px] font-mono font-black text-white/20 uppercase tracking-[0.2em] italic">{filtered.length} Programs Online</p>
           </div>
         </section>
 
         {/* Main Content (Right) */}
-        <section className="p-[160px_10%_120px] flex flex-col gap-10">
+        <section className="p-8 md:p-16 lg:p-[160px_10%_120px] flex flex-col gap-10 lg:h-screen lg:overflow-y-auto">
+          {/* Mobile Header & Filters */}
+          <div className="lg:hidden space-y-12 mb-8">
+            <div className="space-y-4">
+               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Bounty Directory</p>
+               <h1 className="text-6xl font-black italic uppercase tracking-tighter leading-[0.85]">
+                 Security <br /><span className="text-white/5 italic">Programs.</span>
+               </h1>
+            </div>
+            
+            <div className="space-y-8 p-10 rounded-[48px] bg-white/[0.01] border border-white/5">
+              <div className="space-y-4">
+                <label className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic ml-1 flex items-center gap-3">
+                   <Search size={12} /> Search
+                </label>
+                <input 
+                  type="text" 
+                  placeholder="Search programs..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 text-white text-sm outline-none transition-all focus:border-indigo-500/30 font-medium placeholder:text-white/10"
+                />
+              </div>
+
+              <div className="space-y-4">
+                <label className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic ml-1 flex items-center gap-3">
+                   <Filter size={12} /> Access Level
+                </label>
+                <div className="p-1 bg-white/[0.02] border border-white/5 rounded-2xl flex gap-1">
+                  {(['all', 'public', 'private'] as const).map(t => (
+                    <button 
+                      key={t}
+                      onClick={() => setFilterType(t)}
+                      className={`
+                        flex-1 py-4 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all italic
+                        ${filterType === t ? 'bg-white text-black' : 'text-white/20'}
+                      `}
+                    >
+                      {t === 'all' ? 'FULL' : t}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
           {loading && (
             <div className="py-48 text-center space-y-6">
                <div className="w-10 h-10 border-2 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin mx-auto" />

@@ -145,8 +145,8 @@ export default function SignUp() {
                   <Globe className="text-indigo-400/60" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Global Infrastructure</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Access exclusive security programs from tier-1 organizations across all geographical jurisdictions.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Global Programs</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Access exclusive security programs from leading organizations around the world.</p>
                 </div>
               </div>
               <div className="flex gap-8 items-start group">
@@ -182,7 +182,7 @@ export default function SignUp() {
               animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -30, scale: 0.98, filter: 'blur(15px)' }}
               transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
-              className={`w-full ${step === 1 ? 'max-w-[1000px]' : step === 3 ? 'max-w-[600px]' : 'max-w-[400px]'} relative z-10`}
+              className={`w-full ${step === 1 ? 'max-w-5xl' : step === 3 ? 'max-w-xl' : 'max-w-[440px]'} relative z-10`}
             >
               
               {step === 1 && (
@@ -198,11 +198,11 @@ export default function SignUp() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {[
                       { 
-                        id: 'hacker', title: 'Researcher', desc: 'I identify vulnerabilities and report findings with technical impact.', icon: <Zap size={56} />,
+                        id: 'hacker', title: 'Researcher', desc: 'Secure vulnerable logic and earn performance-based rewards.', icon: <Zap size={100} />,
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Organization', desc: 'We deploy assets for continuous verification and securing logic.', icon: <Shield size={56} />,
+                        id: 'company', title: 'Organization', desc: 'Managed programs for continuous verification and assurance.', icon: <Shield size={100} />,
                         Effect: ShieldWall
                       }
                     ].map((r, i) => (
@@ -227,10 +227,10 @@ export default function SignUp() {
               )}
 
               {step === 2 && (
-                <div className="glass-panel p-1 rounded-[56px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/5 relative overflow-hidden">
-                  <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+                <div className="glass-panel p-1 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden">
+                  <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                   
-                  <div className="bg-white/[0.01] backdrop-blur-3xl p-10 md:p-14 border border-white/5 flex flex-col gap-10">
+                  <div className="bg-[#0a0a0a]/80 backdrop-blur-3xl p-8 md:p-12 border border-white/5 flex flex-col gap-6 md:gap-8">
                     <div className="flex justify-between items-start">
                       <div className="space-y-4">
                          <motion.button 
@@ -238,19 +238,19 @@ export default function SignUp() {
                           onClick={prevStep} 
                           className="text-white/20 text-[9px] font-mono font-black tracking-[0.3em] flex items-center gap-2 uppercase italic hover:text-white transition-all mb-4"
                         >
-                          <ChevronLeft size={12} /> Capacity Selection
+                          <ChevronLeft size={12} /> Back to Roles
                         </motion.button>
                         <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Account<br /><span className="text-white/20">Setup.</span></h2>
                       </div>
                       <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">Step 02/03</span>
                     </div>
 
-                    <div className="flex flex-col gap-6">
-                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-6">
+                    <div className="flex flex-col gap-5 md:gap-6">
+                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-5 md:space-y-6">
                         <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
                         <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@email.com" icon={<Mail size={18} />} />
                       </motion.div>
-                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-6">
+                      <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-5 md:space-y-6">
                         <Input label="Password" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} icon={<Lock size={18} />} />
                         <Input label="Confirm Password" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} icon={<Lock size={18} />} />
                       </motion.div>
@@ -279,10 +279,10 @@ export default function SignUp() {
               )}
 
               {step === 3 && (
-                <div className="glass-panel p-1 rounded-[56px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/5 relative overflow-hidden">
-                   <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+                <div className="glass-panel p-1 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden">
+                   <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
                    
-                  <form onSubmit={handleSubmit} className="bg-white/[0.01] backdrop-blur-3xl p-10 md:p-14 border border-white/5 flex flex-col gap-10">
+                  <form onSubmit={handleSubmit} className="bg-[#0a0a0a]/80 backdrop-blur-3xl p-8 md:p-12 border border-white/5 flex flex-col gap-6 md:gap-8">
                     <div className="flex justify-between items-start">
                       <div className="space-y-4">
                         <motion.button 
@@ -319,8 +319,8 @@ export default function SignUp() {
                             >
                               <option className="bg-neutral-900">Web Architecture</option>
                               <option className="bg-neutral-900">Cloud Systems</option>
-                              <option className="bg-neutral-900">Network Protocols</option>
-                              <option className="bg-neutral-900">Mobile Runtime</option>
+                              <option className="bg-neutral-900">Network Security</option>
+                              <option className="bg-neutral-900">Mobile Applications</option>
                               <option className="bg-neutral-900">Cryptography</option>
                             </select>
                           </motion.div>
@@ -331,20 +331,20 @@ export default function SignUp() {
                               onChange={e => setFormData({...formData, experience_level: e.target.value})}
                               className="w-full py-4 px-6 rounded-xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner"
                             >
-                              <option className="bg-neutral-900 text-white">Associate</option>
-                              <option className="bg-neutral-900 text-white">Tactical</option>
-                              <option className="bg-neutral-900 text-white">Strategic</option>
-                              <option className="bg-neutral-900 text-white">Principal</option>
+                              <option className="bg-neutral-900 text-white">Junior</option>
+                              <option className="bg-neutral-900 text-white">Intermediate</option>
+                              <option className="bg-neutral-900 text-white">Advanced</option>
+                              <option className="bg-neutral-900 text-white">Expert</option>
                             </select>
                           </motion.div>
 
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="col-span-1 md:col-span-2">
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">About You</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-2">About You</label>
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
                               placeholder="Brief overview of research history..."
-                              className="w-full min-h-[100px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                              className="w-full min-h-[80px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
                             />
                           </motion.div>
 
@@ -408,12 +408,12 @@ export default function SignUp() {
                           </motion.div>
 
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.35 }} className="col-span-1 md:col-span-2">
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Description</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-2">Description</label>
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
                               placeholder="Briefly describe the assets requiring testing..."
-                              className="w-full min-h-[100px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                              className="w-full min-h-[80px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
                             />
                           </motion.div>
                         </>
@@ -461,7 +461,7 @@ interface InputProps {
 
 function Input({ label, type = 'text', value, onChange, placeholder, icon }: InputProps) {
   return (
-    <div className="flex flex-col gap-3 relative">
+    <div className="flex flex-col gap-2 relative">
       <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block">{label}</label>
       <div className="relative group">
         {icon && (
@@ -473,7 +473,7 @@ function Input({ label, type = 'text', value, onChange, placeholder, icon }: Inp
           type={type} required value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`w-full py-5 ${icon ? 'pl-16' : 'px-7'} pr-7 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10`}
+          className={`w-full py-4 ${icon ? 'pl-16' : 'px-7'} pr-7 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10`}
         />
       </div>
     </div>
@@ -492,7 +492,7 @@ function RoleButton({ title, desc, icon, Effect, onSelect }: {
       onMouseLeave={() => setIsHovered(false)}
       whileHover="hover"
       initial="initial"
-      className="glass-panel aspect-square p-8 rounded-[48px] border border-white/5 cursor-pointer transition-all relative overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl group hover:border-indigo-500/40"
+      className="glass-panel aspect-square p-10 md:p-14 rounded-[56px] border border-white/5 cursor-pointer transition-all relative overflow-hidden flex flex-col items-center justify-center text-center shadow-2xl group hover:border-indigo-500/40"
       variants={{
         hover: { y: -10, transition: { duration: 0.4, ease: "easeOut" } },
         initial: { y: 0 }

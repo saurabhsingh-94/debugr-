@@ -61,7 +61,7 @@ export default function Leaderboard() {
       <main className="relative z-10 w-full flex flex-col lg:flex-row min-h-screen pt-32">
         
         {/* Left Sidebar: Index Info */}
-        <section className="w-full lg:w-[500px] lg:h-[calc(100vh-8rem)] lg:sticky lg:top-32 p-12 lg:pl-[8%] lg:pr-16 border-b lg:border-b-0 lg:border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl flex flex-col gap-16">
+        <section className="w-full lg:w-[480px] lg:h-[calc(100vh-8rem)] lg:sticky lg:top-32 p-12 lg:pl-12 lg:pr-16 border-b lg:border-b-0 lg:border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl flex flex-col gap-16">
           <motion.button 
             whileHover={{ x: -8 }}
             onClick={() => window.history.back()} 
@@ -72,9 +72,9 @@ export default function Leaderboard() {
           
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
-               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Top Researchers</p>
+               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Leaderboard</p>
                <h1 className="text-6xl md:text-7xl font-black italic uppercase tracking-tighter leading-[0.85] mb-8">
-                 Global <br /><span className="text-white/5 italic">Authority.</span>
+                 Researcher <br /><span className="text-white/5 italic">Rankings.</span>
                </h1>
             </div>
             <p className="text-white/30 text-lg leading-relaxed font-medium italic">
@@ -84,20 +84,27 @@ export default function Leaderboard() {
 
           <div className="space-y-8">
             <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic">Sort By</p>
-            <div className="p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] flex gap-2 shadow-2xl">
+            <div className="p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] flex gap-2 shadow-2xl relative">
               {(['earned', 'resolved'] as const).map(m => (
                 <button 
                   key={m}
                   onClick={() => setSortBy(m)}
                   className={`
-                    flex-1 py-4 rounded-[18px] text-[10px] font-black uppercase tracking-[0.2em] transition-all italic
+                    relative flex-1 py-4 rounded-[18px] text-[10px] font-black uppercase tracking-[0.2em] transition-all italic z-10
                     ${sortBy === m 
-                      ? 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.1)]' 
-                      : 'text-white/20 hover:text-white/40 hover:bg-white/5'
+                      ? 'text-black' 
+                      : 'text-white/20 hover:text-white/40'
                     }
                   `}
                 >
-                  {m === 'earned' ? 'Earnings' : 'Impacts'}
+                  {sortBy === m && (
+                    <motion.div 
+                      layoutId="sortHighlight"
+                      className="absolute inset-0 bg-white rounded-[18px] shadow-[0_10px_30px_rgba(255,255,255,0.1)]"
+                      transition={{ type: "spring", stiffness: 500, damping: 35, mass: 0.5 }}
+                    />
+                  )}
+                  <span className="relative z-20">{m === 'earned' ? 'Earnings' : 'Resolved'}</span>
                 </button>
               ))}
             </div>
@@ -109,19 +116,19 @@ export default function Leaderboard() {
               <p className="text-3xl font-black text-white italic tracking-tighter">$2,450</p>
             </div>
             <div className="p-8 bg-white/[0.01] border border-white/5 rounded-[32px] group transition-all hover:bg-white/[0.03] hover:border-indigo-500/20 shadow-xl">
-              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL RESOLVED</p>
+              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL REPORTS</p>
               <p className="text-3xl font-black text-white italic tracking-tighter">1,894</p>
             </div>
           </div>
         </section>
 
         {/* Right Content: Index Feed */}
-        <section className="flex-1 p-12 lg:px-[10%] lg:py-24">
-          <div className="hidden md:grid grid-cols-[100px_1fr_160px_160px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
+        <section className="flex-1 p-8 md:p-12 lg:pl-20 lg:pr-32 lg:py-24">
+          <div className="hidden md:grid grid-cols-[80px_1fr_180px_180px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
             <span>Rank</span>
-            <span>Researcher</span>
-            <span className="text-right">Total Impacts</span>
-            <span className="text-right">Total Earnings</span>
+            <span>Identity</span>
+            <span className="text-right">Verified Resolved</span>
+            <span className="text-right">Verified Earnings</span>
           </div>
 
           <div className="flex flex-col gap-6">
@@ -173,8 +180,8 @@ export default function Leaderboard() {
                           {h.email.split('@')[0]}
                         </p>
                         <div className="flex items-center gap-3">
-                           <ShieldCheck size={10} className="text-white/10" />
-                           <p className="text-[9px] text-white/20 font-mono uppercase tracking-[0.3em] font-black italic">Verified Expert</p>
+                           <ShieldCheck size={10} className="text-indigo-400/40" />
+                           <p className="text-[9px] text-white/20 font-mono uppercase tracking-[0.3em] font-black italic">Verified Researcher</p>
                         </div>
                       </div>
                     </div>
