@@ -101,9 +101,54 @@ export default function SignUp() {
       </div>
       <Navbar />
 
-      <main className="w-full min-h-screen relative z-10 flex items-center justify-center p-6 md:p-12">
-        <section className="w-full h-full flex flex-col items-center justify-center">
+      <main className="w-full min-h-screen relative z-10 lg:grid lg:grid-cols-2">
+        
+        {/* Left Side: Context & Branding (Desktop Only) */}
+        <section className="hidden lg:flex flex-col justify-center p-24 relative overflow-hidden">
+          <motion.div 
+            variants={staggerContainer(0.1, 0.2)}
+            initial="hidden"
+            animate="visible"
+            className="max-w-xl space-y-12 relative z-10"
+          >
+            <motion.div variants={blurReveal}>
+              <p className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4 font-black italic">Registration Gateway</p>
+              <h1 className="text-7xl font-black italic tracking-tighter leading-[0.9] uppercase">
+                Join the<br /><span className="text-white/20">Network.</span>
+              </h1>
+            </motion.div>
 
+            <motion.div variants={blurReveal} className="space-y-8">
+              <div className="flex gap-6 items-start">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">🌍</div>
+                <div>
+                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Global Scale</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Access programs from startups to Fortune 500 companies around the world.</p>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">🛠️</div>
+                <div>
+                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Expert Tools</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Integrated tools and dashboards to help you find and report bugs faster.</p>
+                </div>
+              </div>
+              <div className="flex gap-6 items-start">
+                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">💰</div>
+                <div>
+                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Fair Rewards</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Transparent payment processes so you get paid quickly for your hard work.</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+
+          {/* Background Ambient Glow */}
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+        </section>
+
+        {/* Right Side: Registration Vessel */}
+        <section className="flex items-center justify-center p-6 md:p-12 relative h-full">
           <AnimatePresence mode="wait">
             <motion.div 
               key={step} 
@@ -113,7 +158,6 @@ export default function SignUp() {
               transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
               className={`w-full ${step === 3 ? 'max-w-[580px]' : 'max-w-[420px]'}`}
             >
-
               
               {step === 1 && (
                 <div className="flex flex-col gap-16">
