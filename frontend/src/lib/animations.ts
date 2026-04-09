@@ -21,15 +21,16 @@ export const springBouncy: Transition = { type: "spring", stiffness: 400, dampin
 /**
  * Standard fade-in and slide-up animation.
  */
-export const fadeInUp = (delay = 0, distance = 20): Variants => ({
-  hidden: { opacity: 0, y: distance, filter: 'blur(10px)' },
+export const fadeInUp = (delay = 0, distance = 30): Variants => ({
+  hidden: { opacity: 0, y: distance, filter: 'blur(12px)', scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
+    scale: 1,
     transition: {
       delay,
-      duration: 0.4,
+      duration: 0.6,
       ease: easeOutExpo,
     },
   },
@@ -39,15 +40,15 @@ export const fadeInUp = (delay = 0, distance = 20): Variants => ({
  * Blur-in animation for a premium reveal.
  */
 export const blurIn = (delay = 0): Variants => ({
-  hidden: { opacity: 0, filter: 'blur(20px)', scale: 1.05 },
+  hidden: { opacity: 0, filter: 'blur(25px)', scale: 1.1 },
   visible: {
     opacity: 1,
     filter: 'blur(0px)',
     scale: 1,
     transition: {
       delay,
-      duration: 0.5,
-      ease: easeSmooth,
+      duration: 0.8,
+      ease: easeOutExpo,
     },
   },
 });
@@ -75,15 +76,16 @@ export const blurReveal: Variants = {
  * Scroll-triggered fade-in and slide-up animation.
  */
 export const inView = (delay = 0): Variants => ({
-  hidden: { opacity: 0, y: 30, filter: 'blur(5px)' },
+  hidden: { opacity: 0, y: 50, filter: 'blur(10px)', scale: 0.95 },
   visible: {
     opacity: 1,
     y: 0,
     filter: 'blur(0px)',
+    scale: 1,
     transition: {
       delay,
-      duration: 0.35,
-      ease: easeSmooth,
+      duration: 0.8,
+      ease: easeOutExpo,
     },
   },
 });

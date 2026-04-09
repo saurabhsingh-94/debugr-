@@ -126,7 +126,7 @@ export default function Home() {
           variants={staggerContainer(0.2)}
           className="max-w-7xl mx-auto"
         >
-          <motion.div variants={fadeInUp()} className="text-center mb-24">
+          <motion.div variants={inView()} className="text-center mb-24">
             <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
               Built for Impact
             </h2>
@@ -139,7 +139,7 @@ export default function Home() {
             {features.map((feature, idx) => (
               <motion.div
                 key={idx}
-                variants={fadeInUp()}
+                variants={inView(idx * 0.1)}
                 onMouseEnter={() => setHoveredFeature(idx)}
                 onMouseLeave={() => setHoveredFeature(null)}
                 className="group p-10 rounded-[40px] bg-white/1 border border-white/5 relative overflow-hidden transition-all duration-300 hover:bg-white/2 hover:border-white/10 neon-edge-hover"
@@ -178,8 +178,8 @@ export default function Home() {
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={fadeInUp()}
+          viewport={{ once: true, margin: '-50px' }}
+          variants={inView()}
           className="glass-panel max-w-5xl mx-auto p-16 md:p-32 rounded-[64px] relative overflow-hidden text-center"
         >
           <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />

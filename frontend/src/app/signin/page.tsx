@@ -80,7 +80,7 @@ export default function SignIn() {
             variants={staggerContainer(0.12, 0.2)}
             initial="hidden"
             animate="visible"
-            className="w-full max-w-[500px] glass-panel p-[48px] rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
+            className="w-full max-max-w-[420px] glass-panel p-[32px] md:p-[40px] rounded-[40px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
           >
             <motion.div variants={blurReveal} className="mb-[40px] text-center lg:hidden">
               <p className="subtle-mono mb-[16px] text-indigo-400">Sign In</p>
@@ -156,18 +156,7 @@ export default function SignIn() {
         </section>
       </main>
 
-      {/* Security Status Pill */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1 }}
-        className="fixed bottom-[40px] left-1/2 -translate-x-1/2 z-[100]"
-      >
-        <div className="glass-panel py-[12px] px-[24px] rounded-full flex items-center gap-[12px] border border-white/5 shadow-2xl">
-          <div className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
-          <span className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase">System Secure</span>
-        </div>
-      </motion.div>
+
     </div>
   );
 }

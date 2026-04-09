@@ -28,14 +28,27 @@ app.use(compression());
 
 // CORS with Whitelist from Config
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (!origin || config.corsWhitelist.indexOf(origin) !== -1) {
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Check if the origin matches any allowed pattern or if no origin is provided (server-to-server)
+    const isAllowed = !origin || config.corsWhitelist.some(allowed => {
+      // Direct match
+      if (allowed === origin) return true;
+      // Also check for trailing slashes or www vs non-www if not already matched
+      const sanitized = allowed.replace(/\/$/, "");
+      return sanitized === origin;
+    });
+
+    if (isAllowed) {
       callback(null, true);
     } else {
+      logger.warn(`[CORS Block] Blocked origin: ${origin}`);
       callback(new ApiError(403, `Origin ${origin} not allowed by CORS`));
     }
   },
-  credentials: true
+  credentials: true,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+  optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
 app.use(express.json());
@@ -74,7 +87,11 @@ app.get("/health", (req, res) => {
   res.json({ 
     status: "ok",
     timestamp: new Date().toISOString(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
+    config: {
+      env: config.env,
+      cors: config.corsWhitelist.map(o => o.replace(/(?<=https?:\/\/[^/]+).*/, '')) // Sanitize for health output
+    }
   });
 });
 
