@@ -40,6 +40,8 @@ export const config = {
     ? process.env.CORS_WHITELIST.split(",") 
     : [
         "https://debugr-backend-production.up.railway.app",
+        "https://debugr.app",
+        "https://www.debugr.app",
         "https://debugr-one.vercel.app"
       ],
   smtp: {
