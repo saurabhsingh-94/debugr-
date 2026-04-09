@@ -2,6 +2,9 @@ import express from "express";
 import { pool } from "../db.js";
 import authMiddleware from "../middleware/auth.js";
 import ApiError from "../utils/ApiError.js";
+import upload from "../middleware/upload.js";
+import { uploadToCloudinary } from "../utils/cloudinary.js";
+import logger from "../utils/logger.js";
 
 import cache from "../middleware/cache.js";
 import redis from "../utils/redis.js";
@@ -15,7 +18,7 @@ router.get("/profile/me", authMiddleware, cache(30), async (req, res, next) => {
 
     // 1. Get basic info (including new professional fields)
     const userResult = await pool.query(
-      "SELECT id, email, role, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description, created_at FROM users WHERE id = $1",
+      "SELECT id, email, role, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description, avatar_url, created_at FROM users WHERE id = $1",
       [userId]
     );
 
@@ -120,7 +123,7 @@ router.patch("/profile", authMiddleware, async (req, res, next) => {
     const userId = req.user.id;
     const { 
       name, bio, website, location, github_url, 
-      skills, industry, experience_level, company_size, description 
+      skills, industry, experience_level, company_size, description, avatar_url 
     } = req.body;
 
     // Validate inputs (Basic validation for now, could use Joi later)
@@ -140,9 +143,10 @@ router.patch("/profile", authMiddleware, async (req, res, next) => {
         industry = COALESCE($7, industry),
         experience_level = COALESCE($8, experience_level),
         company_size = COALESCE($9, company_size),
-        description = COALESCE($10, description)
-      WHERE id = $11
-      RETURNING id, email, role, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description
+        description = COALESCE($10, description),
+        avatar_url = COALESCE($11, avatar_url)
+      WHERE id = $12
+      RETURNING id, email, role, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description, avatar_url
     `;
 
     // Normalize skills: accept array or JSON string, always store as JSON string
@@ -156,7 +160,7 @@ router.patch("/profile", authMiddleware, async (req, res, next) => {
     const values = [
       name || null, bio || null, website || null, location || null, github_url || null,
       skillsJson, industry || null, experience_level || null, company_size || null, description || null,
-      userId
+      avatar_url || null, userId
     ];
 
     const result = await pool.query(query, values);
@@ -240,7 +244,7 @@ router.get("/profile/:handle", cache(60), async (req, res, next) => {
 
     // 1. Get basic info
     const userResult = await pool.query(
-      "SELECT id, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description, created_at FROM users WHERE handle = $1",
+      "SELECT id, handle, name, bio, website, location, github_url, skills, industry, experience_level, company_size, description, avatar_url, created_at FROM users WHERE handle = $1",
       [handle]
     );
 
@@ -322,6 +326,35 @@ router.patch("/privacy", authMiddleware, async (req, res, next) => {
     );
 
     res.json({ success: true, message: "Privacy settings updated" });
+  } catch (err) {
+    next(err);
+  }
+});
+
+/**
+ * @route   PATCH /api/users/avatar
+ * @desc    Upload profile picture
+ * @access  Private
+ */
+router.patch("/avatar", authMiddleware, upload.single("avatar"), async (req, res, next) => {
+  try {
+    const userId = req.user.id;
+    if (!req.file) {
+      throw new ApiError(400, "No file uploaded");
+    }
+
+    const avatarUrl = await uploadToCloudinary(req.file.buffer);
+
+    await pool.query(
+      "UPDATE users SET avatar_url = $1 WHERE id = $2",
+      [avatarUrl, userId]
+    );
+
+    res.json({
+      success: true,
+      avatar_url: avatarUrl,
+      message: "Avatar synchronized with tactical grid"
+    });
   } catch (err) {
     next(err);
   }

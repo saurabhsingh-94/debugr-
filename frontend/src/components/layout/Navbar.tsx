@@ -5,12 +5,13 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { springSoft } from '@/lib/animations';
+import ProfileAvatar from '@/components/profile/ProfileAvatar';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   
-  interface NavUser { handle: string; name: string; role: string; }
+  interface NavUser { handle: string; name: string; role: string; avatar_url: string; }
   const [user, setUser] = useState<NavUser | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -79,14 +80,14 @@ export default function Navbar() {
                   ]
                 : user.role === 'hacker'
                 ? [
+                    { label: 'Explore', href: '/programs' },
                     { label: 'Bounties', href: '/bounties' },
                     { label: 'Rankings', href: '/leaderboard' },
-                    { label: 'Settings', href: '/settings' },
                   ]
                 : [
+                    { label: 'Explore', href: '/programs' },
                     { label: 'Discovery', href: '/bounties' },
                     { label: 'Payments', href: '/add-funds' },
-                    { label: 'Settings', href: '/settings' },
                   ];
 
               return navItems.map((item) => (
@@ -126,6 +127,16 @@ export default function Navbar() {
           {!loading && (
             user ? (
               <div className="flex items-center gap-4 sm:gap-6">
+                <Link href="/settings" className="relative group">
+                   <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                  >
+                    <span className="text-[14px]">⚙️</span>
+                  </motion.div>
+                </Link>
+
                 <Link href="/profile" className="relative group">
                   <motion.div 
                     whileHover={{ scale: 1.1 }}
@@ -135,11 +146,13 @@ export default function Navbar() {
                     <span className="hidden md:block text-[11px] font-black text-white/50 uppercase tracking-widest">
                       {user.handle}
                     </span>
-                    <div className="w-7 h-7 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 flex items-center justify-center">
-                      <span className="text-indigo-400 text-[10px] font-black uppercase">
-                        {user?.handle?.substring(0, 2) || '??'}
-                      </span>
-                    </div>
+                    <ProfileAvatar 
+                      handle={user.handle} 
+                      name={user.name} 
+                      avatarUrl={user.avatar_url} 
+                      size={28} 
+                      border={false} 
+                    />
                   </motion.div>
                 </Link>
               </div>

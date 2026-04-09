@@ -1015,3 +1015,15 @@
 2026-04-09 17:21:22:2122 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
 2026-04-09 17:21:23:2123 info: 🚀 Server running on port 5000 in development mode
 2026-04-09 17:21:26:2126 info: ✅ Database initialized successfully
+2026-04-09 17:53:24:5324 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 17:53:24:5324 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 17:53:25:5325 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 17:53:26:5326 info: ✅ Database initialized successfully
+2026-04-09 18:22:20:2220 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 18:22:20:2220 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 18:22:21:2221 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 18:22:23:2223 info: ✅ Database initialized successfully
+2026-04-09 18:23:12:2312 warn: ⚠️ No SMTP credentials found. Emails will be logged to console in JSON format.
+2026-04-09 18:23:12:2312 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-09 18:23:12:2312 info: 🚀 Server running on port 5000 in development mode
+2026-04-09 18:23:17:2317 info: ✅ Database initialized successfully

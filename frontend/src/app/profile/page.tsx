@@ -24,6 +24,7 @@ interface UserProfile {
   industry: string;
   experience_level: string;
   description: string;
+  avatar_url: string;
   created_at: string;
   stats: {
     total_submissions: string;
@@ -111,7 +112,7 @@ export default function MyProfile() {
               <div className="px-10 pb-12 -mt-14 relative flex flex-col items-center">
                 <div className="relative group">
                   <div className="absolute -inset-1 bg-linear-to-r from-white/0 via-white/20 to-white/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
-                  <ProfileAvatar handle={profile.handle} name={profile.name} size={120} border />
+                  <ProfileAvatar handle={profile.handle} name={profile.name} avatarUrl={profile.avatar_url} size={120} border />
                 </div>
                 
                 <div className="mt-8 text-center w-full">

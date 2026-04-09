@@ -21,20 +21,50 @@ interface EditProfileModalProps {
 }
 
 export default function EditProfileModal({ isOpen, onClose, onSuccess, initialData }: EditProfileModalProps) {
-  const [formData, setFormData] = useState(initialData);
+  const [formData, setFormData] = useState({ ...initialData, avatar_url: (initialData as any).avatar_url || '' });
   const [newSkill, setNewSkill] = useState('');
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
 
   useEffect(() => {
     if (isOpen) {
-      setFormData(initialData);
+      setFormData({ ...initialData, avatar_url: (initialData as any).avatar_url || '' });
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
     return () => { document.body.style.overflow = ''; };
   }, [isOpen, initialData]);
+
+  const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    setMessage({ type: '', text: '' });
+
+    const uploadFormData = new FormData();
+    uploadFormData.append('avatar', file);
+
+    try {
+      const res = await fetchWithAuth(`${API_URL}/api/users/avatar`, {
+        method: 'PATCH',
+        body: uploadFormData,
+      });
+      const data = await res.json();
+      if (data.success) {
+        setFormData(prev => ({ ...prev, avatar_url: data.avatar_url }));
+        setMessage({ type: 'success', text: 'Tactical signature synchronized' });
+      } else {
+        setMessage({ type: 'error', text: data.error || 'Upload failed' });
+      }
+    } catch {
+      setMessage({ type: 'error', text: 'Transmission error' });
+    } finally {
+      setUploading(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -107,6 +137,32 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
 
             {/* Scrollable Content */}
             <div className="p-10 overflow-y-auto max-h-[70vh] custom-scrollbar space-y-10">
+              {/* Avatar Upload Section */}
+              <div className="flex flex-col items-center gap-6 mb-4">
+                <div className="relative group">
+                  <div className="w-32 h-32 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-600/20 border-2 border-indigo-500/30 overflow-hidden flex items-center justify-center shadow-2xl">
+                    {formData.avatar_url ? (
+                      <img src={formData.avatar_url} alt="Profile" className="w-full h-full object-cover" />
+                    ) : (
+                      <span className="text-4xl">👤</span>
+                    )}
+                    {uploading && (
+                      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center">
+                        <div className="w-6 h-6 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                      </div>
+                    )}
+                  </div>
+                  <label className="absolute bottom-0 right-0 w-10 h-10 bg-indigo-500 hover:bg-indigo-400 text-white rounded-full flex items-center justify-center cursor-pointer shadow-xl transition-all hover:scale-110 active:scale-90 border-2 border-[#0e0e10]">
+                    <span className="text-lg">📸</span>
+                    <input type="file" className="hidden" accept="image/*" onChange={handleAvatarUpload} disabled={uploading} />
+                  </label>
+                </div>
+                <div className="text-center">
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/30 italic">Tactical Signature</p>
+                  <p className="text-[9px] text-white/20 mt-1 uppercase tracking-tight">Image files up to 5MB</p>
+                </div>
+              </div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="md:col-span-2 space-y-3">
                   <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Full Identity Name</label>

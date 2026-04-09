@@ -18,6 +18,7 @@ CREATE TABLE IF NOT EXISTS users (
     skills JSONB DEFAULT '[]',
     company_size VARCHAR(50),
     description TEXT,
+    avatar_url VARCHAR(255),
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -104,6 +105,10 @@ BEGIN
         ALTER TABLE users ADD COLUMN specialization VARCHAR(100);
         ALTER TABLE users ADD COLUMN industry VARCHAR(100);
         ALTER TABLE users ADD COLUMN experience_level VARCHAR(50);
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='users' AND column_name='avatar_url') THEN
+        ALTER TABLE users ADD COLUMN avatar_url VARCHAR(255);
     END IF;
 END $$;
 

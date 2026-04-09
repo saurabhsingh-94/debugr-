@@ -5,6 +5,7 @@ interface Props {
   name?: string;
   size?: number;
   border?: boolean;
+  avatarUrl?: string;
 }
 
 // Generate a deterministic gradient from a handle string
@@ -27,7 +28,7 @@ export function getAvatarGradient(handle: string): string {
   return `linear-gradient(135deg, ${a}, ${b})`;
 }
 
-export default function ProfileAvatar({ handle, name, size = 80, border = true }: Props) {
+export default function ProfileAvatar({ handle, name, size = 80, border = true, avatarUrl }: Props) {
   const letter = (name || handle || '?').charAt(0).toUpperCase();
   const gradient = getAvatarGradient(handle);
 
@@ -38,7 +39,7 @@ export default function ProfileAvatar({ handle, name, size = 80, border = true }
         height: size,
         borderRadius: '50%',
         border: border ? `4px solid #0e0e10` : 'none',
-        background: gradient,
+        background: avatarUrl ? 'transparent' : gradient,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -48,10 +49,20 @@ export default function ProfileAvatar({ handle, name, size = 80, border = true }
         flexShrink: 0,
         userSelect: 'none',
         letterSpacing: '-0.02em',
-        boxShadow: `0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5)`,
+        boxShadow: avatarUrl ? 'none' : `0 0 0 1px rgba(255,255,255,0.08), 0 8px 32px rgba(0,0,0,0.5)`,
+        overflow: 'hidden',
+        position: 'relative'
       }}
     >
-      {letter}
+      {avatarUrl ? (
+        <img 
+          src={avatarUrl} 
+          alt={handle} 
+          style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+        />
+      ) : (
+        letter
+      )}
     </div>
   );
 }

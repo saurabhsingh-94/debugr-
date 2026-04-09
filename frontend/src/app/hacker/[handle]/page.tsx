@@ -27,6 +27,7 @@ interface Researcher {
   industry: string;
   experience_level: string;
   description: string;
+  avatar_url: string;
   created_at: string;
   stats: ResearcherStats;
 }
@@ -142,7 +143,7 @@ export default function ResearcherProfile() {
               <div className="flex flex-col items-center">
                 <div className="relative mb-10 group/avatar">
                   <div className="absolute -inset-4 bg-linear-to-r from-indigo-500/0 via-indigo-500/20 to-indigo-500/0 rounded-full opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-700 blur-2xl" />
-                  <ProfileAvatar handle={researcher.handle} name={researcher.name} size={150} border />
+                  <ProfileAvatar handle={researcher.handle} name={researcher.name} avatarUrl={researcher.avatar_url} size={150} border />
                   <div className="absolute bottom-2 right-2 w-8 h-8 rounded-full bg-indigo-600 border-4 border-[#0b0b0d] flex items-center justify-center text-[10px] font-black italic">✓</div>
                 </div>
 
