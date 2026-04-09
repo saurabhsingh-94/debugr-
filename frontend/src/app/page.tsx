@@ -2,6 +2,7 @@
 
 import { 
   ShieldCheck, 
+  Shield,
   TrendingUp, 
   Zap, 
   Fingerprint, 
@@ -108,6 +109,11 @@ export default function Home() {
                        <span className="text-[10px] font-mono text-white/20 tracking-widest uppercase">Live Activity</span>
                     </div>
                     <div className="space-y-6">
+                       {[
+                         { id: 'Artemis', type: 'Critical', reward: '$12,500', target: 'Core Infra' },
+                         { id: 'Cipher', type: 'High', reward: '$4,500', target: 'Fintech API' },
+                         { id: 'Ghost_Protocol', type: 'Medium', reward: '$1,200', target: 'Auth Node' },
+                       ].map((item, i) => (
                          <div key={i} className="flex items-center justify-between p-5 rounded-3xl bg-white/[0.02] border border-white/5 group hover:border-white/10 transition-all">
                             <div className="flex flex-col">
                                <span className="text-[9px] font-mono text-white/20 mb-1">{item.id}</span>

@@ -301,7 +301,7 @@ export default function SignUp() {
                       {role === 'hacker' ? (
                         <>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                            <Input label="Job Title" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
+                            <Input label="Job Title" value={formData.jobProfile} onChange={v => setFormData({...formData, jobProfile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
                           </motion.div>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
                             <Input label="Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
@@ -384,7 +384,7 @@ export default function SignUp() {
                             <Input label="Company Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="Company Name" icon={<Briefcase size={16} />} />
                           </motion.div>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
-                            <Input label="Business Email" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@company.com" icon={<Mail size={16} />} />
+                            <Input label="Business Email" type="email" value={formData.businessEmail} onChange={v => setFormData({...formData, businessEmail: v})} placeholder="security@company.com" icon={<Mail size={16} />} />
                           </motion.div>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}>
                             <Input label="Website" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://website.com" icon={<Globe size={16} />} />
