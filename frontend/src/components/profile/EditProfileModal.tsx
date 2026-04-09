@@ -48,7 +48,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
     uploadFormData.append('avatar', file);
 
     try {
-      const res = await fetchWithAuth(`${API_URL}/api/users/avatar`, {
+      const res = await fetchWithAuth(`/api/users/avatar`, {
         method: 'PATCH',
         body: uploadFormData,
       });
@@ -70,7 +70,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
     setSaving(true);
     setMessage({ type: '', text: '' });
     try {
-      const res = await fetchWithAuth(`${API_URL}/api/users/profile`, {
+      const res = await fetchWithAuth(`/api/users/profile`, {
         method: 'PATCH',
         body: JSON.stringify(formData),
       });
@@ -119,7 +119,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
             animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
             exit={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
             transition={{ type: 'spring', stiffness: 300, damping: 25, mass: 0.8 }}
-            className="relative w-full max-w-[640px] glass-panel rounded-[40px] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col bg-[#0e0e10]"
+            className="relative w-full max-w-[640px] glass-panel rounded-[40px] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col bg-[#0e0e10] max-h-[90vh]"
           >
             {/* Header */}
             <header className="px-10 py-8 border-b border-white/5 flex items-center justify-between">
@@ -136,7 +136,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
             </header>
 
             {/* Scrollable Content */}
-            <div className="p-10 overflow-y-auto max-h-[70vh] custom-scrollbar space-y-10">
+            <div className="p-8 md:p-12 overflow-y-auto scrollbar-hide space-y-12">
               {/* Avatar Upload Section */}
               <div className="flex flex-col items-center gap-6 mb-4">
                 <div className="relative group">
@@ -165,7 +165,9 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div className="md:col-span-2 space-y-3">
-                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Full Identity Name</label>
+                  <div className="flex items-center justify-between mb-1 px-2">
+                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Full Identity Name</label>
+                  </div>
                   <input 
                     type="text" 
                     value={formData.name}
@@ -173,6 +175,17 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
                     placeholder="E. Hunter"
                     className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] font-bold outline-none transition-all"
                   />
+                </div>
+
+                <div className="md:col-span-2 space-y-3">
+                  <div className="flex items-center justify-between mb-1 px-2">
+                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Operational Alias</label>
+                    <span className="text-[9px] font-black text-indigo-400/50 uppercase tracking-widest italic">Permanent Identity</span>
+                  </div>
+                  <div className="w-full bg-white/1 border border-white/5 rounded-2xl px-6 py-4 text-white/30 text-[14px] font-mono flex items-center gap-2">
+                    <span className="opacity-20">@</span>
+                    {(initialData as any).handle}
+                  </div>
                 </div>
 
                 <div className="md:col-span-2 space-y-3">

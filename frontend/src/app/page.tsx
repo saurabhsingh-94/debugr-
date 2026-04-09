@@ -13,6 +13,7 @@ import {
 } from '@/lib/animations';
 import { getCookie } from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import Navbar from '@/components/layout/Navbar';
 
 export default function Home() {
   const router = useRouter();
@@ -47,165 +48,131 @@ export default function Home() {
   ];
 
   return (
-    <main className="bg-bg min-h-screen overflow-hidden text-white font-sans selection:bg-white/10">
+    <main className="min-h-screen bg-bg selection:bg-accent-purple/30 selection:text-white overflow-x-hidden">
+      {/* Dynamic Background */}
+      <div className="fixed inset-0 z-0">
+        <div className="absolute inset-0 bg-[#080808]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(157,80,187,0.05)_0%,transparent_70%)]" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+      </div>
+
+      <Navbar />
+
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
-        {/* Animated Background Blobs */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none" />
+      <section className="relative pt-40 pb-20 px-6 lg:px-12 overflow-hidden">
+        <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          {/* Left Text Content */}
+          <div className="lg:col-span-7 space-y-12">
+            <motion.div
+              variants={fadeInUp(0.1)}
+              initial="hidden"
+              animate="visible"
+              className="space-y-6"
+            >
+              <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full bg-white/[0.03] border border-white/5 backdrop-blur-md">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent-purple opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-accent-purple"></span>
+                </span>
+                <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Network Status: Operational</span>
+              </div>
 
-        <motion.div 
-          variants={staggerContainer(0.15, 0.2)}
-          initial="hidden"
-          animate="visible"
-          className="relative z-10 text-center max-w-[1000px]"
-        >
-          <motion.h1 
-            variants={blurIn(0.1)}
-            className="text-[clamp(44px,8vw,96px)] font-black leading-[0.9] tracking-tighter mb-10"
-          >
-            Securing the <br /> 
-            <span className="bg-linear-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(157,80,187,0.3)]">
-              Digital Horizon.
-            </span>
-          </motion.h1>
+              <h1 className="text-6xl md:text-8xl font-black tracking-tight leading-[0.9] text-white">
+                <span className="block italic opacity-40 uppercase">Secure The</span>
+                <span className="block bg-gradient-to-r from-white to-white/40 bg-clip-text text-transparent">FRONTIER.</span>
+              </h1>
 
-          <motion.p 
-            variants={fadeInUp(0.3)}
-            className="text-t2 text-base md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
-          >
-            The world&apos;s premier bug bounty platform. Partner with elite hackers to protect your infrastructure.
-          </motion.p>
+              <p className="text-lg md:text-xl text-t2 max-w-xl font-medium leading-relaxed">
+                The next-generation bug bounty terminal for elite researchers and secure systems. Submit, track, and earn in the shadows.
+              </p>
+            </motion.div>
 
-          <motion.div 
-            variants={fadeInUp(0.4)}
-            className="flex flex-col sm:flex-row gap-5 justify-center items-center"
-          >
-            <Link href="/programs">
-              <motion.div 
-                whileHover={hoverScale}
-                whileTap={tapScale}
-                className="px-10 py-5 bg-white text-black font-black text-sm uppercase tracking-widest rounded-2xl shadow-2xl hover:bg-white/90 transition-all"
-              >
-                View Opportunities
-              </motion.div>
-            </Link>
-            <Link href="/signup">
-              <motion.div 
-                whileHover={hoverScale}
-                whileTap={tapScale}
-                className="px-10 py-5 bg-white/5 border border-white/10 text-white font-black text-sm uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all backdrop-blur-xl"
-              >
-                Hacker Sign Up
-              </motion.div>
-            </Link>
-          </motion.div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.5, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
-        >
-          <div className="w-6 h-10 rounded-full border border-white/10 relative">
-            <motion.div 
-              animate={{ opacity: [0.3, 1, 0.3], y: [4, 24, 4] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-1 left-1/2 -ml-[1.5px] w-[3px] h-2 bg-white rounded-full shadow-[0_0_8px_#fff]"
-            />
+            <motion.div
+              variants={fadeInUp(0.3)}
+              initial="hidden"
+              animate="visible"
+              className="flex flex-wrap items-center gap-6"
+            >
+              <Link href="/signup">
+                <motion.button
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="group relative px-10 py-5 bg-white text-black font-black text-sm uppercase tracking-[0.2em] rounded-2xl transition-all"
+                >
+                  Join the Grid
+                </motion.button>
+              </Link>
+              <Link href="/explore">
+                <motion.button
+                  whileHover={{ scale: 1.02, x: 5 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="px-10 py-5 bg-white/5 hover:bg-white/10 text-white font-black text-sm uppercase tracking-[0.2em] rounded-2xl border border-white/5 transition-all"
+                >
+                  Explore Ops
+                </motion.button>
+              </Link>
+            </motion.div>
           </div>
-        </motion.div>
+
+          {/* Right Visual Element */}
+          <div className="lg:col-span-5 relative hidden lg:block">
+            <motion.div
+              variants={blurIn(0.5)}
+              initial="hidden"
+              animate="visible"
+              className="relative aspect-square"
+            >
+              <div className="absolute inset-0 bg-gradient-to-tr from-accent-purple/20 to-transparent rounded-[60px] blur-3xl" />
+              <div className="relative h-full w-full glass-panel border border-white/10 flex items-center justify-center overflow-hidden bg-black/40 backdrop-blur-xl rounded-[60px]">
+                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05]" />
+                <div className="text-[80px] opacity-10 font-black tracking-tighter filter blur-[2px] select-none">DEBUGR</div>
+                <div className="absolute w-40 h-40 border-2 border-white/5 rounded-full animate-[spin_20s_linear_infinite]" />
+                <div className="absolute w-60 h-60 border border-white/5 rounded-full animate-[spin_30s_linear_infinite_reverse]" />
+                
+                {/* Minimal HUD overlay placeholder */}
+                <div className="absolute bottom-10 left-10 right-10 flex justify-between">
+                  <div className="text-[10px] font-mono text-white/20">SYSTEM_ID: X-88</div>
+                  <div className="text-[10px] font-mono text-white/20">REDACTED_DATA</div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
       </section>
 
-      {/* Features Grid */}
-      <section className="py-40 px-6 relative">
-        <motion.div 
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-100px' }}
-          variants={staggerContainer(0.2)}
-          className="max-w-7xl mx-auto"
-        >
-          <motion.div variants={inView()} className="text-center mb-24">
-            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
-              Built for Impact
-            </h2>
-            <p className="text-t2 text-lg md:text-xl max-w-2xl mx-auto font-medium">
-              Powerful tools designed for the modern security ecosystem.
-            </p>
-          </motion.div>
- 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {features.map((feature, idx) => (
+      {/* Grid Stats */}
+      <section className="px-6 lg:px-12 pb-32">
+        <div className="max-w-[1400px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {[
+              { label: 'Active Tasks', value: '42', icon: '⚡' },
+              { label: 'Bounties Paid', value: '$840k', icon: '💰' },
+              { label: 'Elite Hackers', value: '1.2k', icon: '👁️' },
+              { label: 'Nodes Secured', value: '18.4k', icon: '🛡️' }
+            ].map((stat, i) => (
               <motion.div
-                key={idx}
-                variants={inView(idx * 0.1)}
-                onMouseEnter={() => setHoveredFeature(idx)}
-                onMouseLeave={() => setHoveredFeature(null)}
-                className="group p-10 rounded-[40px] bg-white/1 border border-white/5 relative overflow-hidden transition-all duration-300 hover:bg-white/2 hover:border-white/10 neon-edge-hover"
+                key={i}
+                variants={fadeInUp(0.2 + i * 0.1)}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                className="group p-8 glass-panel border border-white/5 hover:border-white/10 transition-all bg-white/[0.02] rounded-[32px]"
               >
-                <div className="text-4xl mb-8 group-hover:scale-110 transition-transform duration-500 origin-left">
-                  {feature.icon}
+                <div className="flex items-center gap-4 mb-4">
+                  <span className="text-xl opacity-50 group-hover:opacity-100 transition-opacity">{stat.icon}</span>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30">{stat.label}</span>
                 </div>
-                <h3 className="text-2xl font-black text-white mb-4 tracking-tight">
-                  {feature.title}
-                </h3>
-                <p className="text-t2 text-sm leading-relaxed font-medium">
-                  {feature.desc}
-                </p>
-
-                <AnimatePresence>
-                  {hoveredFeature === idx && (
-                    <motion.div
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      className="absolute inset-0 pointer-events-none"
-                      style={{
-                        background: `radial-gradient(circle at center, ${feature.color}05 0%, transparent 70%)`
-                      }}
-                    />
-                  )}
-                </AnimatePresence>
+                <div className="text-4xl font-black text-white">{stat.value}</div>
               </motion.div>
             ))}
           </div>
-        </motion.div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-40 px-6">
-        <motion.div
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: '-50px' }}
-          variants={inView()}
-          className="glass-panel max-w-5xl mx-auto p-16 md:p-32 rounded-[64px] relative overflow-hidden text-center"
-        >
-          <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />
-          
-          <h2 className="text-4xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-none">
-            Join the <br /> Vanguard.
-          </h2>
-          <p className="text-t2 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
-            Partner with elite hackers and industry leaders to build a safer digital future.
-          </p>
-          <Link href="/signup">
-            <motion.div 
-              whileHover={hoverScale}
-              whileTap={tapScale}
-              className="inline-block px-12 py-5 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-black text-lg uppercase tracking-widest rounded-2xl shadow-[0_20px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_25px_50px_rgba(99,102,241,0.4)] transition-all"
-            >
-              Get Started
-            </motion.div>
-          </Link>
-        </motion.div>
+        </div>
       </section>
 
       <footer className="py-20 border-t border-white/5 text-center">
-        <p className="text-white/10 text-xs font-black uppercase tracking-[0.3em]">
-          &copy; 2026 Debugr Platform. All rights reserved.
+        <p className="text-white/10 text-[10px] font-black uppercase tracking-[0.4em]">
+          &copy; 2026 Debugr Platform. Operational Integrity Guaranteed.
         </p>
       </footer>
     </main>

@@ -21,8 +21,8 @@ export const springBouncy: Transition = { type: "spring", stiffness: 400, dampin
 /**
  * Standard fade-in and slide-up animation.
  */
-export const fadeInUp = (delay = 0, distance = 30): Variants => ({
-  hidden: { opacity: 0, y: distance, filter: 'blur(12px)', scale: 0.98 },
+export const fadeInUp = (delay = 0, distance = 20): Variants => ({
+  hidden: { opacity: 0, y: distance, filter: 'blur(6px)', scale: 0.99 },
   visible: {
     opacity: 1,
     y: 0,
@@ -30,7 +30,7 @@ export const fadeInUp = (delay = 0, distance = 30): Variants => ({
     scale: 1,
     transition: {
       delay,
-      duration: 0.6,
+      duration: 0.4,
       ease: easeOutExpo,
     },
   },
@@ -40,14 +40,14 @@ export const fadeInUp = (delay = 0, distance = 30): Variants => ({
  * Blur-in animation for a premium reveal.
  */
 export const blurIn = (delay = 0): Variants => ({
-  hidden: { opacity: 0, filter: 'blur(25px)', scale: 1.1 },
+  hidden: { opacity: 0, filter: 'blur(12px)', scale: 1.05 },
   visible: {
     opacity: 1,
     filter: 'blur(0px)',
     scale: 1,
     transition: {
       delay,
-      duration: 0.8,
+      duration: 0.5,
       ease: easeOutExpo,
     },
   },
@@ -57,18 +57,18 @@ export const blurIn = (delay = 0): Variants => ({
  * Ultra-smooth reveal for text and panels.
  */
 export const blurReveal: Variants = {
-  hidden: { opacity: 0, filter: 'blur(15px)', y: 15 },
+  hidden: { opacity: 0, filter: 'blur(8px)', y: 10 },
   visible: { 
     opacity: 1, 
     filter: 'blur(0px)', 
     y: 0,
-    transition: { duration: 0.4, ease: easeOutExpo }
+    transition: { duration: 0.3, ease: easeOutExpo }
   },
   exit: { 
     opacity: 0, 
-    filter: 'blur(10px)', 
-    y: -10,
-    transition: { duration: 0.3, ease: easeSmooth }
+    filter: 'blur(6px)', 
+    y: -8,
+    transition: { duration: 0.2, ease: easeSmooth }
   }
 };
 
@@ -76,7 +76,7 @@ export const blurReveal: Variants = {
  * Scroll-triggered fade-in and slide-up animation.
  */
 export const inView = (delay = 0): Variants => ({
-  hidden: { opacity: 0, y: 50, filter: 'blur(10px)', scale: 0.95 },
+  hidden: { opacity: 0, y: 30, filter: 'blur(8px)', scale: 0.98 },
   visible: {
     opacity: 1,
     y: 0,
@@ -84,7 +84,7 @@ export const inView = (delay = 0): Variants => ({
     scale: 1,
     transition: {
       delay,
-      duration: 0.8,
+      duration: 0.5,
       ease: easeOutExpo,
     },
   },

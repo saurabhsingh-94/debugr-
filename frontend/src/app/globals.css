@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
+
 @theme {
-  --color-bg: #050505;
+  --color-bg: #080808;
   --color-accent-purple: #9d50bb;
   --color-accent-blue: #6e7aff;
   --color-accent-pink: #d442f5;
@@ -17,10 +18,20 @@
     scroll-behavior: smooth;
   }
   body {
-    background: #050505;
+    background: #080808;
     color: #ffffff;
     font-family: var(--font-inter);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

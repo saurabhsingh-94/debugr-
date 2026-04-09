@@ -48,10 +48,20 @@ export default function Navbar() {
       fixed top-0 left-0 right-0 z-[100] transition-all duration-500
       ${scrolled ? 'h-16 bg-bg/60 backdrop-blur-3xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
     `}>
-      <div className="w-full h-full flex items-center justify-between px-6 lg:px-12">
+      <div className="w-full h-full flex items-center justify-between px-4 lg:px-12">
         
-        {/* Brand Logo */}
-        <div className="flex-1 flex items-center">
+        {/* Back & Brand Logo */}
+        <div className="flex-1 flex items-center gap-2 sm:gap-4">
+          <motion.button
+            whileHover={{ scale: 1.1, x: -2 }}
+            whileTap={{ scale: 0.9 }}
+            onClick={() => window.history.back()}
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all text-lg"
+            title="Go Back"
+          >
+            ←
+          </motion.button>
+
           <Link href="/" className="group">
             <motion.div 
               whileHover={{ scale: 1.05 }}
@@ -126,24 +136,14 @@ export default function Navbar() {
         <div className="flex-1 flex items-center justify-end gap-3 sm:gap-6">
           {!loading && (
             user ? (
-              <div className="flex items-center gap-4 sm:gap-6">
-                <Link href="/settings" className="relative group">
-                   <motion.div 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
-                  >
-                    <span className="text-[14px]">⚙️</span>
-                  </motion.div>
-                </Link>
-
+              <div className="flex items-center gap-3 sm:gap-4">
                 <Link href="/profile" className="relative group">
                   <motion.div 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="flex items-center gap-3 pl-3 pr-1.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2.5 pl-2.5 pr-1 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
                   >
-                    <span className="hidden md:block text-[11px] font-black text-white/50 uppercase tracking-widest">
+                    <span className="hidden lg:block text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">
                       {user.handle}
                     </span>
                     <ProfileAvatar 
@@ -153,6 +153,16 @@ export default function Navbar() {
                       size={28} 
                       border={false} 
                     />
+                  </motion.div>
+                </Link>
+
+                <Link href="/settings" className="relative group">
+                   <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                  >
+                    <span className="text-[13px]">⚙️</span>
                   </motion.div>
                 </Link>
               </div>
