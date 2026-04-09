@@ -4,7 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
-import { fadeInUp, blurReveal, springSoft } from '@/lib/animations';
+import { fadeInUp, blurReveal } from '@/lib/animations';
+import { 
+  Activity, 
+  Shield, 
+  Zap, 
+  BarChart3, 
+  Search, 
+  Plus, 
+  ChevronRight,
+  Terminal,
+  Clock,
+  ExternalLink
+} from 'lucide-react';
 
 type Severity = 'Critical' | 'High' | 'Medium' | 'Low';
 type Status = 'Triaged' | 'Resolved' | 'Pending' | 'Bounty Paid' | 'Verifying';
@@ -23,8 +35,8 @@ interface Report {
 const sevColor: Record<Severity | 'All', string> = {
   Critical: 'text-rose-500',
   High:     'text-amber-500',
-  Medium:   'text-slate-400',
-  Low:      'text-slate-600',
+  Medium:   'text-indigo-400',
+  Low:      'text-white/20',
   All:      'text-white'
 };
 
@@ -60,13 +72,13 @@ export default function HackerDashboard() {
         if (reportsRes.ok) {
           const data = await reportsRes.json();
           if (data.success) {
-            const transformed = data.reports.map((r: { id: string; title: string; severity: string; status: string; bounty: number; company: string; created_at: string }) => ({
+            const transformed = data.reports.map((r: any) => ({
               id: r.id.substring(0, 8).toUpperCase(),
               title: r.title,
               severity: r.severity.charAt(0).toUpperCase() + r.severity.slice(1),
-              status: r.status === 'resolved' && r.bounty > 0 ? 'Bounty Paid' : (r.status === 'triaged' ? 'Verifying' : r.status.charAt(0).toUpperCase() + r.status.slice(1)),
+              status: r.status === 'resolved' && (r.bounty || 0) > 0 ? 'Bounty Paid' : (r.status === 'triaged' ? 'Verifying' : r.status.charAt(0).toUpperCase() + r.status.slice(1)),
               earned: `$${Number(r.bounty || 0).toLocaleString()}`,
-              company: r.company || 'Private Program',
+              company: r.company || 'Private Registry',
               submitted: new Date(r.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
               cvss: r.severity === 'critical' ? 9.8 : r.severity === 'high' ? 7.5 : 5.0,
             }));
@@ -85,36 +97,44 @@ export default function HackerDashboard() {
   const filtered = filter === 'All' ? reports : reports.filter(r => r.severity === filter);
 
   return (
-    <div className="space-y-12">
-      {/* ── Stats Header ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-12 border-b border-white/5">
-        <div>
-          <div className="flex items-center gap-4 mb-6">
-            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.3em]">Hacker Activity</span>
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span className="text-[9px] font-black text-emerald-400 uppercase tracking-widest">Feed Active</span>
+    <div className="space-y-16">
+      {/* ── Operational Metrics ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-16 border-b border-white/5">
+        <div className="space-y-8">
+          <div className="flex items-center gap-4">
+            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.4em] uppercase italic">[ SYSTEM.INDEX ]</span>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/5 border border-emerald-500/10">
+              <Activity size={10} className="text-emerald-500 animate-pulse" />
+              <span className="text-[8px] font-black text-emerald-400/60 uppercase tracking-widest">Feed_Synced</span>
             </div>
           </div>
-          <h1 className="hero-title text-4xl md:text-6xl tracking-tighter leading-none mb-4">Dashboard.</h1>
-          <p className="text-t2 text-sm font-medium opacity-60">Manage your vulnerability reports, earnings, and reputation across all programs.</p>
+          <h1 className="text-6xl font-black italic tracking-tighter uppercase leading-[0.8]">
+            Operational <br />
+            <span className="text-white/5 italic">Hub.</span>
+          </h1>
+          <p className="text-white/30 text-sm font-medium italic max-w-lg leading-relaxed">
+            Coordinating vulnerability lifecycles and reputation growth across the decentralized registry.
+          </p>
         </div>
 
         <div className="flex gap-12 items-end">
           {[
-            { label: 'Bounty Earnings', value: `$${Number(balance).toLocaleString()}`, highlight: true },
-            { label: 'Total Reports', value: String(reports.length) },
-            { label: 'Success Rate', value: '94.2%' },
+            { label: 'Calculated Yield', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
+            { label: 'Impact Vectors', value: String(reports.length), icon: <Shield size={14} /> },
+            { label: 'Validated Rate', value: '94.2%', icon: <BarChart3 size={14} /> },
           ].map((s, i) => (
             <motion.div 
               key={s.label}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.1 }}
-              className="space-y-2 text-right md:text-left"
+              className="space-y-4 text-right md:text-left"
             >
-              <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black">{s.label}</p>
-              <p className={`text-2xl md:text-4xl font-black tracking-tighter ${s.highlight ? 'text-white drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]' : 'text-white/60'}`}>
+              <div className="flex items-center gap-3 justify-end md:justify-start">
+                <span className="text-white/10">{s.icon}</span>
+                <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">{s.label}</p>
+              </div>
+              <p className={`text-4xl font-black tracking-tighter italic ${s.highlight ? 'text-white' : 'text-white/40'}`}>
                 {s.value}
               </p>
             </motion.div>
@@ -122,17 +142,17 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── Controls & Filter ── */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-        <div className="flex items-center gap-2 p-1.5 bg-white/3 border border-white/5 rounded-2xl overflow-x-auto">
+      {/* ── Triage Terminal Controls ── */}
+      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        <div className="flex items-center gap-2 p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] overflow-x-auto">
           {(['All', 'Critical', 'High', 'Medium', 'Low'] as const).map(s => (
             <button 
               key={s} 
               onClick={() => setFilter(s)} 
               className={`
-                px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap
+                px-6 py-3 rounded-[18px] text-[10px] font-black uppercase tracking-widest transition-all whitespace-nowrap italic
                 ${filter === s 
-                  ? 'bg-white text-black shadow-2xl' 
+                  ? 'bg-white text-black shadow-[0_10px_30px_rgba(255,255,255,0.1)]' 
                   : 'text-white/20 hover:text-white/40 hover:bg-white/5'
                 }
               `}
@@ -141,44 +161,49 @@ export default function HackerDashboard() {
             </button>
           ))}
         </div>
-        <div className="flex items-center gap-6">
-           <span className="subtle-mono text-[9px] text-white/30 uppercase tracking-[0.2em]">
-            Total: <span className="text-white ml-2">{filtered.length} Reports</span>
-          </span>
+        
+        <div className="flex items-center gap-8">
+          <div className="hidden sm:flex items-center gap-4 px-6 py-3 rounded-full border border-white/5 bg-white/[0.01]">
+             <Search size={14} className="text-white/10" />
+             <span className="subtle-mono text-[9px] text-white/20 uppercase tracking-widest font-black italic">Search Index...</span>
+          </div>
           <Link href="/submit">
             <motion.button 
-              whileHover={{ scale: 1.05 }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
-              className="px-8 py-3.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-500 transition-all shadow-2xl shadow-indigo-600/20"
+              className="px-10 py-4 bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] rounded-2xl hover:bg-neutral-200 transition-all shadow-[0_20px_40px_rgba(255,255,255,0.1)] flex items-center gap-4 italic"
             >
-              + Submit Report
+              <Plus size={14} /> Initialize Report
             </motion.button>
           </Link>
         </div>
       </div>
 
-      {/* ── Reports Grid ── */}
-      <div className="glass-panel rounded-[32px] overflow-hidden border border-white/5 shadow-2xl">
-        <div className="hidden lg:grid grid-cols-[140px_1fr_160px_100px_150px_120px] px-10 py-5 bg-white/3 border-b border-white/5">
-          {['ID', 'Report Title', 'Program', 'Severity', 'Status', 'Reward'].map(h => (
-            <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black">{h}</span>
+      {/* ── Operational Feed Grid ── */}
+      <div className="glass-panel rounded-[40px] overflow-hidden border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]">
+        <div className="hidden lg:grid grid-cols-[160px_1fr_180px_120px_160px_140px] px-12 py-6 bg-white/[0.02] border-b border-white/5">
+          {['Vector_ID', 'Vulnerability Title', 'Identity_Registry', 'Sev.Index', 'Status.Vector', 'Valuation'].map(h => (
+            <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black italic">{h}</span>
           ))}
         </div>
 
-        <div className="relative min-h-[300px]">
+        <div className="relative min-h-[400px]">
           {loading ? (
-            <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-4">
-              <div className="w-8 h-8 border-2 border-white/5 border-t-white/20 rounded-full animate-spin" />
-              <p className="subtle-mono text-[9px] text-white/10 italic">Loading reports...</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-6">
+              <div className="relative w-12 h-12">
+                <div className="absolute inset-0 border border-white/5 rounded-full" />
+                <div className="absolute inset-0 border border-t-white/40 rounded-full animate-spin" />
+              </div>
+              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Polling secure streams...</p>
             </div>
           ) : filtered.length === 0 ? (
-            <div className="py-32 text-center">
-              <p className="text-white/20 text-lg font-medium italic">No reports found.</p>
+            <div className="py-40 text-center space-y-4">
+              <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">No Active Protocols.</p>
               <button 
                 onClick={() => setFilter('All')} 
-                className="mt-4 text-indigo-400 text-xs font-bold uppercase tracking-widest font-mono"
+                className="text-indigo-400 text-[10px] font-black uppercase tracking-[0.3em] font-mono hover:text-white transition-colors italic"
               >
-                Reset Filter
+                Reset_Filter
               </button>
             </div>
           ) : (
@@ -194,32 +219,66 @@ export default function HackerDashboard() {
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: i * 0.04 }}
-                    className="grid grid-cols-1 lg:grid-cols-[140px_1fr_160px_100px_150px_120px] px-10 py-7 items-center border-b border-white/3 hover:bg-white/2 transition-colors group relative"
+                    className="grid grid-cols-1 lg:grid-cols-[160px_1fr_180px_120px_160px_140px] px-12 py-10 items-center border-b border-white/[0.03] hover:bg-white/[0.02] transition-all group relative overflow-hidden"
                   >
-                    <span className="subtle-mono text-[11px] text-white/20 hover:text-white/40 transition-colors cursor-pointer">{r.id}</span>
-                    <div className="pr-12">
-                      <p className="text-[15px] font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{r.title}</p>
-                      <p className="subtle-mono text-[9px] text-white/10 mt-2">SUBMITTED: {r.submitted}</p>
+                    <div className="absolute inset-y-0 left-0 w-1 bg-indigo-500/0 group-hover:bg-indigo-500/40 transition-all" />
+                    
+                    <span className="subtle-mono text-[11px] text-white/10 group-hover:text-white/40 transition-colors italic font-black">[ {r.id} ]</span>
+                    
+                    <div className="pr-12 space-y-2">
+                      <p className="text-lg font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight italic select-none">{r.title}</p>
+                      <div className="flex items-center gap-3">
+                         <span className="w-1 h-1 rounded-full bg-white/10" />
+                         <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">INDEXED: {r.submitted}</p>
+                      </div>
                     </div>
-                    <span className="text-sm font-bold text-white/40 tracking-tight">{r.company}</span>
-                    <div className="flex items-center gap-2">
-                       <span className={`subtle-mono text-xs font-black italic ${sc}`}>{r.cvss}</span>
+
+                    <div className="flex items-center gap-3">
+                       <span className="w-6 h-6 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-[10px] font-black text-white/20 group-hover:bg-white group-hover:text-black transition-all">{r.company[0]}</span>
+                       <span className="text-xs font-black text-white/30 tracking-tight uppercase italic group-hover:text-white/60 transition-colors">{r.company}</span>
                     </div>
+
+                    <div className="flex items-center gap-3">
+                       <span className={`subtle-mono text-xs font-black italic tracking-tighter ${sc}`}>{r.cvss.toFixed(1)}</span>
+                    </div>
+
                     <div>
                       <span className={`
-                        inline-block px-4 py-1.5 rounded-lg text-[9px] font-black uppercase tracking-widest border
-                        ${st.bg} ${st.text} ${st.border} shadow-lg
+                        inline-block px-5 py-2 rounded-[14px] text-[9px] font-black uppercase tracking-widest border italic
+                        ${st.bg} ${st.text} ${st.border} shadow-inner
                       `}>
                         {r.status}
                       </span>
                     </div>
-                    <span className="text-xl font-black text-white text-right md:text-left tracking-tighter group-hover:scale-110 transition-transform origin-left">{r.earned}</span>
+
+                    <div className="flex flex-col items-end lg:items-start group/reward">
+                       <span className="text-2xl font-black text-white tracking-tighter italic group-hover:scale-110 transition-transform origin-left">{r.earned}</span>
+                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Validated_USD</span>
+                    </div>
                   </motion.div>
                 );
               })}
             </AnimatePresence>
           )}
         </div>
+      </div>
+
+      {/* ── System Status Bar ── */}
+      <div className="flex items-center justify-between px-10 py-6 rounded-[32px] bg-white/[0.01] border border-white/5">
+         <div className="flex items-center gap-8">
+            <div className="flex items-center gap-3">
+               <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Network Protocols Stable</span>
+            </div>
+            <div className="h-4 w-[1px] bg-white/5" />
+            <div className="flex items-center gap-3">
+               <Terminal size={12} className="text-white/10" />
+               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">V2.4.b491</span>
+            </div>
+         </div>
+         <div className="flex items-center gap-6">
+            <span className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">Session expires in: <span className="text-white/40 ml-2">4h 12m</span></span>
+         </div>
       </div>
     </div>
   );

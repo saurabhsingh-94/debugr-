@@ -5,6 +5,20 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { fadeInUp, blurReveal, springSoft } from '@/lib/animations';
+import { 
+  Shield, 
+  Activity, 
+  Zap, 
+  Layers, 
+  Inbox, 
+  Plus, 
+  ChevronRight, 
+  Cpu, 
+  Lock,
+  Terminal,
+  Server,
+  Cloud
+} from 'lucide-react';
 
 type Severity = 'critical' | 'high' | 'medium' | 'low';
 type ReportStatus = 'pending' | 'triaged' | 'resolved' | 'duplicate' | 'informative' | 'not-applicable';
@@ -70,36 +84,44 @@ export default function CompanyDashboard() {
   const pendingCount = reports.filter(r => r.status === 'pending').length;
 
   return (
-    <div className="space-y-12">
-      {/* ── Metrics Header ── */}
-      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-12 border-b border-white/5">
-        <div>
-          <div className="flex items-center gap-4 mb-6">
-            <span className="subtle-mono text-[9px] text-white/20 tracking-[0.3em]">Security Operations</span>
-            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/20">
+    <div className="space-y-16">
+      {/* ── Security Metrics ── */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-16 border-b border-white/5">
+        <div className="space-y-8">
+          <div className="flex items-center gap-4">
+            <span className="subtle-mono text-[9px] text-indigo-400 tracking-[0.4em] uppercase italic">[ PERIMETER.NODE ]</span>
+            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/5 border border-indigo-500/10">
               <span className="w-1.5 h-1.5 rounded-full bg-indigo-500 animate-pulse" />
-              <span className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Command Active</span>
+              <span className="text-[8px] font-black text-indigo-400/60 uppercase tracking-widest">Surveillance_Active</span>
             </div>
           </div>
-          <h1 className="hero-title text-4xl md:text-6xl tracking-tighter leading-none mb-4">Security Perimeter.</h1>
-          <p className="text-t2 text-sm font-medium opacity-60">Oversee your disclosure programs, triage incoming reports, and manage security partnerships.</p>
+          <h1 className="text-6xl font-black italic tracking-tighter uppercase leading-[0.8]">
+            Security <br />
+            <span className="text-white/5 italic">Perimeter.</span>
+          </h1>
+          <p className="text-white/30 text-sm font-medium italic max-w-lg leading-relaxed">
+            Consolidating vulnerability telemetry and specialized research coordination across managed registries.
+          </p>
         </div>
 
         <div className="flex gap-12 items-end">
           {[
-            { label: 'Available Funds', value: `$${Number(balance).toLocaleString()}`, highlight: true },
-            { label: 'Total Bounties Paid', value: `$${totalPaid.toLocaleString()}` },
-            { label: 'Active Reports', value: String(reports.length) },
+            { label: 'Available Liquidity', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
+            { label: 'Cumulative Yield', value: `$${totalPaid.toLocaleString()}`, icon: <Layers size={14} /> },
+            { label: 'Triage Queue', value: String(pendingCount), icon: <Inbox size={14} /> },
           ].map((s, i) => (
             <motion.div 
               key={s.label}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 + i * 0.1 }}
-              className="space-y-2 text-right md:text-left"
+              className="space-y-4 text-right md:text-left"
             >
-              <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black">{s.label}</p>
-              <p className={`text-2xl md:text-4xl font-black tracking-tighter ${s.highlight ? 'text-white' : 'text-white/40'}`}>
+              <div className="flex items-center gap-3 justify-end md:justify-start">
+                <span className="text-white/10">{s.icon}</span>
+                <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">{s.label}</p>
+              </div>
+              <p className={`text-4xl font-black tracking-tighter italic ${s.highlight ? 'text-white' : 'text-white/40'}`}>
                 {s.value}
               </p>
             </motion.div>
@@ -107,66 +129,68 @@ export default function CompanyDashboard() {
         </div>
       </div>
 
-      {/* ── Sub Navigation ── */}
-      <div className="flex gap-12 border-b border-white/5 pb-0.5">
+      {/* ── Context Navigation ── */}
+      <div className="flex gap-16 border-b border-white/5 pb-0.5">
         {(['inbox', 'programs'] as const).map(tabId => {
           const tab = tabId === 'inbox' 
-            ? { id: 'inbox', label: 'Security Inbox', count: pendingCount }
-            : { id: 'programs', label: 'Active Programs', count: programs.length };
+            ? { id: 'inbox', label: 'Vulnerability Feed', count: pendingCount, icon: <Activity size={12} /> }
+            : { id: 'programs', label: 'Program Registry', count: programs.length, icon: <Layers size={12} /> };
           return (
             <button 
               key={tab.id}
               onClick={() => setActiveTab(tab.id as 'inbox' | 'programs')}
-            className={`
-              relative py-4 text-[11px] font-black uppercase tracking-[0.2em] transition-all
-              ${activeTab === tab.id ? 'text-white' : 'text-white/20 hover:text-white/40'}
-            `}
-          >
-            <span className="flex items-center gap-3">
-              {tab.label}
-              {tab.count > 0 && (
-                <span className={`
-                  px-2 py-0.5 rounded-full text-[9px] font-black
-                  ${activeTab === tab.id ? 'bg-white text-black' : 'bg-white/5 text-white/20'}
-                `}>
-                  {tab.count}
-                </span>
+              className={`
+                relative py-6 text-[11px] font-black uppercase tracking-[0.3em] transition-all italic
+                ${activeTab === tab.id ? 'text-white' : 'text-white/20 hover:text-white/40'}
+              `}
+            >
+              <span className="flex items-center gap-4">
+                <span className={activeTab === tab.id ? 'text-indigo-400' : 'text-white/10'}>{tab.icon}</span>
+                {tab.label}
+                {tab.count > 0 && (
+                  <span className={`
+                    px-2.5 py-0.5 rounded-full text-[8px] font-mono font-black italic
+                    ${activeTab === tab.id ? 'bg-white text-black' : 'bg-white/5 text-white/20'}
+                  `}>
+                    {tab.count.toString().padStart(2, '0')}
+                  </span>
+                )}
+              </span>
+              {activeTab === tab.id && (
+                <motion.div 
+                  layoutId="activeTabUnderline"
+                  className="absolute bottom-0 inset-x-0 h-0.5 bg-indigo-500/40"
+                />
               )}
-            </span>
-            {activeTab === tab.id && (
-              <motion.div 
-                layoutId="activeTab"
-              />
-            )}
-          </button>
-        );
-      })}
-    </div>
+            </button>
+          );
+        })}
+      </div>
 
       <AnimatePresence mode="wait">
         {activeTab === 'inbox' ? (
           <motion.div 
             key="inbox"
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: 20 }}
-            className="glass-panel rounded-[32px] overflow-hidden border border-white/5 shadow-2xl"
+            exit={{ opacity: 0, x: 10 }}
+            className="glass-panel rounded-[40px] overflow-hidden border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]"
           >
-            <div className="hidden lg:grid grid-cols-[1fr_140px_120px_140px_120px] px-10 py-5 bg-white/3 border-b border-white/5">
-              {['Vulnerability', 'Researcher', 'Severity', 'State', 'Bounty'].map(h => (
-                <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black">{h}</span>
+            <div className="hidden lg:grid grid-cols-[1fr_180px_120px_160px_140px] px-12 py-6 bg-white/[0.02] border-b border-white/5">
+              {['Vulnerability_Vector', 'Researcher_ID', 'Sev_Index', 'Triage_State', 'Valuation'].map(h => (
+                <span key={h} className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black italic">{h}</span>
               ))}
             </div>
-            <div className="relative min-h-[300px]">
+            <div className="relative min-h-[400px]">
               {loading ? (
-                <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-4">
-                  <div className="w-8 h-8 border-2 border-white/5 border-t-white/20 rounded-full animate-spin" />
-                  <p className="subtle-mono text-[9px] text-white/10 italic">Polling secure feeds...</p>
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-20 gap-6">
+                  <div className="w-8 h-8 border border-white/5 border-t-white/40 rounded-full animate-spin" />
+                  <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Polling secure feeds...</p>
                 </div>
               ) : reports.length === 0 ? (
-                <div className="py-32 text-center">
-                  <p className="text-white/10 text-xl font-black italic tracking-widest uppercase">Perimeter Secure.</p>
-                  <p className="text-t2 text-xs mt-2 opacity-40">Inbox zero achieved across all programs.</p>
+                <div className="py-40 text-center space-y-4">
+                  <p className="text-white/10 text-2xl font-black italic uppercase tracking-tighter">Perimeter Secure.</p>
+                  <p className="subtle-mono text-[10px] text-white/10 uppercase tracking-[0.4em]">All Vectors Neutralized.</p>
                 </div>
               ) : (
                 reports.map((r, i) => (
@@ -176,20 +200,36 @@ export default function CompanyDashboard() {
                     initial="hidden"
                     animate="visible"
                     transition={{ delay: i * 0.04 }}
-                    className="grid grid-cols-1 lg:grid-cols-[1fr_140px_120px_140px_120px] px-10 py-7 items-center border-b border-white/3 hover:bg-white/2 transition-colors group"
+                    className="grid grid-cols-1 lg:grid-cols-[1fr_180px_120px_160px_140px] px-12 py-10 items-center border-b border-white/[0.03] hover:bg-white/[0.02] transition-all group relative overflow-hidden"
                   >
-                    <div>
-                      <p className="text-[15px] font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight">{r.title}</p>
-                      <p className="subtle-mono text-[9px] text-white/10 mt-2 uppercase tracking-widest leading-none">Received: {new Date(r.created_at).toLocaleDateString()}</p>
+                    <div className="absolute inset-y-0 left-0 w-1 bg-indigo-500/0 group-hover:bg-indigo-500/40 transition-all" />
+                    
+                    <div className="space-y-2">
+                      <p className="text-lg font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight italic select-none">{r.title}</p>
+                      <div className="flex items-center gap-3">
+                         <span className="w-1 h-1 rounded-full bg-white/10" />
+                         <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic leading-none">RECEIVED: {new Date(r.created_at).toLocaleDateString()}</p>
+                      </div>
                     </div>
-                    <span className="text-xs font-bold text-white/40 tracking-tight">@{r.user_handle || 'anonymous'}</span>
-                    <span className={`text-[10px] font-black uppercase tracking-widest ${r.severity === 'critical' ? 'text-rose-500' : 'text-amber-500'}`}>{r.severity}</span>
+                    
+                    <div className="flex items-center gap-3">
+                       <span className="text-[10px] bg-white/[0.03] border border-white/5 px-3 py-1 rounded-full font-black text-white/30 tracking-tight uppercase italic group-hover:text-white group-hover:bg-white/10 transition-all">@{r.user_handle || 'anonymous'}</span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                       <span className={`subtle-mono text-xs font-black uppercase italic tracking-widest ${r.severity === 'critical' ? 'text-rose-500' : 'text-amber-500'}`}>{r.severity}</span>
+                    </div>
+
                     <div>
-                      <span className="inline-block px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-white/5 text-white/40 border border-white/10">
-                        {r.status}
+                      <span className="inline-block px-5 py-2 rounded-[14px] text-[9px] font-black uppercase tracking-widest bg-white/[0.02] text-white/30 border border-white/5 italic">
+                        [ {r.status} ]
                       </span>
                     </div>
-                    <span className="text-xl font-black text-white text-right md:text-left tracking-tighter">${Number(r.bounty || 0).toLocaleString()}</span>
+
+                    <div className="flex flex-col items-end lg:items-start group/reward">
+                       <span className="text-2xl font-black text-white tracking-tighter italic group-hover:scale-110 transition-transform origin-left">${Number(r.bounty || 0).toLocaleString()}</span>
+                       <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Allocation_USD</span>
+                    </div>
                   </motion.div>
                 ))
               )}
@@ -198,10 +238,10 @@ export default function CompanyDashboard() {
         ) : (
           <motion.div 
             key="programs"
-            initial={{ opacity: 0, x: 20 }}
+            initial={{ opacity: 0, x: 10 }}
             animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            exit={{ opacity: 0, x: -10 }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10"
           >
             {programs.map((p, i) => (
               <motion.div 
@@ -209,42 +249,55 @@ export default function CompanyDashboard() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
-                className="p-10 rounded-[40px] bg-white/2 border border-white/10 flex flex-col gap-8 group hover:bg-white/3 hover:border-white/20 transition-all duration-500 shadow-2xl"
+                className="p-12 rounded-[56px] glass-panel border border-white/5 flex flex-col gap-10 group hover:bg-white/[0.02] hover:border-indigo-500/20 transition-all duration-500 shadow-2xl relative overflow-hidden h-[480px] justify-between"
               >
-                <div className="space-y-4">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl font-black text-white shadow-inner group-hover:scale-110 transition-transform duration-500">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-indigo-500/[0.05] transition-all" />
+                
+                <div className="space-y-8 relative z-10">
+                  <div className="w-16 h-16 rounded-2xl bg-[#0a0a0a] border border-white/10 flex items-center justify-center text-3xl font-black text-white shadow-inner group-hover:scale-110 transition-transform duration-500 italic">
                     {p.name[0]}
                   </div>
                   <div>
-                    <h3 className="text-2xl font-black text-white tracking-tight mb-2 uppercase">{p.name}</h3>
-                    <div className="flex items-center gap-2">
-                       <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 mt-[-1px]" />
-                       <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-widest font-black italic">Status: {p.status}</p>
+                    <h3 className="text-3xl font-black text-white tracking-tight mb-3 uppercase italic leading-none">{p.name}</h3>
+                    <div className="flex items-center gap-3">
+                       <span className={`w-2 h-2 rounded-full ${p.status === 'active' ? 'bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]' : 'bg-white/10'}`} />
+                       <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.2em] font-black italic">STATUS: {p.status}</p>
                     </div>
                   </div>
                 </div>
-                <Link href={`/programs/${p.id}/manage`} className="mt-6">
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="w-full py-4 text-center rounded-2xl bg-white text-black text-[11px] font-black uppercase tracking-widest shadow-xl hover:bg-white/90 transition-all"
-                  >
-                    Manage Policy
-                  </motion.div>
-                </Link>
+
+                <div className="space-y-6 relative z-10">
+                   <div className="flex justify-between items-center py-4 border-y border-white/5">
+                      <span className="subtle-mono text-[8px] text-white/20 uppercase tracking-widest italic">Vulnerability Flow</span>
+                      <span className="text-[10px] font-black text-white italic group-hover:text-indigo-400">Synced</span>
+                   </div>
+                   <Link href={`/programs/${p.id}/manage`} className="block">
+                    <motion.div 
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-5 text-center rounded-[24px] bg-white text-black text-[11px] font-black uppercase tracking-[0.3em] shadow-xl hover:bg-neutral-200 transition-all italic flex items-center justify-center gap-3"
+                    >
+                      <Terminal size={12} /> Manage Policy
+                    </motion.div>
+                  </Link>
+                </div>
               </motion.div>
             ))}
+            
             <motion.div 
               onClick={() => setShowNewProgram(true)}
-              whileHover={{ scale: 1.02 }}
-              className="p-10 rounded-[40px] border-2 border-dashed border-white/5 bg-transparent flex flex-col items-center justify-center gap-8 group cursor-pointer hover:border-white/20 transition-all duration-500"
+              whileHover={{ scale: 1.02, y: -4 }}
+              className="p-12 rounded-[56px] border-2 border-dashed border-white/5 bg-transparent flex flex-col items-center justify-center gap-10 group cursor-pointer hover:border-indigo-500/20 hover:bg-white/[0.01] transition-all duration-500 h-[480px]"
             >
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center text-white/10 group-hover:text-white/40 group-hover:bg-white/10 transition-all duration-500">
-                 <span className="text-3xl">+</span>
+              <div className="w-20 h-20 rounded-full bg-white/[0.03] border border-white/5 flex items-center justify-center text-white/10 group-hover:text-indigo-400 group-hover:bg-indigo-500/10 group-hover:border-indigo-500/20 transition-all duration-700 relative">
+                 <Plus size={32} className="group-hover:rotate-90 transition-transform duration-500" />
+                 <div className="absolute inset-0 bg-indigo-500/5 blur-xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
               </div>
-              <div className="text-center space-y-2">
-                <p className="text-white/20 font-black text-sm uppercase tracking-widest">Deployment Ready</p>
-                <p className="text-t2 text-[11px] font-medium opacity-40 max-w-[200px] mx-auto">Initialize a new crowdsourced security program in seconds.</p>
+              <div className="text-center space-y-4">
+                <p className="text-white/20 font-black text-xs uppercase tracking-[0.4em] italic group-hover:text-white/40">Initialize Registry</p>
+                <p className="text-white/10 text-[10px] font-medium italic max-w-[200px] mx-auto leading-relaxed">
+                  Provision a new coordination channel for specialized security research.
+                </p>
               </div>
             </motion.div>
           </motion.div>
@@ -286,77 +339,93 @@ function NewProgramModal({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/60 backdrop-blur-2xl">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-black/80 backdrop-blur-3xl">
       <motion.div 
-        initial={{ opacity: 0, scale: 0.9, y: 30 }}
+        initial={{ opacity: 0, scale: 0.95, y: 40 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 30 }}
+        exit={{ opacity: 0, scale: 0.95, y: 40 }}
         transition={springSoft}
-        className="glass-panel w-full max-w-xl p-12 rounded-[64px] border border-white/10 overflow-hidden relative shadow-[0_40px_80px_rgba(0,0,0,0.8)]"
+        className="glass-panel w-full max-w-2xl p-16 rounded-[64px] border border-white/10 overflow-hidden relative shadow-[0_80px_160px_rgba(0,0,0,0.9)]"
       >
         <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-transparent pointer-events-none" />
+        <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-500/5 blur-[100px] rounded-full -translate-y-1/2 translate-x-1/2" />
         
-        <div className="flex justify-between items-center mb-12 relative z-10">
-          <div className="space-y-1">
-            <p className="subtle-mono text-[9px] text-white/20 tracking-widest font-black uppercase italic">Vanguard Deployment</p>
-            <h2 className="text-3xl font-black tracking-tighter text-white uppercase italic">Deploy Program</h2>
+        <div className="flex justify-between items-start mb-16 relative z-10">
+          <div className="space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
+              <p className="subtle-mono text-[10px] text-indigo-400 tracking-[0.4em] font-black uppercase italic">[ VANGUARD_DEPLOYMENT ]</p>
+            </div>
+            <h2 className="text-5xl font-black tracking-tighter text-white uppercase italic leading-none">Config <br /><span className="text-white/5">Registry.</span></h2>
           </div>
-          <button 
+          <motion.button 
+            whileHover={{ scale: 1.1, rotate: 90 }}
             onClick={onClose} 
-            className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white hover:bg-white/10 transition-all"
-          >✕</button>
+            className="w-14 h-14 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white/20 hover:text-white hover:bg-white/10 transition-all font-light"
+          >✕</motion.button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-8 relative z-10">
-          <div className="space-y-3">
-            <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Program Identifier</label>
-            <input 
-              required
-              className="w-full bg-white/3 border border-white/5 rounded-2xl px-6 py-4 text-white text-[15px] font-medium outline-none focus:border-white/20 focus:bg-white/5 transition-all shadow-lg"
-              value={formData.name}
-              onChange={e => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g. Debugr VDP Core"
-            />
+        <form onSubmit={handleSubmit} className="space-y-10 relative z-10">
+          <div className="space-y-4">
+            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Program.Identifier</label>
+            <div className="relative group">
+               <Server className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-hover:text-indigo-400 transition-colors" size={18} />
+               <input 
+                 required
+                 className="w-full bg-white/[0.03] border border-white/5 rounded-[32px] pl-16 pr-8 py-6 text-white text-base font-medium outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all shadow-2xl"
+                 value={formData.name}
+                 onChange={e => setFormData({ ...formData, name: e.target.value })}
+                 placeholder="e.g. DEBUGR_VDP_PRO"
+               />
+            </div>
           </div>
-          <div className="space-y-3">
-            <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Management Directives</label>
-            <textarea 
-              required
-              className="w-full bg-white/3 border border-white/5 rounded-3xl px-6 py-5 text-white text-[15px] font-medium h-40 outline-none focus:border-white/20 focus:bg-white/5 transition-all shadow-lg resize-none"
-              value={formData.description}
-              onChange={e => setFormData({ ...formData, description: e.target.value })}
-              placeholder="Describe scope, reward tiers, and submission criteria..."
-            />
+
+          <div className="space-y-4">
+            <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Management.Directives</label>
+            <div className="relative group">
+               <Cpu className="absolute left-6 top-8 text-white/10 group-hover:text-indigo-400 transition-colors" size={18} />
+               <textarea 
+                 required
+                 className="w-full bg-white/[0.03] border border-white/5 rounded-[40px] pl-16 pr-8 py-8 text-white text-base font-medium h-48 outline-none focus:border-indigo-500/40 focus:bg-white/[0.05] transition-all shadow-2xl resize-none leading-relaxed"
+                 value={formData.description}
+                 onChange={e => setFormData({ ...formData, description: e.target.value })}
+                 placeholder="Scope definition, validation criteria, and rewards protocol..."
+               />
+            </div>
           </div>
-          <div className="grid grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Lower Reward Ceiling ($)</label>
+
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-4">
+              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Lower Floor ($)</label>
               <input 
                 type="number"
-                className="w-full bg-white/3 border border-white/5 rounded-2xl px-6 py-4 text-white text-[15px] font-medium transition-all"
+                className="w-full bg-white/[0.03] border border-white/5 rounded-[28px] px-8 py-6 text-white text-base font-black italic transition-all outline-none focus:border-indigo-500/40"
                 value={formData.reward_min}
                 onChange={e => setFormData({ ...formData, reward_min: Number(e.target.value) })}
               />
             </div>
-            <div className="space-y-3">
-              <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Upper Reward Ceiling ($)</label>
+            <div className="space-y-4">
+              <label className="subtle-mono text-[9px] text-white/20 ml-6 uppercase tracking-[0.3em] font-black italic">Upper Ceiling ($)</label>
               <input 
                 type="number"
-                className="w-full bg-white/3 border border-white/5 rounded-2xl px-6 py-4 text-white text-[15px] font-medium transition-all"
+                className="w-full bg-white/[0.03] border border-white/5 rounded-[28px] px-8 py-6 text-white text-base font-black italic transition-all outline-none focus:border-indigo-500/40"
                 value={formData.reward_max}
                 onChange={e => setFormData({ ...formData, reward_max: Number(e.target.value) })}
               />
             </div>
           </div>
-          <motion.button 
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full py-5 bg-white text-black font-black rounded-3xl hover:bg-white/90 transition-all uppercase tracking-widest text-[13px] shadow-[0_20px_40px_rgba(255,255,255,0.1)] mt-4"
-          >
-            {isSubmitting ? 'Deploying...' : 'Initialize Program'}
-          </motion.button>
+
+          <div className="pt-6">
+            <motion.button 
+              whileHover={{ scale: 1.02, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-7 bg-white text-black font-black rounded-[32px] hover:bg-neutral-100 transition-all uppercase tracking-[0.4em] text-xs shadow-[0_30px_60px_rgba(255,255,255,0.1)] mt-4 flex items-center justify-center gap-4 italic"
+            >
+              <Cloud size={16} /> {isSubmitting ? 'Deploying...' : 'Initialize Program'}
+            </motion.button>
+          </div>
         </form>
       </motion.div>
     </div>

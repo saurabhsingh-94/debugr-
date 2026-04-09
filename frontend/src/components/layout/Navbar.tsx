@@ -2,7 +2,16 @@
 
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  ArrowLeft, 
+  Settings, 
+  LayoutExplore, 
+  Trophy, 
+  Target,
+  Wallet,
+  Menu,
+  ChevronRight
+} from 'lucide-react';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { springSoft } from '@/lib/animations';
 import ProfileAvatar from '@/components/profile/ProfileAvatar';
@@ -56,10 +65,10 @@ export default function Navbar() {
             whileHover={{ scale: 1.1, x: -2 }}
             whileTap={{ scale: 0.9 }}
             onClick={() => window.history.back()}
-            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all text-lg"
+            className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all"
             title="Go Back"
           >
-            ←
+            <ArrowLeft size={16} />
           </motion.button>
 
           <Link href="/" className="group">
@@ -68,10 +77,10 @@ export default function Navbar() {
               whileTap={{ scale: 0.95 }}
               className="flex items-center gap-3"
             >
-              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 via-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
                 <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
               </div>
-              <span className="hidden sm:block text-xl font-black tracking-tight text-white">
+              <span className="hidden sm:block text-xl font-black tracking-tight text-white italic">
                 Debugr
               </span>
             </motion.div>
@@ -84,20 +93,20 @@ export default function Navbar() {
             {!loading && (() => {
               const navItems = !user 
                 ? [
-                    { label: 'Explore', href: '/explore' },
-                    { label: 'Bounties', href: '/programs' },
-                    { label: 'Rankings', href: '/leaderboard' },
+                    { label: 'Explore', href: '/explore', icon: null },
+                    { label: 'Bounties', href: '/programs', icon: null },
+                    { label: 'Rankings', href: '/leaderboard', icon: null },
                   ]
                 : user.role === 'hacker'
                 ? [
-                    { label: 'Explore', href: '/explore' },
-                    { label: 'Bounties', href: '/programs' },
-                    { label: 'Rankings', href: '/leaderboard' },
+                    { label: 'Explore', href: '/explore', icon: null },
+                    { label: 'Bounties', href: '/programs', icon: null },
+                    { label: 'Rankings', href: '/leaderboard', icon: null },
                   ]
                 : [
-                    { label: 'Explore', href: '/explore' },
-                    { label: 'Programs', href: '/programs' },
-                    { label: 'Payments', href: '/add-funds' },
+                    { label: 'Explore', href: '/explore', icon: null },
+                    { label: 'Programs', href: '/programs', icon: null },
+                    { label: 'Payments', href: '/add-funds', icon: null },
                   ];
 
               return navItems.map((item) => (
@@ -121,7 +130,7 @@ export default function Navbar() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0"
+                        className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0 shadow-lg"
                         transition={springSoft}
                       />
                     )}
@@ -162,7 +171,7 @@ export default function Navbar() {
                     whileTap={{ scale: 0.9 }}
                     className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
                   >
-                    <span className="text-[13px]">⚙️</span>
+                    <Settings size={16} className="text-white/40" />
                   </motion.div>
                 </Link>
               </div>
@@ -175,11 +184,11 @@ export default function Navbar() {
                 </Link>
                 <Link href="/signup">
                   <motion.div 
-                    whileHover={{ scale: 1.05, y: -1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-white/90 transition-all shadow-xl"
+                    whileHover={{ scale: 1.02, y: -1 }}
+                    whileTap={{ scale: 0.98 }}
+                    className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
                   >
-                    Join
+                    <span className="relative z-10 flex items-center gap-2">Initialize <ChevronRight size={14} /></span>
                   </motion.div>
                 </Link>
               </div>

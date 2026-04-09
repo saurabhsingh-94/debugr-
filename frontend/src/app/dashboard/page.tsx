@@ -8,6 +8,16 @@ import CompanyDashboard from '@/components/dashboard/CompanyDashboard';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { fadeInUp } from '@/lib/animations';
+import { 
+  Shield, 
+  User, 
+  Terminal, 
+  Power, 
+  Fingerprint, 
+  Lock, 
+  Activity,
+  Globe
+} from 'lucide-react';
 
 interface User {
   email: string;
@@ -55,75 +65,108 @@ export default function Dashboard() {
 
   if (loading) {
     return (
-      <div className="bg-bg min-h-screen flex flex-col items-center justify-center p-6">
-        <div className="w-12 h-12 border-2 border-white/5 border-t-white/40 rounded-full animate-spin mb-8" />
-        <p className="subtle-mono text-[10px] animate-pulse">Initializing Interface...</p>
+      <div className="bg-[#050505] min-h-screen flex flex-col items-center justify-center p-6 gap-6">
+        <div className="relative w-16 h-16">
+          <div className="absolute inset-0 border-2 border-white/5 rounded-full" />
+          <div className="absolute inset-0 border-2 border-t-indigo-500 border-r-transparent border-b-transparent border-l-transparent rounded-full animate-spin" />
+          <div className="absolute inset-4 bg-indigo-500/10 rounded-full animate-pulse" />
+        </div>
+        <p className="subtle-mono text-[10px] text-white/20 uppercase tracking-[0.4em] animate-pulse italic">Initializing Node...</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-[#080808] min-h-screen text-white selection:bg-white/10">
+    <div className="bg-[#080808] min-h-screen text-white selection:bg-indigo-500/20">
       <Navbar />
-      <div className="fixed inset-0 z-0 opacity-[0.02] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      <main className="relative max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+      {/* Global Ambience */}
+      <div className="fixed inset-0 z-0 opacity-[0.03] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="fixed top-0 left-0 w-full h-[500px] bg-linear-to-b from-indigo-500/5 to-transparent pointer-events-none z-0" />
+      <div className="fixed bottom-0 right-0 w-[40%] h-[40%] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none z-0" />
+
+      <main className="relative max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 z-10 grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
         
-        {/* Left Aspect: Identity & Status */}
-        <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-40">
+        {/* Left Aspect: Identity & Protocol Status */}
+        <div className="lg:col-span-4 space-y-12 lg:sticky lg:top-40">
           <motion.div 
             variants={fadeInUp(0.05)}
             initial="hidden"
             animate="visible"
           >
-            <div className="flex items-center gap-3 mb-6">
-              <span className="h-px w-8 bg-indigo-500" />
-              <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.3em] font-black">Active Terminal</p>
+            <div className="flex items-center gap-4 mb-8">
+              <span className="h-[1px] w-10 bg-indigo-500/40" />
+              <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.4em] font-black italic">[ SESSION.ACTIVE ]</p>
             </div>
-            <h1 className="text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8] mb-8">
-              System <span className="text-white/20">Access.</span>
+
+            <h1 className="text-7xl font-black italic tracking-tighter uppercase leading-[0.8] mb-12">
+              Identity <br />
+              <span className="text-white/5 italic">Vector.</span>
             </h1>
             
-            <div className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 backdrop-blur-3xl shadow-2xl space-y-8">
-              <div className="flex items-center gap-6">
-                <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center text-2xl font-black text-white shadow-inner shrink-0">
-                  {user?.email[0].toUpperCase()}
-                </div>
-                <div className="space-y-1 overflow-hidden">
-                  <h2 className="text-xl font-black tracking-tight text-white uppercase truncate">
-                    {user?.handle || user?.email.split('@')[0]}
-                  </h2>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                    <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">Connected Node</p>
+            <div className="p-10 rounded-[48px] glass-panel border border-white/5 backdrop-blur-3xl shadow-2xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/[0.02] rounded-full -translate-y-1/2 translate-x-1/2 blur-2xl group-hover:bg-indigo-500/[0.05] transition-all" />
+              
+              <div className="space-y-10 relative z-10">
+                <div className="flex items-center gap-8">
+                  <div className="w-20 h-20 rounded-3xl bg-[#0a0a0a] border border-white/10 flex items-center justify-center text-3xl font-black text-white shadow-2xl group-hover:scale-105 transition-transform duration-500 overflow-hidden relative">
+                    <div className="absolute inset-0 bg-linear-to-br from-indigo-500/10 to-transparent" />
+                    {user?.email[0].toUpperCase()}
+                  </div>
+                  <div className="space-y-3">
+                    <h2 className="text-2xl font-black tracking-tight text-white uppercase italic truncate max-w-[200px]">
+                      {user?.handle || user?.email.split('@')[0]}
+                    </h2>
+                    <div className="flex items-center gap-3">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_12px_rgba(16,185,129,0.5)]" />
+                      <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">Verified node</p>
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="space-y-4 pt-6 border-t border-white/5">
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/20">
-                  <span>Role Classification</span>
-                  <span className="text-indigo-400">{user?.role === 'hacker' ? 'Hacker' : 'Registry Admin'}</span>
+                <div className="space-y-6 pt-10 border-t border-white/5">
+                  <div className="flex justify-between items-center group/item hover:bg-white/5 p-4 rounded-2xl transition-all cursor-default">
+                    <div className="flex items-center gap-4">
+                      <Shield size={14} className="text-white/20 group-hover/item:text-indigo-400 transition-colors" />
+                      <span className="subtle-mono text-[9px] font-black uppercase tracking-widest text-white/30">Role.Class</span>
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-indigo-400 italic">
+                      {user?.role === 'hacker' ? 'Researcher' : 'Core Admin'}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center group/item hover:bg-white/5 p-4 rounded-2xl transition-all cursor-default">
+                    <div className="flex items-center gap-4">
+                      <Fingerprint size={14} className="text-white/20 group-hover/item:text-indigo-400 transition-colors" />
+                      <span className="subtle-mono text-[9px] font-black uppercase tracking-widest text-white/30">Node.Level</span>
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-white/60 italic">Tier_1_Elite</span>
+                  </div>
+                  <div className="flex justify-between items-center group/item hover:bg-white/5 p-4 rounded-2xl transition-all cursor-default">
+                    <div className="flex items-center gap-4">
+                      <Activity size={14} className="text-white/20 group-hover/item:text-indigo-400 transition-colors" />
+                      <span className="subtle-mono text-[9px] font-black uppercase tracking-widest text-white/30">Uptime</span>
+                    </div>
+                    <span className="text-[10px] font-black uppercase tracking-widest text-emerald-500/60 italic">99.9%</span>
+                  </div>
                 </div>
-                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/20">
-                  <span>Security Level</span>
-                  <span className="text-white/60">Tier 1 Elite</span>
-                </div>
-              </div>
 
-              <button 
-                onClick={handleLogout}
-                className="w-full py-4 rounded-2xl bg-white/5 border border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all italic"
-              >
-                Terminate Session
-              </button>
+                <motion.button 
+                  onClick={handleLogout}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full py-5 rounded-3xl bg-white/[0.02] border border-white/5 text-[10px] font-black uppercase tracking-[0.3em] text-white/20 hover:text-white hover:bg-rose-500/10 hover:border-rose-500/20 transition-all italic flex items-center justify-center gap-3 mt-6"
+                >
+                  <Power size={12} />
+                  Terminate Session
+                </motion.button>
+              </div>
             </div>
           </motion.div>
         </div>
 
         {/* Right Aspect: Operational Feed */}
         <div className="lg:col-span-8">
-          <section className="animate-in fade-in duration-700 delay-150 fill-mode-both">
+          <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 fill-mode-both">
             {user?.role === 'company' ? <CompanyDashboard /> : <HackerDashboard />}
           </section>
         </div>
@@ -132,3 +175,4 @@ export default function Dashboard() {
     </div>
   );
 }
+

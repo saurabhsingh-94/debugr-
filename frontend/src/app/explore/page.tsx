@@ -4,7 +4,19 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { fetchWithAuth } from '@/lib/api';
-import { inView, blurReveal, staggerContainer } from '@/lib/animations';
+import { fadeInUp, blurReveal, staggerContainer } from '@/lib/animations';
+import { 
+  Globe, 
+  Cloud, 
+  Smartphone, 
+  Box, 
+  ArrowRight, 
+  Target, 
+  Activity,
+  Terminal,
+  Shield,
+  Search
+} from 'lucide-react';
 
 interface Program {
   id: string;
@@ -25,7 +37,6 @@ export default function ExplorePage() {
         if (res.ok) {
           const data = await res.json();
           if (data.success) {
-            // Sort by reward_max to show "High Impact" first
             const sorted = [...data.programs].sort((a, b) => Number(b.reward_max) - Number(a.reward_max));
             setFeatured(sorted.slice(0, 3));
           }
@@ -40,111 +51,169 @@ export default function ExplorePage() {
   }, []);
 
   const categories = [
-    { title: 'Web Apps', icon: '🌐', count: 24, color: 'indigo' },
-    { title: 'Cloud Security', icon: '☁️', count: 12, color: 'emerald' },
-    { title: 'Mobile Apps', icon: '📱', count: 8, color: 'rose' },
-    { title: 'Blockchain', icon: '⛓️', count: 15, color: 'amber' }
+    { title: 'Web Protocol', icon: <Globe size={24} />, count: 24, label: 'ASSET_WEB' },
+    { title: 'Cloud Infra', icon: <Cloud size={24} />, count: 12, label: 'INFRA_SYSTEM' },
+    { title: 'Mobile Client', icon: <Smartphone size={24} />, count: 8, label: 'ENDPOINT_MOBILE' },
+    { title: 'Data Assets', icon: <Box size={24} />, count: 15, label: 'NODE_DIST' }
   ];
 
   return (
-    <div className="min-h-screen bg-[#080808] text-white selection:bg-white/10">
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] selection:bg-indigo-500/30 overflow-x-hidden">
+      {/* Background Ambience */}
+      <div className="fixed inset-0 z-0 pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+      </div>
+
       <Navbar />
 
-      <main className="pt-32 pb-20 px-6 lg:px-[8%]">
+      <main className="relative z-10 pt-48 pb-32 px-6 lg:px-[8%]">
         
         {/* Hero Section */}
-        <section className="mb-24">
-          <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible">
-            <motion.p variants={blurReveal} className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4">Discovery</motion.p>
+        <section className="mb-32">
+          <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-6">
+            <motion.div variants={fadeInUp()} className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
+              <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ REGISTRY.CORE ]</span>
+              <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Live Discovery Mode</span>
+            </motion.div>
             <motion.h1 
               variants={blurReveal} 
-              className="text-6xl md:text-8xl font-black italic tracking-tighter leading-[0.9] uppercase"
+              className="text-7xl md:text-9xl font-black italic tracking-tighter leading-[0.85] uppercase"
             >
-              Find your next <br /><span className="text-white/20">Target.</span>
+              Asset <br /><span className="text-white/5 italic">Registry.</span>
             </motion.h1>
+            <motion.p variants={fadeInUp()} className="text-xl text-white/30 font-medium italic max-w-xl leading-relaxed">
+              Analyze and engage with verified technical assets across high-stakes digital environments. Secure your reputation through validated impact.
+            </motion.p>
           </motion.div>
         </section>
 
-        {/* Categories Grid */}
-        <section className="mb-32">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        {/* Categories Grid - Engineering View */}
+        <section className="mb-48">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {categories.map((cat, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
-                whileHover={{ scale: 1.02, y: -5 }}
-                className="glass-panel p-8 rounded-[40px] border border-white/5 bg-white/[0.01] transition-all hover:bg-white/[0.03] cursor-pointer group"
+                whileHover={{ y: -8, scale: 1.02 }}
+                className="group p-10 glass-panel border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-indigo-500/20 transition-all rounded-[40px] cursor-pointer shadow-2xl overflow-hidden relative"
               >
-                <div className="text-4xl mb-6 group-hover:scale-110 transition-transform">{cat.icon}</div>
-                <h3 className="text-lg font-black italic uppercase mb-1">{cat.title}</h3>
-                <p className="text-[10px] font-black text-white/20 uppercase tracking-widest">{cat.count} Operations</p>
+                <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center mb-10 group-hover:bg-indigo-500/10 group-hover:scale-110 group-hover:text-indigo-400 transition-all text-white/40 shadow-inner">
+                  {cat.icon}
+                </div>
+                <div className="space-y-3 relative z-10">
+                   <p className="text-[9px] font-mono font-black text-indigo-400/40 uppercase tracking-[0.3em]">{cat.label}</p>
+                   <h3 className="text-2xl font-black italic uppercase text-white/80 group-hover:text-white transition-colors">{cat.title}</h3>
+                   <div className="flex items-center gap-3 pt-2">
+                      <Activity size={12} className="text-white/10 animate-pulse" />
+                      <p className="text-[10px] font-black text-white/20 uppercase tracking-widest">{cat.count} Validated Units</p>
+                   </div>
+                </div>
               </motion.div>
             ))}
           </div>
         </section>
 
-        {/* Featured / High Impact Tier */}
-        <section className="mb-32">
-          <div className="flex justify-between items-end mb-12">
-            <div>
-              <p className="subtle-mono text-white/20 text-[10px] uppercase tracking-widest mb-2 font-black">Top Tiers</p>
-              <h2 className="text-4xl font-black italic uppercase tracking-tighter">Featured <span className="text-white/20">Programs.</span></h2>
+        {/* Featured / High Impact Tier - Dossier Style */}
+        <section className="mb-48">
+          <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+            <div className="space-y-4">
+              <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">[ PRIORITY_VALUATION ]</p>
+              <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-none">High-Impact <span className="text-white/5">Tiers.</span></h2>
             </div>
-            <Link href="/programs" className="text-[10px] font-black uppercase tracking-widest text-white/40 hover:text-white transition-colors pb-1 border-b border-white/10">View Directory →</Link>
+            <Link href="/programs" className="group flex items-center gap-4 text-white/20 hover:text-white transition-all text-[11px] font-black uppercase tracking-[0.2em] pb-5 border-b-2 border-white/5 hover:border-indigo-500/40 italic">
+               Access Asset Directory <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {loading ? (
               [1, 2, 3].map(i => (
-                <div key={i} className="h-[300px] rounded-[48px] bg-white/[0.02] animate-pulse border border-white/5" />
+                <div key={i} className="h-[520px] rounded-[64px] bg-white/[0.01] animate-pulse border border-white/5 shadow-2xl" />
               ))
             ) : (
               featured.map((p, i) => (
                 <motion.div
                   key={p.id}
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + i * 0.1 }}
-                  className="group relative p-10 glass-panel border border-white/5 hover:border-white/10 transition-all rounded-[48px] bg-white/[0.01] overflow-hidden"
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: 0.2 + i * 0.1 }}
+                  whileHover={{ y: -16, scale: 1.01 }}
+                  className="group relative p-14 glass-panel border border-white/5 hover:border-indigo-500/30 transition-all rounded-[64px] bg-white/[0.01] overflow-hidden flex flex-col justify-between h-[580px] shadow-3xl"
                 >
-                  <div className="absolute top-0 right-0 p-8">
-                     <span className="text-[9px] font-black uppercase tracking-widest px-3 py-1 rounded-full border border-white/10 text-white/40">{p.type}</span>
+                  <div className="absolute top-0 right-0 p-12">
+                     <span className="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-white/10 text-white/20 group-hover:text-white group-hover:border-indigo-500/40 transition-all italic">{p.type} Access</span>
                   </div>
-                  <div className="w-14 h-14 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center font-black text-xl mb-12 group-hover:scale-110 transition-transform">{p.name[0]}</div>
-                  <h3 className="text-2xl font-black text-white mb-2 italic uppercase">{p.name}</h3>
-                  <div className="space-y-1">
-                    <p className="text-[10px] font-black text-white/20 uppercase tracking-widest">Max Reward</p>
-                    <p className="text-3xl font-black text-white tracking-tighter italic">${Number(p.reward_max).toLocaleString()}</p>
+                  
+                  <div>
+                    <div className="w-16 h-16 bg-[#080808] border border-white/10 rounded-2xl flex items-center justify-center font-black text-2xl italic mb-14 group-hover:bg-white group-hover:text-black transition-all shadow-xl">{p.name[0]}</div>
+                    <div className="space-y-4">
+                       <p className="text-[9px] font-mono text-white/10 uppercase tracking-[0.4em]">[ ASSETID_{p.id.slice(0, 4)} ]</p>
+                       <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-tight group-hover:text-indigo-400 transition-colors">{p.name}</h3>
+                    </div>
                   </div>
-                  <Link href={`/programs/${p.id}`}>
-                    <button className="mt-8 w-full py-4 bg-white/5 hover:bg-white text-white hover:text-black font-black text-[10px] uppercase tracking-widest rounded-2xl transition-all italic border border-white/5">View Details</button>
-                  </Link>
+
+                  <div className="space-y-10">
+                    <div className="space-y-3">
+                      <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">MAX_VALUATION</p>
+                      <p className="text-5xl font-black text-white tracking-tighter italic leading-none">${Number(p.reward_max).toLocaleString()}</p>
+                    </div>
+                    <Link href={`/programs/${p.id}`} className="block">
+                      <button className="w-full py-6 bg-white/[0.03] hover:bg-white text-white hover:text-black font-black text-[11px] uppercase tracking-[0.4em] rounded-full transition-all italic border border-white/5 shadow-2xl">Initialize Analysis</button>
+                    </Link>
+                  </div>
                 </motion.div>
               ))
             )}
           </div>
         </section>
 
-        {/* Call to Action Mini */}
-        <section className="py-20">
-           <div className="glass-panel p-16 rounded-[60px] border border-white/5 bg-white/[0.01] flex flex-col items-center text-center relative overflow-hidden">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.1),transparent_70%)]" />
-             <h2 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-6 relative z-10">Looking for <span className="text-white/20">More?</span></h2>
-             <p className="text-white/30 text-sm italic font-medium max-w-lg mb-8 relative z-10">Join our private network for access to exclusive, invitation-only bounty programs.</p>
-             <Link href="/signup" className="relative z-10">
-               <button className="px-10 py-5 bg-white text-black font-black text-[10px] uppercase tracking-widest rounded-2xl hover:scale-105 transition-all italic shadow-2xl">Join Private Network</button>
-             </Link>
+        {/* Call to Action - System Join */}
+        <section className="py-32">
+           <div className="glass-panel p-24 md:p-32 rounded-[80px] border border-white/5 bg-[#060606] flex flex-col items-center text-center relative overflow-hidden shadow-[0_50px_150px_rgba(0,0,0,0.8)]">
+             <div className="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-indigo-500/20 to-transparent" />
+             <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.1),transparent_70%)] opacity-50" />
+             
+             <div className="relative z-10 space-y-10">
+                <Shield size={48} className="text-white/10 mx-auto mb-4 animate-pulse" />
+                <h2 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter leading-[0.8] mb-8">Elevate your <br /><span className="text-white/5 italic">Authority.</span></h2>
+                <p className="text-white/20 text-xl font-medium italic max-w-xl mx-auto leading-relaxed">Join our private network for prioritized triage access to exclusive, invitation-only asset environments.</p>
+                <div className="pt-8 flex justify-center">
+                  <Link href="/signup">
+                    <motion.button 
+                      whileHover={{ scale: 1.05, y: -4 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="px-16 py-8 bg-white text-black font-black text-[11px] uppercase tracking-[0.4em] rounded-full hover:bg-neutral-200 transition-all italic shadow-[0_30px_70px_rgba(255,255,255,0.15)] flex items-center gap-6"
+                    >
+                      Join Private Collective <ChevronRight size={18} />
+                    </motion.button>
+                  </Link>
+                </div>
+             </div>
            </div>
         </section>
 
       </main>
 
-      <footer className="py-20 border-t border-white/5 text-center">
-        <p className="text-white/10 text-[10px] font-black uppercase tracking-[0.4em]">
-          &copy; 2026 Debugr Platform. Exploratory Branch.
-        </p>
+      <footer className="py-24 border-t border-white/5 bg-[#030303]">
+        <div className="max-w-[1400px] mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-12">
+          <div className="flex items-center gap-6 group cursor-pointer">
+             <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center font-black italic group-hover:bg-indigo-500 group-hover:text-white transition-all shadow-xl">D</div>
+             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20">DEBUGR_EXPLORE</p>
+          </div>
+          <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.5em] italic order-3 md:order-2">
+            Asset Discovery Layer protocol v2.4.0
+          </p>
+          <div className="flex gap-10 order-2 md:order-3">
+             <span className="text-[9px] font-mono text-white/10 hover:text-white transition-all cursor-pointer uppercase tracking-[0.4em] italic">Programs</span>
+             <span className="text-[9px] font-mono text-white/10 hover:text-white transition-all cursor-pointer uppercase tracking-[0.4em] italic">Terminal</span>
+          </div>
+        </div>
       </footer>
     </div>
   );

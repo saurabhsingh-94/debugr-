@@ -1,11 +1,13 @@
-'use client';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
-import Navbar from '@/components/layout/Navbar';
-import { blurReveal, staggerContainer } from '@/lib/animations';
-import { setCookie, API_URL } from '@/lib/api';
+import { 
+  ShieldCheck, 
+  Activity, 
+  ArrowLeft, 
+  ArrowRight,
+  Fingerprint,
+  Lock,
+  ChevronRight
+} from 'lucide-react';
+import { getCookie, setCookie, API_URL } from '@/lib/api';
 
 export default function SignIn() {
   const router = useRouter();
@@ -41,11 +43,11 @@ export default function SignIn() {
   };
 
   return (
-    <div className="min-h-screen bg-[#080808] text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30">
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30 font-sans">
       {/* Background Ambience */}
       <div className="fixed inset-0 z-0">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(157,80,187,0.08)_0%,transparent_50%)]" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.02] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
       </div>
       
       <Navbar />
@@ -53,7 +55,7 @@ export default function SignIn() {
       <main className="w-full min-h-screen relative z-10 lg:grid lg:grid-cols-2">
         
         {/* Left Side: Context & Branding (Desktop Only) */}
-        <section className="hidden lg:flex flex-col justify-center p-24 relative overflow-hidden">
+        <section className="hidden lg:flex flex-col justify-center p-24 relative overflow-hidden bg-white/[0.01]">
           <motion.div 
             variants={staggerContainer(0.1, 0.2)}
             initial="hidden"
@@ -61,32 +63,40 @@ export default function SignIn() {
             className="max-w-xl space-y-12 relative z-10"
           >
             <motion.div variants={blurReveal}>
-              <p className="subtle-mono text-[10px] text-indigo-400 uppercase tracking-[0.4em] mb-4 font-black italic">Access Your Account</p>
+              <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-8">
+                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ CORE.AUTH ]</span>
+                <span className="w-1 h-1 rounded-full bg-indigo-400" />
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">ENCRYPTED_SESSION</span>
+              </div>
               <h1 className="text-7xl font-black italic tracking-tighter leading-[0.9] uppercase">
-                Welcome<br /><span className="text-white/20">Back.</span>
+                Access <br /><span className="text-white/20">Protocol.</span>
               </h1>
             </motion.div>
 
-            <motion.div variants={blurReveal} className="space-y-8">
-              <div className="flex gap-6 items-start">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">🤝</div>
+            <motion.div variants={blurReveal} className="space-y-10">
+              <div className="flex gap-8 items-start group">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/10 group-hover:scale-110 transition-all">
+                   <ShieldCheck className="text-indigo-400/60" size={24} />
+                </div>
                 <div>
-                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Secure Sign-In</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Your data is safe with us. We use industry-standard encryption to keep your account secure.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Authenticated Interface</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Secure entry via AES-256 encrypted session handler. We prioritize researcher anonymity and asset integrity.</p>
                 </div>
               </div>
-              <div className="flex gap-6 items-start">
-                <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-xl shrink-0">📈</div>
+              <div className="flex gap-8 items-start group">
+                <div className="w-14 h-14 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/10 group-hover:scale-110 transition-all">
+                   <Activity className="text-indigo-400/60" size={24} />
+                </div>
                 <div>
-                  <h2 className="text-sm font-black uppercase italic tracking-widest text-white mb-1">Track Progress</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed">Check your latest bounties and rankings across the platform.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Live Coordination</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Directly reconnect with active programs and track real-time triage updates across your dashboard.</p>
                 </div>
               </div>
             </motion.div>
           </motion.div>
 
           {/* Background Ambient Glow */}
-          <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[120px] rounded-full opacity-40 pointer-events-none" />
+          <div className="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-indigo-500/10 blur-[150px] rounded-full opacity-40 pointer-events-none" />
         </section>
 
         {/* Right Side: Authentication Vessel */}
@@ -103,53 +113,61 @@ export default function SignIn() {
                 variants={blurReveal}
                 className="text-5xl font-black italic tracking-tighter uppercase leading-[0.9]"
               >
-                Login.
+                Sign In.
               </motion.h1>
             </div>
 
             {/* Form Vessel */}
             <motion.div 
               variants={blurReveal}
-              className="glass-panel p-8 md:p-12 rounded-[48px] shadow-2xl border border-white/10 bg-white/[0.01] backdrop-blur-2xl"
+              className="glass-panel p-10 md:p-14 rounded-[56px] shadow-[0_30px_100px_rgba(0,0,0,0.5)] border border-white/5 bg-white/[0.01] backdrop-blur-3xl relative overflow-hidden"
             >
-              <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-                <div className="flex flex-col gap-3">
-                  <label className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">
-                    Username or email
+              <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
+              
+              <form onSubmit={handleSubmit} className="flex flex-col gap-10 relative z-10">
+                <div className="flex flex-col gap-4">
+                  <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
+                    [ USERNAME_IDENTITY ]
                   </label>
-                  <input 
-                    type="text" 
-                    required
-                    value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    placeholder="Enter your username"
-                    className="input-focus-glow w-full py-5 px-7 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner placeholder:text-white/10"
-                  />
+                  <div className="relative group">
+                    <Fingerprint className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
+                    <input 
+                      type="text" 
+                      required
+                      value={formData.username}
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                      placeholder="Enter handle or email"
+                      className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                    />
+                  </div>
                 </div>
 
-                <div className="flex flex-col gap-3">
-                  <label className="text-[9px] font-black text-white/20 uppercase tracking-[0.3em] ml-2">
-                    Password
+                <div className="flex flex-col gap-4">
+                  <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
+                    [ CRYPTO_PASSPHRASE ]
                   </label>
-                  <input 
-                    type="password" 
-                    required
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    placeholder="••••••••"
-                    className="input-focus-glow w-full py-5 px-7 rounded-2xl bg-white/2 border border-white/5 text-white text-sm transition-all shadow-inner placeholder:text-white/10"
-                  />
+                  <div className="relative group">
+                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
+                    <input 
+                      type="password" 
+                      required
+                      value={formData.password}
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      placeholder="••••••••"
+                      className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                    />
+                  </div>
                 </div>
 
                 <AnimatePresence>
                   {error && (
                     <motion.div 
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="text-rose-500 text-[10px] font-black text-center p-4 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic"
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -10 }}
+                      className="text-rose-400 text-[10px] font-mono font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic"
                     >
-                      !! {error} !!
+                      ERR: {error}
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -159,9 +177,11 @@ export default function SignIn() {
                   whileTap={{ scale: 0.98 }}
                   type="submit"
                   disabled={loading}
-                  className="w-full py-6 text-sm font-black bg-white text-black rounded-2xl shadow-xl transition-all uppercase tracking-[0.2em] italic hover:bg-white/90"
+                  className="group w-full py-6 text-xs font-black bg-white text-black rounded-full shadow-2xl transition-all uppercase tracking-[0.3em] italic hover:bg-neutral-200 flex items-center justify-center gap-3"
                 >
-                  {loading ? 'Signing in...' : 'Sign In'}
+                  {loading ? 'Initializing...' : (
+                    <>Establish Connection <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" /></>
+                  )}
                 </motion.button>
               </form>
             </motion.div>
@@ -169,7 +189,7 @@ export default function SignIn() {
             {/* Footer Link */}
             <motion.div variants={blurReveal} className="text-center">
               <p className="text-[12px] text-white/20 font-medium tracking-tight">
-                New identity? <Link href="/signup" className="text-white font-black hover:text-indigo-400 transition-colors uppercase tracking-widest text-[10px] ml-2">Register Here</Link>
+                New identity? <Link href="/signup" className="group text-white font-black hover:text-indigo-400 transition-all uppercase tracking-[0.2em] text-[10px] ml-3 flex inline-flex items-center gap-2">Initialize Now <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" /></Link>
               </p>
             </motion.div>
           </motion.div>
