@@ -141,14 +141,26 @@ export default function MyProfile() {
                   </div>
                 </div>
 
-                <motion.button 
-                  onClick={() => setIsEditModalOpen(true)}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="w-full mt-10 py-4 px-6 bg-white text-black rounded-2xl font-black text-[13px] shadow-2xl transition-all"
-                >
-                  Edit Profile
-                </motion.button>
+                <div className="w-full flex flex-col gap-3 mt-10">
+                  <Link href="/dashboard" className="w-full">
+                    <motion.button 
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-4 px-6 bg-linear-to-br from-indigo-500 to-purple-600 text-white rounded-2xl font-black text-[13px] shadow-[0_10px_30px_rgba(99,102,241,0.3)] uppercase tracking-widest italic"
+                    >
+                      Access Dashboard
+                    </motion.button>
+                  </Link>
+
+                  <motion.button 
+                    onClick={() => setIsEditModalOpen(true)}
+                    whileHover={{ scale: 1.02, backgroundColor: 'rgba(255,255,255,0.05)' }}
+                    whileTap={{ scale: 0.98 }}
+                    className="w-full py-4 px-6 bg-transparent border border-white/10 text-white/60 rounded-2xl font-black text-[13px] transition-all uppercase tracking-widest"
+                  >
+                    Edit Profile
+                  </motion.button>
+                </div>
               </div>
             </div>
 

@@ -200,6 +200,21 @@ export default function SettingsPage() {
                   )}
                 </button>
               ))}
+
+              <div className="h-px bg-white/5 my-4 mx-4 hidden lg:block" />
+              
+              <button 
+                onClick={() => {
+                  import('@/lib/api').then(m => {
+                    m.deleteCookie('debugr_token');
+                    window.location.href = '/signin';
+                  });
+                }}
+                className="flex items-center gap-5 px-6 py-5 rounded-3xl text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/5 transition-all duration-300 text-left whitespace-nowrap group"
+              >
+                <span className="text-xl group-hover:scale-110 transition-transform">🚪</span>
+                <span className="font-black text-[13px] uppercase tracking-tighter italic leading-none">Logout</span>
+              </button>
             </div>
           </motion.aside>
 

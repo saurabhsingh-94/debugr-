@@ -80,13 +80,13 @@ export default function Navbar() {
                 : user.role === 'hacker'
                 ? [
                     { label: 'Bounties', href: '/bounties' },
-                    { label: 'My Reports', href: '/dashboard' },
                     { label: 'Rankings', href: '/leaderboard' },
+                    { label: 'Settings', href: '/settings' },
                   ]
                 : [
-                    { label: 'Programs', href: '/dashboard' },
                     { label: 'Discovery', href: '/bounties' },
                     { label: 'Payments', href: '/add-funds' },
+                    { label: 'Settings', href: '/settings' },
                   ];
 
               return navItems.map((item) => (
@@ -142,13 +142,6 @@ export default function Navbar() {
                     </div>
                   </motion.div>
                 </Link>
-
-                <button 
-                  onClick={handleLogout} 
-                  className="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors"
-                >
-                  Logout
-                </button>
               </div>
             ) : (
               <div className="flex items-center gap-2 sm:gap-4">

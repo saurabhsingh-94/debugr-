@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { fetchWithAuth, API_URL } from '@/lib/api';
 
 interface EditProfileModalProps {
@@ -24,7 +25,6 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
   const [newSkill, setNewSkill] = useState('');
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState({ type: '', text: '' });
-  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (isOpen) {
@@ -33,10 +33,7 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
     } else {
       document.body.style.overflow = '';
     }
-    
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen, initialData]);
 
   const handleSave = async () => {
@@ -49,16 +46,16 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
       });
       const data = await res.json();
       if (data.success) {
-        setMessage({ type: 'success', text: 'Profile updated successfully!' });
+        setMessage({ type: 'success', text: 'Identity updated successfully' });
         setTimeout(() => {
           onSuccess();
           onClose();
         }, 800);
       } else {
-        setMessage({ type: 'error', text: data.error || 'Failed to update' });
+        setMessage({ type: 'error', text: data.error || 'Identity update failed' });
       }
     } catch {
-      setMessage({ type: 'error', text: 'Network error occurred' });
+      setMessage({ type: 'error', text: 'Transmission error occurred' });
     } finally {
       setSaving(false);
     }
@@ -75,144 +72,142 @@ export default function EditProfileModal({ isOpen, onClose, onSuccess, initialDa
     setFormData({ ...formData, skills: formData.skills.filter(s => s !== skill) });
   };
 
-  if (!isOpen) return null;
-
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 16 }}>
-      {/* Backdrop */}
-      <div 
-        style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.85)', backdropFilter: 'blur(8px)' }}
-        onClick={onClose}
-      />
-      
-      {/* Modal Content */}
-      <div 
-        ref={modalRef}
-        className="metallic-card up"
-        style={{ 
-          position: 'relative', 
-          width: '100%', 
-          maxWidth: 600, 
-          maxHeight: '90vh', 
-          borderRadius: 24, 
-          overflow: 'hidden', 
-          background: '#0e0e10',
-          display: 'flex',
-          flexDirection: 'column'
-        }}
-      >
-        {/* Header */}
-        <div style={{ padding: '20px 24px', borderBottom: '1px solid #1c1c21', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ fontSize: 20, fontWeight: 800, margin: 0, letterSpacing: '-0.02em' }}>Edit Profile</h2>
-          <button 
+    <AnimatePresence>
+      {isOpen && (
+        <div className="fixed inset-0 z-[1000] flex items-center justify-center p-4 md:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
             onClick={onClose}
-            style={{ background: 'none', border: 'none', color: '#6e6e73', cursor: 'pointer', fontSize: 24, padding: 4 }}
+            className="absolute inset-0 bg-black/80 backdrop-blur-xl"
+          />
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
+            animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+            exit={{ opacity: 0, scale: 0.9, y: 30, filter: 'blur(10px)' }}
+            transition={{ type: 'spring', stiffness: 300, damping: 25, mass: 0.8 }}
+            className="relative w-full max-w-[640px] glass-panel rounded-[40px] border border-white/10 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.5)] flex flex-col bg-[#0e0e10]"
           >
-            ×
-          </button>
-        </div>
+            {/* Header */}
+            <header className="px-10 py-8 border-b border-white/5 flex items-center justify-between">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.3em] text-indigo-400 mb-1">Preferences</p>
+                <h2 className="text-2xl font-black italic tracking-tighter uppercase">Edit Profile</h2>
+              </div>
+              <button 
+                onClick={onClose}
+                className="w-10 h-10 rounded-full flex items-center justify-center text-white/20 hover:text-white hover:bg-white/5 transition-all text-2xl"
+              >
+                ×
+              </button>
+            </header>
 
-        {/* Scrollable Body */}
-        <div style={{ padding: 24, overflowY: 'auto', flex: 1 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 20 }}>
-            <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Full Name</label>
-              <input 
-                type="text" 
-                value={formData.name}
-                onChange={e => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Your professional name"
-                style={{ width: '100%', background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, padding: '12px 16px', color: '#fff', fontSize: 14 }}
-              />
-            </div>
+            {/* Scrollable Content */}
+            <div className="p-10 overflow-y-auto max-h-[70vh] custom-scrollbar space-y-10">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div className="md:col-span-2 space-y-3">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Full Identity Name</label>
+                  <input 
+                    type="text" 
+                    value={formData.name}
+                    onChange={e => setFormData({ ...formData, name: e.target.value })}
+                    placeholder="E. Hunter"
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] font-bold outline-none transition-all"
+                  />
+                </div>
 
-            <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Bio</label>
-              <textarea 
-                value={formData.bio}
-                onChange={e => setFormData({ ...formData, bio: e.target.value })}
-                placeholder="Hacker at... expert in..."
-                style={{ width: '100%', minHeight: 80, background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, padding: '12px 16px', color: '#fff', fontSize: 14, resize: 'vertical' }}
-              />
-            </div>
+                <div className="md:col-span-2 space-y-3">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Researcher Bio</label>
+                  <textarea 
+                    value={formData.bio}
+                    onChange={e => setFormData({ ...formData, bio: e.target.value })}
+                    placeholder="Focused on infrastructure security and SQLi research..."
+                    className="input-focus-glow w-full min-h-[100px] bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] font-medium outline-none transition-all resize-none"
+                  />
+                </div>
 
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Location</label>
-              <input 
-                type="text" 
-                value={formData.location}
-                onChange={e => setFormData({ ...formData, location: e.target.value })}
-                placeholder="e.g. London / Remote"
-                style={{ width: '100%', background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, padding: '12px 16px', color: '#fff', fontSize: 14 }}
-              />
-            </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Operational Base</label>
+                  <input 
+                    type="text" 
+                    value={formData.location}
+                    onChange={e => setFormData({ ...formData, location: e.target.value })}
+                    placeholder="Remote / Global"
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] outline-none transition-all"
+                  />
+                </div>
 
-            <div>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Website</label>
-              <input 
-                type="text" 
-                value={formData.website}
-                onChange={e => setFormData({ ...formData, website: e.target.value })}
-                placeholder="https://yourblog.io"
-                style={{ width: '100%', background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, padding: '12px 16px', color: '#fff', fontSize: 14 }}
-              />
-            </div>
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Secure Link</label>
+                  <input 
+                    type="text" 
+                    value={formData.website}
+                    onChange={e => setFormData({ ...formData, website: e.target.value })}
+                    placeholder="https://..."
+                    className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-2xl px-6 py-4 text-white text-[14px] outline-none transition-all"
+                  />
+                </div>
 
-            <div style={{ gridColumn: 'span 2' }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 700, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 8 }}>Skills</label>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8, padding: '12px 16px', background: '#141416', border: '1px solid #2c2c2e', borderRadius: 12, minHeight: 48 }}>
-                {formData.skills.map(skill => (
-                  <span key={skill} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 10px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)', color: '#818cf8', fontSize: 12, borderRadius: 8, fontWeight: 600 }}>
-                    {skill}
-                    <button onClick={() => removeSkill(skill)} style={{ background: 'none', border: 'none', color: '#6366f1', cursor: 'pointer', padding: 0, fontSize: 14 }}>×</button>
-                  </span>
-                ))}
-                <input 
-                  type="text" 
-                  value={newSkill}
-                  onChange={e => setNewSkill(e.target.value)}
-                  onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSkill())}
-                  placeholder={formData.skills.length === 0 ? "Add skills (e.g. SQL Injection)..." : ""}
-                  style={{ flex: 1, minWidth: 100, background: 'none', border: 'none', color: '#fff', fontSize: 14, outline: 'none' }}
-                />
+                <div className="md:col-span-2 space-y-3">
+                  <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Skill Arsenal</label>
+                  <div className="flex flex-wrap gap-2 p-4 bg-white/2 border border-white/5 rounded-2xl min-h-[60px]">
+                    {formData.skills.map(skill => (
+                      <span key={skill} className="flex items-center gap-2 px-4 py-2 bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 text-[11px] font-black rounded-xl italic">
+                        {skill}
+                        <button onClick={() => removeSkill(skill)} className="hover:text-white text-lg leading-none mt-[-2px]">×</button>
+                      </span>
+                    ))}
+                    <input 
+                      type="text" 
+                      value={newSkill}
+                      onChange={e => setNewSkill(e.target.value)}
+                      onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addSkill())}
+                      placeholder={formData.skills.length === 0 ? "Add tactical skills..." : ""}
+                      className="flex-1 min-w-[120px] bg-transparent border-none text-white text-[13px] font-bold outline-none placeholder:text-white/10"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
 
-        {/* Footer */}
-        <div style={{ padding: '20px 24px', borderTop: '1px solid #1c1c21', background: '#141416', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: 12 }}>
-          {message.text && (
-            <span style={{ fontSize: 13, color: message.type === 'success' ? '#10b981' : '#ef4444', marginRight: 'auto' }}>
-              {message.text}
-            </span>
-          )}
-          <button 
-            onClick={onClose}
-            style={{ padding: '9px 18px', borderRadius: 10, border: '1px solid #2c2c2e', background: 'transparent', color: '#a1a1a6', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}
-          >
-            Cancel
-          </button>
-          <button 
-            disabled={saving}
-            onClick={handleSave}
-            style={{ 
-              padding: '9px 24px', 
-              borderRadius: 10, 
-              border: 'none', 
-              background: '#6366f1', 
-              color: '#fff', 
-              fontSize: 14, 
-              fontWeight: 700, 
-              cursor: saving ? 'not-allowed' : 'pointer',
-              opacity: saving ? 0.7 : 1,
-              boxShadow: '0 4px 20px rgba(99,102,241,0.3)'
-            }}
-          >
-            {saving ? 'Saving...' : 'Save Profile'}
-          </button>
+            {/* Footer */}
+            <footer className="px-10 py-8 border-t border-white/5 bg-white/1 flex items-center justify-between gap-4">
+              <div className="flex-1">
+                {message.text && (
+                  <motion.p 
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    className={`text-[11px] font-black uppercase tracking-widest italic ${message.type === 'success' ? 'text-indigo-400' : 'text-rose-500'}`}
+                  >
+                    {message.text}
+                  </motion.p>
+                )}
+              </div>
+              <div className="flex gap-4">
+                <button 
+                  onClick={onClose}
+                  className="px-8 py-4 rounded-2xl text-[12px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-all italic"
+                >
+                  Cancel
+                </button>
+                <motion.button 
+                  disabled={saving}
+                  onClick={handleSave}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-10 py-4 bg-white text-black rounded-2xl font-black text-[12px] uppercase tracking-[0.2em] shadow-2xl disabled:opacity-50 italic"
+                >
+                  {saving ? 'Syncing...' : 'Commit Changes'}
+                </motion.button>
+              </div>
+            </footer>
+          </motion.div>
         </div>
-      </div>
-    </div>
+      )}
+    </AnimatePresence>
   );
 }
+

@@ -75,7 +75,7 @@ export default function SignUp() {
         
         if (loginData.success) {
           setCookie('debugr_token', loginData.token);
-          router.push('/dashboard');
+          router.push('/profile');
         } else {
           router.push('/signin');
         }
@@ -100,53 +100,9 @@ export default function SignUp() {
       </div>
       <Navbar />
 
-      <main className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] min-h-screen relative z-10">
-        
-        {/* Left Side: Modern Context Panel */}
-        <section className="hidden lg:flex flex-col gap-10 p-[160px_8%_60px_12%] border-r border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 h-screen">
-          <motion.div variants={staggerContainer(0.1, 0.3)} initial="hidden" animate="visible">
-            <motion.div variants={blurReveal} className="flex items-center gap-3 mb-8">
-              <span className="h-px w-8 bg-indigo-500" />
-              <p className="subtle-mono text-indigo-400">
-                Step 0{step}
-              </p>
-            </motion.div>
-            
-            <motion.h1 
-              variants={blurReveal}
-              className="hero-title text-7xl font-black italic tracking-tighter mb-8 leading-[0.8] uppercase"
-            >
-              Join the<br /><span className="text-white/20">Community.</span>
-            </motion.h1>
-            
-            <motion.p variants={blurReveal} className="text-t2 text-xl font-medium tracking-tight leading-relaxed max-w-[440px] italic">
-              {role === 'hacker' 
-                ? "Gain access to high-value bounty programs and standard reporting tools." 
-                : role === 'company' 
-                ? "Launch your bug bounty program and collaborate with talented security researchers." 
-                : "Choose your role to get started on the platform."}
-            </motion.p>
-          </motion.div>
+      <main className="w-full min-h-screen relative z-10 flex items-center justify-center p-6 md:p-12">
+        <section className="w-full h-full flex flex-col items-center justify-center">
 
-          {/* Step Indicators */}
-          <div className="mt-auto flex gap-4">
-            {[1, 2, 3].map(i => (
-              <motion.div 
-                key={i} 
-                initial={false}
-                animate={{ 
-                  width: i === step ? 80 : 40, 
-                  background: i <= step ? '#fff' : 'rgba(255,255,255,0.05)',
-                  boxShadow: i === step ? '0 0 30px rgba(255,255,255,0.2)' : 'none'
-                }}
-                className="h-1 rounded-full transition-all duration-700"
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Right Side: Progressive Forms */}
-        <section className="flex flex-col items-center justify-start p-[160px_8%_120px]">
           <AnimatePresence mode="wait">
             <motion.div 
               key={step} 
@@ -154,8 +110,9 @@ export default function SignUp() {
               animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
               exit={{ opacity: 0, y: -30, scale: 0.95, filter: 'blur(15px)' }}
               transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
-              className={`w-full ${step === 3 ? 'max-w-[640px]' : 'max-w-[500px]'}`}
+              className={`w-full ${step === 3 ? 'max-w-[580px]' : 'max-w-[420px]'}`}
             >
+
               
               {step === 1 && (
                 <div className="flex flex-col gap-16">
