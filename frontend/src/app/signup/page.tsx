@@ -16,7 +16,8 @@ export default function SignUp() {
   const [formData, setFormData] = useState({ 
     email: '', password: '', confirmPassword: '',
     name: '', handle: '', specialization: 'Web Infrastructure', industry: '', experience_level: 'Intermediate',
-    bio: '', website: '', location: '', github_url: '', skills: [] as string[], company_size: '1-10', description: ''
+    bio: '', website: '', location: '', github_url: '', skills: [] as string[], company_size: '1-10', description: '',
+    job_profile: '', business_email: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -208,11 +209,12 @@ export default function SignUp() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       {role === 'hacker' ? (
                         <>
+                          <Input label="Job Profile" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Senior Security Researcher" />
                           <Input label="Current Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="e.g. San Francisco, CA" />
                           <Input label="GitHub Profile" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" />
                           
                           <div>
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">What do you focus on?</label>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Core Specialization</label>
                             <select 
                               value={formData.specialization} 
                               onChange={e => setFormData({...formData, specialization: e.target.value})}
@@ -279,10 +281,11 @@ export default function SignUp() {
                       ) : (
                         <>
                           <div className="col-span-1 md:col-span-2">
-                            <Input label="Organization Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Vanguard Security Group" />
+                            <Input label="Company Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Vanguard Security Group" />
                           </div>
+                          <Input label="Business Email" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@company.com" />
                           <Input label="Official Domain" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://vanguard.sh" />
-                          <Input label="Industry Sector" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Next-Gen Infrastructure" />
+                          <Input label="Focus Industry" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Cyber Infrastructure" />
                           
                           <div className="col-span-1 md:col-span-2">
                             <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Workforce Size</label>

@@ -45,7 +45,15 @@ export default function Leaderboard() {
       <main className="w-full flex flex-col lg:flex-row min-h-screen pt-24">
         
         {/* Left Sidebar: Titles & Stats */}
-        <section className="w-full lg:w-[450px] lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24 p-10 lg:pl-[8%] lg:pr-12 border-b lg:border-b-0 lg:border-r border-white/5 bg-white/1 flex flex-col gap-12">
+        <section className="w-full lg:w-[450px] lg:h-[calc(100vh-6rem)] lg:sticky lg:top-24 p-10 lg:pl-[8%] lg:pr-12 border-b lg:border-b-0 lg:border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl flex flex-col gap-12">
+          <motion.button 
+            whileHover={{ x: -4 }}
+            onClick={() => window.history.back()} 
+            className="text-white/20 text-[10px] font-black tracking-[0.3em] flex items-center gap-3 uppercase italic hover:text-white transition-all w-fit"
+          >
+            ← Back
+          </motion.button>
+          
           <motion.div variants={inView()} initial="hidden" animate="visible">
             <p className="subtle-mono text-[10px] text-white/30 uppercase tracking-[0.3em] mb-4">Global Security Rankings</p>
             <h1 className="hero-title text-5xl md:text-6xl mb-6 leading-[1.1]">

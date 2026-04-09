@@ -84,19 +84,19 @@ export default function Navbar() {
             {!loading && (() => {
               const navItems = !user 
                 ? [
-                    { label: 'Explore', href: '/programs' },
-                    { label: 'Bounties', href: '/bounties' },
+                    { label: 'Explore', href: '/explore' },
+                    { label: 'Bounties', href: '/programs' },
                     { label: 'Rankings', href: '/leaderboard' },
                   ]
                 : user.role === 'hacker'
                 ? [
-                    { label: 'Explore', href: '/programs' },
-                    { label: 'Bounties', href: '/bounties' },
+                    { label: 'Explore', href: '/explore' },
+                    { label: 'Bounties', href: '/programs' },
                     { label: 'Rankings', href: '/leaderboard' },
                   ]
                 : [
-                    { label: 'Explore', href: '/programs' },
-                    { label: 'Discovery', href: '/bounties' },
+                    { label: 'Explore', href: '/explore' },
+                    { label: 'Programs', href: '/programs' },
                     { label: 'Payments', href: '/add-funds' },
                   ];
 
