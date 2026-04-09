@@ -932,3 +932,62 @@
 2026-04-09 12:32:07:327 info: ::1 - - [09/Apr/2026:07:02:07 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
 2026-04-09 12:33:14:3314 info: [CORS Check] Incoming request from origin: http://localhost:3000
 2026-04-09 12:33:17:3317 info: ::1 - - [09/Apr/2026:07:03:17 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:42:11:4211 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:42:14:4214 info: ::1 - - [09/Apr/2026:08:12:14 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:56:55:5655 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:56:58:5658 info: ::1 - - [09/Apr/2026:08:26:58 +0000] "GET /api/users/profile/me HTTP/1.1" - - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:56:58:5658 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:00:570 info: ::1 - - [09/Apr/2026:08:27:00 +0000] "GET /api/users/profile/me HTTP/1.1" 200 487 "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:13:5713 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:16:5716 info: ::1 - - [09/Apr/2026:08:27:16 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:16:5716 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:16:5716 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:17:5717 info: ::1 - - [09/Apr/2026:08:27:17 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:17:5717 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:18:5718 info: ::1 - - [09/Apr/2026:08:27:18 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:18:5718 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:19:5719 info: ::1 - - [09/Apr/2026:08:27:19 +0000] "GET /api/reports/my-reports HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:19:5719 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:19:5719 info: ::1 - - [09/Apr/2026:08:27:19 +0000] "GET /api/reports/my-reports HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:19:5719 info: ::1 - - [09/Apr/2026:08:27:19 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:19:5719 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:20:5720 info: ::1 - - [09/Apr/2026:08:27:20 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:20:5720 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:21:5721 info: ::1 - - [09/Apr/2026:08:27:21 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:25:5725 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:26:5726 info: ::1 - - [09/Apr/2026:08:27:26 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:41:5741 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:45:5745 info: ::1 - - [09/Apr/2026:08:27:45 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:45:5745 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:46:5746 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:46:5746 info: ::1 - - [09/Apr/2026:08:27:46 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:46:5746 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:48:5748 info: ::1 - - [09/Apr/2026:08:27:48 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:48:5748 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:48:5748 info: ::1 - - [09/Apr/2026:08:27:48 +0000] "GET /api/reports/my-reports HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:48:5748 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:48:5748 info: ::1 - - [09/Apr/2026:08:27:48 +0000] "GET /api/reports/my-reports HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:49:5749 info: ::1 - - [09/Apr/2026:08:27:49 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:49:5749 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:50:5750 info: ::1 - - [09/Apr/2026:08:27:50 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:57:50:5750 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:57:52:5752 info: ::1 - - [09/Apr/2026:08:27:52 +0000] "GET /api/users/profile/me HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:58:54:5854 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:58:56:5856 warn: 401 - Invalid credentials
+2026-04-09 13:58:57:5857 info: ::1 - - [09/Apr/2026:08:28:57 +0000] "POST /api/auth/login HTTP/1.1" 401 47 "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 13:59:31:5931 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 13:59:34:5934 info: ::1 - - [09/Apr/2026:08:29:34 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:00:09:09 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:00:12:012 info: ::1 - - [09/Apr/2026:08:30:12 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:00:58:058 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:00:10 info: ::1 - - [09/Apr/2026:08:31:00 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:01:00:10 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:00:10 info: ::1 - - [09/Apr/2026:08:31:00 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:01:00:10 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:00:10 info: ::1 - - [09/Apr/2026:08:31:00 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:01:00:10 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:01:11 info: ::1 - - [09/Apr/2026:08:31:01 +0000] "GET /api/programs HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:01:02:12 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:02:12 info: ::1 - - [09/Apr/2026:08:31:02 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"
+2026-04-09 14:01:02:12 info: [CORS Check] Incoming request from origin: http://localhost:3000
+2026-04-09 14:01:02:12 info: ::1 - - [09/Apr/2026:08:31:02 +0000] "GET /api/users/leaderboard?sortBy=earned HTTP/1.1" 304 - "http://localhost:3000/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36"

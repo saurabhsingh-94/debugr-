@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import ProfileAvatar from '@/components/profile/ProfileAvatar';
 import { API_URL } from '@/lib/api';
-import { fadeInUp, blurReveal, staggerContainer, springSoft } from '@/lib/animations';
+import { fadeInUp, staggerContainer, springSoft, hoverScale, tapScale } from '@/lib/animations';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface ResearcherStats {
