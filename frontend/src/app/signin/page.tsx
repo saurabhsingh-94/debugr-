@@ -1,3 +1,9 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import Navbar from '@/components/layout/Navbar';
 import { 
   ShieldCheck, 
   Activity, 
@@ -8,6 +14,7 @@ import {
   ChevronRight
 } from 'lucide-react';
 import { getCookie, setCookie, API_URL } from '@/lib/api';
+import { blurReveal, staggerContainer, hoverScale, tapScale } from '@/lib/animations';
 
 export default function SignIn() {
   const router = useRouter();

@@ -1,3 +1,9 @@
+'use client';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import Navbar from '@/components/layout/Navbar';
 import { 
   Cpu, 
   Coins, 

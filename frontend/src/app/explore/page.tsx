@@ -15,7 +15,8 @@ import {
   Activity,
   Terminal,
   Shield,
-  Search
+  Search,
+  ChevronRight
 } from 'lucide-react';
 
 interface Program {
