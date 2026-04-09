@@ -9,7 +9,6 @@ import config from "../config/config.js";
 import authMiddleware from "../middleware/auth.js";
 
 const router = express.Router();
-console.log("🔐 Auth routes initialized");
 
 // Register validation rules
 const registerValidation = [
@@ -25,9 +24,9 @@ const registerValidation = [
   body("industry").optional().trim().isLength({ max: 100 }),
   body("experience_level").optional().trim().isLength({ max: 50 }),
   body("bio").optional().trim().isLength({ max: 1000 }),
-  body("website").optional().trim().isURL().withMessage("Must be a valid URL"),
+  body("website").optional({ checkFalsy: true }).trim().isURL().withMessage("Must be a valid URL"),
   body("location").optional().trim().isLength({ max: 100 }),
-  body("github_url").optional().trim().isURL().withMessage("Must be a valid GitHub URL"),
+  body("github_url").optional({ checkFalsy: true }).trim().isURL().withMessage("Must be a valid GitHub URL"),
   body("skills").optional().isArray(),
   body("company_size").optional().trim().isLength({ max: 50 }),
   body("description").optional().trim().isLength({ max: 2000 }),
@@ -42,7 +41,7 @@ const loginValidation = [
 ];
 
 // Register
-router.post("/register", registerValidation, async (req, res, next) => {
+router.post("/register", registerValidation, validate, async (req, res, next) => {
   try {
     const { email, password, role } = req.body;
 
@@ -94,9 +93,10 @@ router.post("/register", registerValidation, async (req, res, next) => {
 });
 
 // Login
-router.post("/login", loginValidation, async (req, res, next) => {
+router.post("/login", loginValidation, validate, async (req, res, next) => {
   try {
     const { username, password } = req.body;
+    console.info("🔑 Login attempt for:", username);
 
     // Find user by email OR handle
     const result = await pool.query(

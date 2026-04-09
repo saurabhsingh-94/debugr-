@@ -2,9 +2,10 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { setCookie, API_URL } from '@/lib/api';
-import { blurReveal, staggerContainer } from '@/lib/animations';
+import { blurReveal, staggerContainer, springSoft, hoverScale, tapScale } from '@/lib/animations';
 
 type Role = 'hacker' | 'company' | null;
 
@@ -14,7 +15,7 @@ export default function SignUp() {
   const [role, setRole] = useState<Role>(null);
   const [formData, setFormData] = useState({ 
     email: '', password: '', confirmPassword: '',
-    name: '', handle: '', specialization: 'Web', industry: '', experience_level: 'Intermediate',
+    name: '', handle: '', specialization: 'Web Infrastructure', industry: '', experience_level: 'Intermediate',
     bio: '', website: '', location: '', github_url: '', skills: [] as string[], company_size: '1-10', description: ''
   });
   const [loading, setLoading] = useState(false);
@@ -23,24 +24,22 @@ export default function SignUp() {
   const nextStep = () => {
     setError('');
     
-    // Step 2 Validation: Must match backend requirements
     if (step === 2) {
       if (!formData.handle || !formData.handle.match(/^[a-z0-9_]{3,20}$/)) {
-        setError('Identity handle is required (3-20 lowercase alphanumeric characters)');
+        setError('Username is required (3-20 lowercase alphanumeric characters)');
         return;
       }
       if (!formData.email || !formData.email.includes('@')) {
-        setError('A valid email protocol is required');
+        setError('A valid email address is required');
         return;
       }
-      // Aligned with backend/routes/auth.js regex
       const passRegex = /^(?=.*[A-Z])(?=.*\d).{8,}$/;
       if (!passRegex.test(formData.password)) {
-        setError('Passcode must be 8+ characters with at least one uppercase letter and one number');
+        setError('Password must be 8+ characters with at least one uppercase letter and one number');
         return;
       }
       if (formData.password !== formData.confirmPassword) {
-        setError('Passcodes do not match');
+        setError('Passwords do not match');
         return;
       }
     }
@@ -56,7 +55,6 @@ export default function SignUp() {
     setError('');
 
     try {
-      // 1. Register User
       const res = await fetch(`${API_URL}/api/auth/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -65,7 +63,6 @@ export default function SignUp() {
 
       const registerData = await res.json();
       if (registerData.success) {
-        // 2. Auto-login using handle or email
         const loginRes = await fetch(`${API_URL}/api/auth/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -95,82 +92,88 @@ export default function SignUp() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', color: 'var(--t1)', overflowX: 'hidden' }}>
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden selection:bg-indigo-500/30">
+      {/* Background Aurora Effect */}
       <div className="aurora-bg">
-        <div className="aurora-blob blob-1" />
-        <div className="aurora-blob blob-2" />
-        <div className="aurora-blob blob-3" />
+        <div className="aurora-blob animate-breathing opacity-40 blur-3xl shadow-[0_0_100px_rgba(157,80,187,0.3)]" style={{ background: '#9d50bb', top: '-10%', left: '-10%' }} />
+        <div className="aurora-blob animate-breathing opacity-30 delay-[-4s] blur-2xl font-black italic" style={{ background: '#c084fc', bottom: '-10%', right: '-10%' }} />
+        <div className="aurora-blob animate-breathing opacity-50 delay-[-2s] blur-3xl shadow-[0_0_100px_rgba(31,31,31,0.5)]" style={{ background: '#050505', top: '30%', right: '20%' }} />
       </div>
+
       <Navbar />
 
-      <main style={{ width: '100%', display: 'grid', gridTemplateColumns: '1fr 1.2fr', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <main className="w-full grid grid-cols-1 lg:grid-cols-[1fr_1.2fr] min-h-screen relative z-10">
         
-        {/* Left Side: Sticky Info */}
-        <section style={{ 
-          padding: '160px 60px 60px 12%', 
-          borderRight: '1px solid rgba(255,255,255,0.05)',
-          background: 'linear-gradient(to bottom, rgba(0,0,0,0.4), transparent)',
-          display: 'flex', flexDirection: 'column', gap: 40,
-          position: 'sticky', top: 0, height: '100vh'
-        }}>
+        {/* Left Side: Modern Context Panel */}
+        <section className="hidden lg:flex flex-col gap-10 p-[160px_8%_60px_12%] border-r border-white/5 bg-black/40 backdrop-blur-xl sticky top-0 h-screen">
           <motion.div variants={staggerContainer(0.1, 0.3)} initial="hidden" animate="visible">
-            <motion.p variants={blurReveal} className="mono" style={{ fontSize: 11, color: 'var(--t2)', letterSpacing: '0.4em', marginBottom: 20 }}>
-              {step === 1 ? 'STEP 01 // IDENTITY' : step === 2 ? 'STEP 02 // SECURITY' : 'STEP 03 // PROFILE'}
-            </motion.p>
+            <motion.div variants={blurReveal} className="flex items-center gap-3 mb-8">
+              <span className="h-px w-8 bg-indigo-500" />
+              <p className="subtle-mono text-indigo-400">
+                Phase 0{step}
+              </p>
+            </motion.div>
+            
             <motion.h1 
               variants={blurReveal}
-              style={{ fontSize: 'clamp(44px, 5vw, 72px)', fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 1, marginBottom: 24 }}
+              className="hero-title text-7xl font-black italic tracking-tighter mb-8 leading-[0.8] uppercase"
             >
-              Join the<br /><span className="text-gradient">Collective.</span>
+              Start Your<br /><span className="text-white/20">Journey.</span>
             </motion.h1>
-            <motion.p variants={blurReveal} style={{ color: 'var(--t2)', fontSize: 18, lineHeight: 1.6, maxWidth: 400 }}>
-              {role ? `Initializing encrypted tunnel for ${role} operations...` : "Choose your path and establish your digital presence within the most advanced security grid."}
+            
+            <motion.p variants={blurReveal} className="text-[#a1a1a6] text-xl font-medium tracking-tight leading-relaxed max-w-[440px] italic">
+              {role === 'hacker' 
+                ? "Gain access to high-value intelligence opportunities and elite disclosure tools." 
+                : role === 'company' 
+                ? "Deploy your security perimeter and collaborate with the world's most talented researchers." 
+                : "Choose your path to begin collaborating with the elite security collective."}
             </motion.p>
           </motion.div>
 
-          <div style={{ marginTop: 'auto', display: 'flex', gap: 8 }}>
+          {/* Step Indicators */}
+          <div className="mt-auto flex gap-4">
             {[1, 2, 3].map(i => (
               <motion.div 
                 key={i} 
                 initial={false}
                 animate={{ 
-                  width: i === step ? 60 : 30, 
-                  background: i <= step ? '#fff' : 'rgba(255,255,255,0.1)',
-                  boxShadow: i === step ? '0 0 15px rgba(255,255,255,0.3)' : 'none'
+                  width: i === step ? 80 : 40, 
+                  background: i <= step ? '#fff' : 'rgba(255,255,255,0.05)',
+                  boxShadow: i === step ? '0 0 30px rgba(255,255,255,0.2)' : 'none'
                 }}
-                style={{ height: 3, borderRadius: 2 }} 
+                className="h-1 rounded-full transition-all duration-700"
               />
             ))}
           </div>
         </section>
 
-        {/* Right Side: Interactive Flow */}
-        <section style={{ padding: '120px 8% 80px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Right Side: Progressive Forms */}
+        <section className="flex flex-col items-center justify-start p-[160px_8%_120px]">
           <AnimatePresence mode="wait">
             <motion.div 
               key={step} 
-              initial="hidden"
-              animate="visible"
-              exit="hidden"
-              variants={blurReveal}
-              transition={{ duration: 0.6, ease: [0.23, 1, 0.32, 1] }}
-              style={{ width: '100%', maxWidth: step === 3 ? 740 : 540 }}
+              initial={{ opacity: 0, x: 20, filter: 'blur(20px)' }}
+              animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+              exit={{ opacity: 0, x: -20, filter: 'blur(20px)' }}
+              transition={springSoft}
+              className={`w-full ${step === 3 ? 'max-w-[840px]' : 'max-w-[540px]'}`}
             >
               
               {step === 1 && (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 48 }}>
-                  <div style={{ textAlign: 'center' }}>
-                    <h2 className="metallic-text" style={{ fontSize: 32, fontWeight: 800, marginBottom: 12 }}>Choose your Path</h2>
-                    <p style={{ color: 'var(--t3)', fontSize: 16 }}>Select your operational identity to continue</p>
+                <div className="flex flex-col gap-16">
+                  <div className="text-center">
+                    <h2 className="text-5xl font-black italic tracking-tighter mb-4 uppercase">Identity Type</h2>
+                    <p className="text-white/30 text-lg font-medium italic">Select your professional path to continue.</p>
                   </div>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     {[
                       { 
-                        id: 'hacker', title: 'Hacker', desc: 'Hunt bugs, uncover flaws, and earn reputation + rewards.', icon: '⚡',
+                        id: 'hacker', title: 'Security Researcher', desc: 'Find vulnerabilities, join elite programs, and earn bounties.', icon: '⚡',
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Organization', desc: 'Secure your assets through world-class security intelligence.', icon: '🛡️',
+                        id: 'company', title: 'Security Partner', desc: 'Manage your assets, triage disclosures, and secure your perimeter.', icon: '🛡️',
                         Effect: ShieldWall
                       }
                     ].map(r => (
@@ -189,39 +192,41 @@ export default function SignUp() {
               )}
 
               {step === 2 && (
-                <div className="glass-panel" style={{ padding: '48px', borderRadius: 40, border: '1px solid rgba(255,255,255,0.08)' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: 32 }}>
+                <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl">
+                  <div className="bg-white/1 backdrop-blur-3xl p-12 md:p-16 rounded-[44px] border border-white/5 flex flex-col gap-12">
                     <div>
                       <motion.button 
-                        whileHover={{ x: -3 }}
+                        whileHover={{ x: -4 }}
                         onClick={prevStep} 
-                        style={{ background: 'none', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em', display: 'flex', alignItems: 'center', gap: 10 }}
+                        className="text-white/20 text-[10px] font-black tracking-[0.3em] flex items-center gap-3 uppercase italic hover:text-white transition-all"
                       >
-                        <span style={{ fontSize: 16 }}>←</span> PREVIEW IDENTITY
+                        <span className="text-lg">←</span> Previous Phase
                       </motion.button>
-                      <h2 className="hero-title" style={{ fontSize: 32, fontWeight: 800, marginTop: 16 }}>Establish Credentials</h2>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Secure<br /><span className="text-white/20">Credentials.</span></h2>
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                      <Input label="Identity Handle (@)" value={formData.handle} onChange={v => setFormData({...formData, handle: v.replace(/[^a-z0-9_]/g, '')})} placeholder="e.g. shadow_walker" />
-                      <Input label="Email Protocol" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="hacker@debugr.ops" />
-                      <Input label="Secure Passcode" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} />
-                      <Input label="Confirm Passcode" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} />
+
+                    <div className="flex flex-col gap-8">
+                      <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.replace(/[^a-z0-9_]/g, '')})} placeholder="e.g. janesmith" />
+                      <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="jane@example.com" />
+                      <Input label="Create Password" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} />
+                      <Input label="Verify Password" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} />
                     </div>
+
                     {error && (
                       <motion.div 
-                        initial={{ opacity: 0, y: -10 }} 
-                        animate={{ opacity: 1, y: 0 }} 
-                        style={{ fontSize: 13, color: '#ff4d4d', background: 'rgba(255,100,100,0.05)', padding: '16px', borderRadius: 16, border: '1px solid rgba(255,100,100,0.1)' }}
+                        initial={{ opacity: 0, scale: 0.95 }} 
+                        animate={{ opacity: 1, scale: 1 }} 
+                        className="text-rose-500 text-[11px] font-black text-center p-[20px] bg-rose-500/5 rounded-3xl border border-rose-500/10 uppercase tracking-widest italic"
                       >
-                        <span style={{ fontWeight: 800 }}>ALERT: </span> {error}
+                       !! {error} !!
                       </motion.div>
                     )}
+
                     <motion.button 
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
+                      whileHover={hoverScale}
+                      whileTap={tapScale}
                       onClick={nextStep} 
-                      className="btn-luminous" 
-                      style={{ width: '100%', padding: '20px', fontSize: 15 }}
+                      className="w-full py-6 text-base font-black bg-white text-black rounded-3xl shadow-2xl transition-all uppercase tracking-widest italic hover:bg-white/90"
                     >
                       Continue to Profile
                     </motion.button>
@@ -230,70 +235,67 @@ export default function SignUp() {
               )}
 
               {step === 3 && (
-                <div className="glass-panel" style={{ padding: '48px', borderRadius: 40 }}>
-                  <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
+                <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl">
+                  <form onSubmit={handleSubmit} className="bg-white/1 backdrop-blur-3xl p-12 md:p-16 rounded-[44px] border border-white/5 flex flex-col gap-12">
                     <div>
                       <motion.button 
-                        whileHover={{ x: -3 }}
+                        whileHover={{ x: -4 }}
                         type="button" onClick={prevStep} 
-                        style={{ background: 'none', border: 'none', color: 'var(--t3)', cursor: 'pointer', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em' }}
+                        className="text-white/20 text-[10px] font-black tracking-[0.3em] flex items-center gap-3 uppercase italic hover:text-white transition-all"
                       >
-                        ← BACK TO SECURITY
+                        ← Update Credentials
                       </motion.button>
-                      <h2 className="hero-title" style={{ fontSize: 32, fontWeight: 800, marginTop: 16 }}>Initialize Profile</h2>
-                      <p style={{ color: 'var(--t3)', fontSize: 14 }}>Configure your public metadata for the collective.</p>
+                      <h2 className="text-4xl font-black italic tracking-tighter mt-6 uppercase leading-tight">Establish<br /><span className="text-white/20">Identity.</span></h2>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32 }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                       {role === 'hacker' ? (
                         <>
-                          <Input label="Operational Base" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="e.g. Neo Tokyo" />
-                          <Input label="Command Center (URL)" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/hacker" />
+                          <Input label="Current Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="e.g. San Francisco, CA" />
+                          <Input label="GitHub Identity" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" />
                           
-                          <div style={{ gridColumn: 'span 1' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 10 }}>SPECIALIZATION</label>
+                          <div>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Professional Focus</label>
                             <select 
                               value={formData.specialization} 
                               onChange={e => setFormData({...formData, specialization: e.target.value})}
-                              className="neon-focus"
-                              style={{ width: '100%', padding: '18px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', fontSize: 14 }}
+                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
-                              <option>Web Infrastructure</option>
-                              <option>Cloud Architecture</option>
-                              <option>Kernel Mining</option>
-                              <option>Smart Contracts</option>
+                              <option className="bg-bg">Web Infrastructure</option>
+                              <option className="bg-bg">Cloud Architecture</option>
+                              <option className="bg-bg">Legacy Mining</option>
+                              <option className="bg-bg">Smart Contracts</option>
+                              <option className="bg-bg">Zero-Day Research</option>
                             </select>
                           </div>
-                          <div style={{ gridColumn: 'span 1' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 10 }}>EXPERIENCE</label>
+                          <div>
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Field Experience</label>
                             <select 
                               value={formData.experience_level} 
                               onChange={e => setFormData({...formData, experience_level: e.target.value})}
-                              className="neon-focus"
-                              style={{ width: '100%', padding: '18px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', fontSize: 14 }}
+                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
-                              <option>Entry Protocol</option>
-                              <option>Regular Operative</option>
-                              <option>Senior Architect</option>
-                              <option>Elite / L33t</option>
+                              <option className="bg-bg text-white">Entry</option>
+                              <option className="bg-bg text-white">Intermediate</option>
+                              <option className="bg-bg text-white">Advanced</option>
+                              <option className="bg-bg text-white">Elite</option>
                             </select>
                           </div>
 
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 10 }}>OPERATIONAL BIO</label>
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Researcher Bio</label>
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
-                              placeholder="Describe your technical methodology..."
-                              className="neon-focus"
-                              style={{ width: '100%', minHeight: 120, padding: '20px', borderRadius: 20, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', resize: 'vertical', fontSize: 14 }}
+                              placeholder="Briefly describe your methodology and mission..."
+                              className="input-focus-glow w-full min-h-[140px] p-6 rounded-3xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>
 
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 16 }}>CORE TACTICS</label>
-                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
-                              {['XSS', 'SQLi', 'RCE', 'SSR_F', 'Auth Bypass', 'API Security'].map(skill => (
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-5">Primary Arsenal</label>
+                            <div className="flex flex-wrap gap-3">
+                              {['XSS', 'SQLi', 'RCE', 'SSRF', 'Auth Bypass', 'Logic', 'Cryptographic', 'API'].map(skill => (
                                 <motion.button 
                                   key={skill}
                                   type="button"
@@ -305,12 +307,11 @@ export default function SignUp() {
                                       : [...formData.skills, skill];
                                     setFormData({...formData, skills: newSkills});
                                   }}
-                                  style={{
-                                    padding: '10px 20px', borderRadius: 12, fontSize: 12, fontWeight: 800, cursor: 'pointer',
-                                    background: formData.skills.includes(skill) ? '#fff' : 'rgba(255,255,255,0.04)',
-                                    border: `1px solid ${formData.skills.includes(skill) ? '#fff' : 'rgba(255,255,255,0.1)'}`,
-                                    color: formData.skills.includes(skill) ? '#000' : 'var(--t2)',
-                                  }}
+                                  className={`px-5 py-3 rounded-xl text-[10px] font-black cursor-pointer transition-all border ${
+                                    formData.skills.includes(skill) 
+                                      ? 'bg-white text-black border-white shadow-xl' 
+                                      : 'bg-white/2 text-white/20 border-white/5 hover:text-white hover:border-white/20'
+                                  } uppercase tracking-widest`}
                                 >
                                   {skill}
                                 </motion.button>
@@ -320,35 +321,33 @@ export default function SignUp() {
                         </>
                       ) : (
                         <>
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <Input label="Organization Identity" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Cyberdyne Systems" />
+                          <div className="col-span-1 md:col-span-2">
+                            <Input label="Organization Legal Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="e.g. Vanguard Security Group" />
                           </div>
-                          <Input label="Official Domain" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://organization.com" />
-                          <Input label="Industry Sector" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Deep Tech" />
+                          <Input label="Official Domain" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://vanguard.sh" />
+                          <Input label="Industry Sector" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Next-Gen Infrastructure" />
                           
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 10 }}>GRID SCALE (EMPLOYEES)</label>
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Workforce Size</label>
                             <select 
                               value={formData.company_size} 
                               onChange={e => setFormData({...formData, company_size: e.target.value})}
-                              className="neon-focus"
-                              style={{ width: '100%', padding: '18px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', fontSize: 14 }}
+                              className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner"
                             >
-                              <option>1-10 Units</option>
-                              <option>11-100 Units</option>
-                              <option>101-500 Units</option>
-                              <option>500+ Units</option>
+                              <option className="bg-bg">1-10 Members</option>
+                              <option className="bg-bg">11-100 Members</option>
+                              <option className="bg-bg">101-500 Members</option>
+                              <option className="bg-bg">500+ Members</option>
                             </select>
                           </div>
 
-                          <div style={{ gridColumn: 'span 2' }}>
-                            <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)', display: 'block', marginBottom: 10 }}>MISSION DESCRIPTION</label>
+                          <div className="col-span-1 md:col-span-2">
+                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block mb-3">Security Mission</label>
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
-                              placeholder="Describe your security mission..."
-                              className="neon-focus"
-                              style={{ width: '100%', minHeight: 140, padding: '20px', borderRadius: 20, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', color: '#fff', resize: 'vertical', fontSize: 14 }}
+                              placeholder="Describe your security goals and values..."
+                              className="input-focus-glow w-full min-h-[160px] p-6 rounded-3xl bg-white/2 border border-white/5 text-white resize-none text-sm font-medium transition-all shadow-inner"
                             />
                           </div>
                         </>
@@ -356,27 +355,26 @@ export default function SignUp() {
                     </div>
 
                     {error && (
-                      <div style={{ fontSize: 14, color: '#ff4d4d', background: 'rgba(255,100,100,0.05)', padding: '16px', borderRadius: 16, border: '1px solid rgba(255,100,100,0.1)' }}>
-                        <span style={{ fontWeight: 800 }}>CRITICAL: </span> {error}
-                      </div>
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-rose-500 text-[11px] font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic">
+                        !! {error} !!
+                      </motion.div>
                     )}
                     
                     <motion.button 
                       type="submit" 
                       disabled={loading} 
-                      whileHover={{ scale: 1.01 }}
-                      whileTap={{ scale: 0.99 }}
-                      className="btn-luminous" 
-                      style={{ width: '100%', padding: '20px', fontSize: 16 }}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-7 text-base font-black bg-indigo-600 text-white rounded-3xl shadow-2xl shadow-indigo-600/30 transition-all uppercase tracking-[0.2em] italic hover:bg-indigo-500"
                     >
-                      {loading ? 'Initializing Interface...' : 'Finalize Profile'}
+                      {loading ? 'Transmitting...' : 'Complete Phase 3'}
                     </motion.button>
                   </form>
                 </div>
               )}
 
-              <p style={{ textAlign: 'center', fontSize: 15, color: 'var(--t3)', marginTop: 48 }}>
-                Existing profile? <a href="/signin" style={{ color: '#fff', fontWeight: 800, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.3)' }}>Resume Session</a>
+              <p className="text-center text-white/20 font-medium text-[13px] tracking-tight mt-16">
+                Already part of the collective? <Link href="/signin" className="text-white font-black hover:text-indigo-400 underline underline-offset-8 decoration-white/10 transition-all">Authenticate now</Link>
               </p>
             </motion.div>
           </AnimatePresence>
@@ -396,14 +394,13 @@ interface InputProps {
 
 function Input({ label, type = 'text', value, onChange, placeholder }: InputProps) {
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-      <label className="subtle-mono" style={{ fontSize: 11, fontWeight: 800, color: 'var(--t3)' }}>{label}</label>
+    <div className="flex flex-col gap-3">
+      <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest block">{label}</label>
       <input 
         type={type} required value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="neon-focus"
-        style={{ width: '100%', padding: '18px 24px', borderRadius: 16, background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: 15 }}
+        className="input-focus-glow w-full py-5 px-6 rounded-2xl bg-white/2 border border-white/5 text-white text-sm font-medium transition-all shadow-inner placeholder:text-white/10"
       />
     </div>
   );
@@ -421,43 +418,30 @@ function RoleButton({ title, desc, icon, Effect, onSelect }: {
       onMouseLeave={() => setIsHovered(false)}
       whileHover="hover"
       initial="initial"
-      className="glass-panel hover-glow"
-      style={{ 
-        textAlign: 'left', padding: '40px 32px', borderRadius: 32, cursor: 'pointer',
-        display: 'flex', flexDirection: 'column', gap: 20,
-        background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)',
-        position: 'relative', overflow: 'hidden'
-      }}
+      className="glass-panel p-10 rounded-[48px] border border-white/5 text-left cursor-pointer transition-all relative overflow-hidden flex flex-col gap-8 shadow-2xl group"
       variants={{
-        hover: { y: -8, scale: 1.02, transition: { duration: 0.4, ease: [0.23, 1, 0.32, 1] } },
+        hover: { y: -10, scale: 1.02, transition: { duration: 0.5, ease: [0.23, 1, 0.32, 1] } },
         initial: { y: 0, scale: 1 }
       }}
     >
-      {/* Immersive Full-Board Effect - Triggered only on hover */}
       <AnimatePresence>
         {isHovered && <Effect />}
       </AnimatePresence>
 
-      <motion.div 
-        style={{ fontSize: 32, display: 'inline-block', width: 'fit-content', position: 'relative', zIndex: 2 }}
-      >
+      <div className="text-5xl relative z-10 w-fit p-5 rounded-3xl bg-white/5 border border-white/5 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500">
         {icon}
-      </motion.div>
-      <div style={{ position: 'relative', zIndex: 2 }}>
-        <h3 style={{ color: '#fff', fontSize: 22, fontWeight: 800, marginBottom: 10 }}>{title}</h3>
-        <p style={{ fontSize: 14, color: 'var(--t3)', lineHeight: 1.5 }}>{desc}</p>
       </div>
-      <div style={{ 
-        position: 'absolute', top: 0, right: 0, padding: '12px 20px', 
-        background: 'rgba(255,255,255,0.05)', borderBottomLeftRadius: 20,
-        fontSize: 10, fontWeight: 900, letterSpacing: '0.1em', opacity: 0.4,
-        zIndex: 2
-      }}>SELECT</div>
+      <div className="relative z-10">
+        <h3 className="text-white text-2xl font-black mb-3 tracking-tighter uppercase italic">{title}</h3>
+        <p className="text-sm text-white/30 font-medium leading-relaxed group-hover:text-white/50 transition-colors uppercase tracking-tight">{desc}</p>
+      </div>
+      
+      <div className="absolute top-0 right-0 p-6 bg-white/5 rounded-bl-[20px] text-[8px] font-black tracking-widest text-indigo-400 uppercase opacity-0 group-hover:opacity-100 transition-opacity z-10 scale-0 group-hover:scale-100 duration-500 origin-top-right">
+        Select
+      </div>
     </motion.button>
   );
 }
-
-// --- Immersive Effects Components ---
 
 function LightningField() {
   return (
@@ -466,64 +450,31 @@ function LightningField() {
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="absolute inset-0 pointer-events-none"
-      style={{ overflow: 'hidden' }}
     >
-      <svg viewBox="0 0 100 100" preserveAspectRatio="none" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        {/* Main Bolt Strike */}
+      <svg viewBox="0 0 100 100" preserveAspectRatio="none" className="absolute inset-0 w-full h-full">
         <motion.path
           d="M 85 0 L 78 15 L 85 30 L 70 50 L 80 65 L 45 85 L 55 92 L 15 100"
           fill="none"
           stroke="#fff"
-          strokeWidth="1.5"
+          strokeWidth="1"
           initial={{ pathLength: 0, opacity: 0 }}
           animate={{ 
             pathLength: [0, 1, 1],
             opacity: [0, 1, 0, 1, 0, 0.8, 0],
-            strokeWidth: [1, 2, 1, 3, 1],
           }}
           transition={{ 
-            duration: 0.8,
+            duration: 0.6,
             times: [0, 0.1, 0.15, 0.2, 0.25, 0.3, 1],
             ease: "easeOut"
           }}
-          style={{ filter: 'drop-shadow(0 0 15px rgba(255, 255, 255, 1)) drop-shadow(0 0 30px rgba(100, 200, 255, 0.8))' }}
-        />
-        
-        {/* Secondary Branches */}
-        <motion.path
-          d="M 70 50 L 85 55 M 45 85 L 65 88 M 78 15 L 60 18"
-          fill="none"
-          stroke="rgba(200, 230, 255, 0.8)"
-          strokeWidth="0.8"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: [0, 1],
-            opacity: [0, 0.7, 0]
-          }}
-          transition={{ 
-            duration: 0.4, 
-            delay: 0.1
-          }}
-        />
-
-        {/* The Glow Core */}
-        <motion.path
-          d="M 85 0 L 78 15 L 85 30 L 70 50 L 80 65 L 45 85 L 55 92 L 15 100"
-          fill="none"
-          stroke="rgba(100, 200, 255, 0.3)"
-          strokeWidth="8"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0, 0.4, 0] }}
-          transition={{ duration: 0.5, times: [0, 0.2, 1] }}
+          className="shadow-[0_0_20px_#fff]"
         />
       </svg>
-
-      {/* Extreme Flash */}
       <motion.div 
         initial={{ opacity: 0 }}
-        animate={{ opacity: [0, 0.3, 0] }}
-        transition={{ duration: 0.15, times: [0, 0.1, 1] }}
-        style={{ position: 'absolute', inset: 0, background: '#fff', mixBlendMode: 'overlay', zIndex: 10 }}
+        animate={{ opacity: [0, 0.1, 0] }}
+        transition={{ duration: 0.15 }}
+        className="absolute inset-0 bg-white mix-blend-overlay"
       />
     </motion.div>
   );
@@ -535,98 +486,26 @@ function ShieldWall() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="absolute inset-0 pointer-events-none"
-      style={{ overflow: 'hidden' }}
+      className="absolute inset-0 pointer-events-none overflow-hidden"
     >
-      {/* Background Matrix Grid */}
       <div 
+        className="absolute inset-0 opacity-10"
         style={{ 
-          position: 'absolute', inset: 0,
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 0 L60 15 L60 45 L30 60 L0 45 L0 15 Z' fill='none' stroke='%233b82f6' stroke-opacity='0.15' stroke-width='1'/%3E%3C/svg%3E")`,
-          backgroundSize: '40px 48px',
-          opacity: 0.4
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 0 L40 10 L40 30 L20 40 L0 30 L0 10 Z' fill='none' stroke='%233b82f6' stroke-width='1'/%3E%3C/svg%3E")`,
+          backgroundSize: '30px 36px',
         }}
       />
-
-      <svg viewBox="0 0 400 400" preserveAspectRatio="xMidYMid slice" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%' }}>
-        <defs>
-          <radialGradient id="shieldGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.4" />
-            <stop offset="100%" stopColor="#3b82f6" stopOpacity="0" />
-          </radialGradient>
-          <linearGradient id="barrierGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#06b6d4" />
-            <stop offset="50%" stopColor="#3b82f6" />
-            <stop offset="100%" stopColor="#06b6d4" />
-          </linearGradient>
-        </defs>
-
-        {/* Pulsing Concentric Defense Rings */}
-        {[1, 2, 3].map((i) => (
-          <motion.circle
-            key={i}
-            cx="200" cy="200" r={40 * i}
-            fill="none"
-            stroke="#3b82f6"
-            strokeWidth="1"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ 
-              scale: [1, 1.5],
-              opacity: [0.3, 0],
-              strokeWidth: [2, 0.5]
-            }}
-            transition={{ 
-              duration: 2, 
-              repeat: Infinity, 
-              delay: i * 0.6,
-              ease: "easeOut" 
-            }}
-          />
-        ))}
-
-        {/* Shimmering Energy Barrier Arc */}
-        <motion.path
-          d="M 100 300 Q 200 150 300 300"
-          fill="none"
-          stroke="url(#barrierGradient)"
-          strokeWidth="4"
-          strokeLinecap="round"
-          initial={{ pathLength: 0, opacity: 0 }}
-          animate={{ 
-            pathLength: 1, 
-            opacity: [0.4, 0.8, 0.4],
-            filter: ['blur(1px)', 'blur(4px)', 'blur(1px)']
-          }}
-          transition={{ 
-            pathLength: { duration: 1, ease: "easeInOut" },
-            opacity: { duration: 2, repeat: Infinity, ease: "easeInOut" },
-            filter: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-          }}
-          style={{ filter: 'drop-shadow(0 0 15px #3b82f6)' }}
-        />
-
-        {/* Core Protection Pulse */}
+      <svg viewBox="0 0 400 400" className="absolute inset-0 w-full h-full">
         <motion.circle
-          cx="200" cy="230" r="15"
-          fill="#3b82f6"
-          initial={{ scale: 1, opacity: 0.5 }}
-          animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
+          cx="200" cy="200" r="100"
+          fill="none"
+          stroke="#3b82f6"
+          strokeWidth="1"
+          initial={{ scale: 0.5, opacity: 0 }}
+          animate={{ scale: 1.5, opacity: [0.5, 0] }}
           transition={{ duration: 2, repeat: Infinity }}
-          style={{ filter: 'drop-shadow(0 0 20px #3b82f6)' }}
         />
       </svg>
-      
-      {/* Scanning Line */}
-      <motion.div 
-        animate={{ y: ['0%', '100%', '0%'] }}
-        transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
-        style={{ 
-          position: 'absolute', top: 0, left: 0, right: 0, height: '1px', 
-          background: 'linear-gradient(90deg, transparent, #22d3ee, transparent)',
-          boxShadow: '0 0 15px #22d3ee', zIndex: 5, opacity: 0.3
-        }}
-      />
     </motion.div>
   );
 }
-

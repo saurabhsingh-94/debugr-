@@ -28,7 +28,6 @@ export default function SignIn() {
       const data = await res.json();
       if (data.success) {
         setCookie('debugr_token', data.token);
-        // Redirect to unified dashboard route
         router.push('/dashboard');
       } else {
         setError(data.error || data.message || 'Authentication failed');
@@ -42,69 +41,48 @@ export default function SignIn() {
   };
 
   return (
-    <div style={{ minHeight: '100vh', background: '#050505', color: '#f5f5f7', position: 'relative', overflowX: 'hidden' }}>
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden">
       {/* Background Aurora Effect */}
       <div className="aurora-bg">
-        <div className="aurora-blob blob-1 animate-breathing" style={{ opacity: 0.1 }} />
-        <div className="aurora-blob blob-2 animate-breathing" style={{ opacity: 0.1, animationDelay: '-4s' }} />
-        <div className="aurora-blob blob-3 animate-breathing" style={{ opacity: 0.1, animationDelay: '-2s' }} />
+        <div className="aurora-blob animate-breathing opacity-40 blur-3xl shadow-[0_0_100px_rgba(157,80,187,0.3)]" style={{ background: '#9d50bb', top: '-10%', left: '-10%' }} />
+        <div className="aurora-blob animate-breathing opacity-30 delay-[-4s] blur-2xl" style={{ background: '#c084fc', bottom: '-10%', right: '-10%' }} />
+        <div className="aurora-blob animate-breathing opacity-50 delay-[-2s] blur-3xl shadow-[0_0_100px_rgba(31,31,31,0.5)]" style={{ background: '#050505', top: '30%', right: '20%' }} />
       </div>
 
       <Navbar />
 
-      <main style={{ 
-        width: '100%', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        minHeight: '100vh',
-        padding: '100px 5% 50px',
-        position: 'relative',
-        zIndex: 10
-      }}>
+      <main className="w-full flex items-center justify-center min-h-screen px-[5%] pt-[100px] pb-[50px] relative z-10">
         <motion.div 
           variants={staggerContainer(0.12, 0.2)}
           initial="hidden"
           animate="visible"
-          className="glass-panel"
-          style={{ 
-            width: '100%', 
-            maxWidth: '480px', 
-            padding: '48px', 
-            borderRadius: '32px',
-            boxShadow: '0 40px 80px rgba(0,0,0,0.5)',
-            border: '1px solid rgba(255,255,255,0.08)'
-          }}
+          className="glass-panel w-full max-w-[480px] p-[48px] rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.8)] border border-white/10"
         >
-          <motion.div variants={blurReveal} style={{ marginBottom: '40px', textAlign: 'center' }}>
-            <p className="subtle-mono" style={{ marginBottom: '16px' }}>Secure Protocol 2.0</p>
-            <h1 className="hero-title" style={{ fontSize: '42px', marginBottom: '12px' }}>Welcome Back</h1>
-            <p style={{ color: '#a1a1a6', fontSize: '15px' }}>Enter your credentials to resume operations.</p>
+          <motion.div variants={blurReveal} className="mb-[40px] text-center">
+            <p className="subtle-mono mb-[16px] text-indigo-400">Secure Access</p>
+            <h1 className="hero-title text-[42px] mb-[12px] leading-tight uppercase italic font-black">Welcome Back</h1>
+            <p className="text-[#a1a1a6] text-[15px] font-medium italic opacity-60">Authentication required to access the perimeter.</p>
           </motion.div>
 
-          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
-            <motion.div variants={blurReveal} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <label style={{ fontSize: '11px', fontWeight: 800, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.1em', marginLeft: '4px' }}>
-                Identity / Handle <span style={{ color: 'var(--accent-purple)' }}>*</span>
+          <form onSubmit={handleSubmit} className="flex flex-col gap-[32px]">
+            <motion.div variants={blurReveal} className="flex flex-col gap-[12px]">
+              <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-[4px]">
+                Researcher Identity
               </label>
               <input 
                 type="text" 
                 required
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                placeholder="Enter your handle or email"
-                className="input-focus-glow"
-                style={{
-                  width: '100%', padding: '20px 24px', borderRadius: '18px', background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '15px', transition: 'all 0.3s'
-                }}
+                placeholder="Username or Email"
+                className="input-focus-glow w-full py-[22px] px-[28px] rounded-[24px] bg-white/2 border border-white/5 text-white text-[15px] font-medium transition-all shadow-inner"
               />
             </motion.div>
 
-            <motion.div variants={blurReveal} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingRight: '4px' }}>
-                <label style={{ fontSize: '11px', fontWeight: 800, color: '#6e6e73', textTransform: 'uppercase', letterSpacing: '0.1em', marginLeft: '4px' }}>
-                  Passcode <span style={{ color: 'var(--accent-blue)' }}>*</span>
+            <motion.div variants={blurReveal} className="flex flex-col gap-[12px]">
+              <div className="flex justify-between items-center pr-[4px]">
+                <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] ml-[4px]">
+                  Passcode
                 </label>
               </div>
               <input 
@@ -113,46 +91,41 @@ export default function SignIn() {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 placeholder="••••••••"
-                className="input-focus-glow"
-                style={{
-                  width: '100%', padding: '20px 24px', borderRadius: '18px', background: 'rgba(255,255,255,0.03)',
-                  border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '15px', transition: 'all 0.3s'
-                }}
+                className="input-focus-glow w-full py-[22px] px-[28px] rounded-[24px] bg-white/2 border border-white/5 text-white text-[15px] transition-all shadow-inner"
               />
             </motion.div>
 
             <AnimatePresence>
               {error && (
                 <motion.p 
-                  initial={{ opacity: 0, height: 0 }}
-                  animate={{ opacity: 1, height: 'auto' }}
-                  exit={{ opacity: 0, height: 0 }}
-                  style={{ color: '#ff4b4b', fontSize: '13px', fontWeight: 600, textAlign: 'center', padding: '14px', background: 'rgba(255,75,75,0.08)', borderRadius: '14px', border: '1px solid rgba(255,75,75,0.2)' }}
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  className="text-rose-500 text-[11px] font-black text-center p-[16px] bg-rose-500/5 rounded-[18px] border border-rose-500/10 uppercase tracking-widest italic"
                 >
-                  {error}
+                  !! {error} !!
                 </motion.p>
               )}
             </AnimatePresence>
 
             <motion.button 
               variants={blurReveal}
-              whileHover={{ scale: 1.02, boxShadow: '0 0 30px rgba(255,255,255,0.1)' }}
+              whileHover={{ 
+                scale: 1.02, 
+                backgroundColor: 'rgba(255,255,255,0.95)',
+                boxShadow: '0 0 40px rgba(157, 80, 187, 0.4)'
+              }}
               whileTap={{ scale: 0.98 }}
               type="submit"
               disabled={loading}
-              className="btn-luminous"
-              style={{ 
-                width: '100%', padding: '22px', fontSize: '16px', fontWeight: 800, 
-                background: '#fff', color: '#000', borderRadius: '18px', cursor: loading ? 'not-allowed' : 'pointer',
-                border: 'none', transition: 'all 0.3s'
-              }}
+              className="w-full py-[24px] text-[15px] font-black bg-white text-black rounded-[24px] shadow-2xl transition-all uppercase tracking-widest hover:italic"
             >
-              {loading ? 'Authenticating...' : 'Resume Operation'}
+              {loading ? 'Verifying Identity...' : 'Login Now'}
             </motion.button>
 
-            <motion.div variants={blurReveal} style={{ textAlign: 'center', marginTop: '10px' }}>
-              <p style={{ fontSize: '14px', color: '#6e6e73' }}>
-                New to the grid? <Link href="/signup" style={{ color: '#fff', fontWeight: 800, textDecoration: 'none', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '2px' }}>Initialize Profile</Link>
+            <motion.div variants={blurReveal} className="text-center mt-[10px]">
+              <p className="text-[13px] text-white/20 font-medium tracking-tight">
+                New researcher? <Link href="/signup" className="text-white font-black hover:text-indigo-400 transition-colors">Apply for access</Link>
               </p>
             </motion.div>
           </form>
@@ -161,14 +134,14 @@ export default function SignIn() {
 
       {/* Security Status Pill */}
       <motion.div 
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
         transition={{ delay: 1 }}
-        style={{ position: 'fixed', bottom: '40px', left: '50%', transform: 'translateX(-50%)', zIndex: 100 }}
+        className="fixed bottom-[40px] left-1/2 -translate-x-1/2 z-[100]"
       >
-        <div className="glass-panel" style={{ padding: '12px 24px', borderRadius: '100px', display: 'flex', alignItems: 'center', gap: '12px', border: '1px solid rgba(255,255,255,0.1)' }}>
-          <div className="animate-breathing" style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#00ff41', boxShadow: '0 0 10px #00ff41' }} />
-          <span style={{ fontSize: '11px', fontWeight: 800, letterSpacing: '0.05em', color: '#a1a1a6' }}>ENCRYPTION ACTIVE</span>
+        <div className="glass-panel py-[12px] px-[24px] rounded-full flex items-center gap-[12px] border border-white/5 shadow-2xl">
+          <div className="w-[6px] h-[6px] rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]" />
+          <span className="text-[9px] font-black tracking-[0.4em] text-white/30 uppercase">Perimeter Secure</span>
         </div>
       </motion.div>
     </div>

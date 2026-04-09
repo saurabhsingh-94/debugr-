@@ -4,6 +4,10 @@ const API_BASE = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API
 
 export const API_URL = API_BASE || 'https://debugr-backend-production.up.railway.app';
 
+if (typeof window !== 'undefined') {
+  console.log('🌐 [Debugr] Using API URL:', API_URL);
+}
+
 // Cookie Helpers
 export function setCookie(name: string, value: string, days: number = 7) {
   const expires = new Date(Date.now() + days * 864e5).toUTCString();

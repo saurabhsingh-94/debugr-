@@ -1,21 +1,17 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   fadeInUp, 
   staggerContainer, 
   blurIn,
-  easeOutExpo, 
   hoverScale, 
   tapScale,
-  viewportConfig,
-  easeSmooth
 } from '@/lib/animations';
 import { getCookie } from '@/lib/api';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function Home() {
   const router = useRouter();
@@ -30,62 +26,50 @@ export default function Home() {
 
   const features = [
     {
-      title: 'Advanced Analytics',
-      desc: 'Real-time threat intelligence and vulnerability distribution mapping.',
-      icon: '­ƒôè',
+      title: 'Precision Analytics',
+      desc: 'Real-time insight into vulnerability impact and resolution metrics.',
+      icon: '📊',
       color: '#c084fc'
     },
     {
-      title: 'Global Researcher Network',
-      desc: 'Connect with elite security researchers from around the world.',
-      icon: '­ƒîÉ',
+      title: 'Expert Network',
+      desc: 'Connect with a global community of elite security researchers.',
+      icon: '🌍',
       color: '#60a5fa'
     },
     {
-      title: 'Rapid Triage',
-      desc: 'Industry-leading SLA for vulnerability validation and processing.',
-      icon: 'ÔÜí',
+      title: 'Streamlined Verification',
+      desc: 'Rapid triage and verification process backed by security experts.',
+      icon: '⚡',
       color: '#f472b6'
     }
   ];
 
   return (
-    <main style={{ background: '#050505', minHeight: '100vh', overflow: 'hidden' }}>
+    <main className="bg-bg min-h-screen overflow-hidden text-white font-sans selection:bg-white/10">
       {/* Hero Section */}
-      <section style={{ 
-        position: 'relative', minHeight: '100vh', display: 'flex', 
-        alignItems: 'center', justifyContent: 'center', padding: '0 5%',
-        paddingTop: 80
-      }}>
+      <section className="relative min-h-screen flex items-center justify-center px-6 pt-20">
         {/* Animated Background Blobs */}
-        <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
           <motion.div
             animate={{ 
               scale: [1, 1.2, 1],
               x: [0, 50, 0],
               y: [0, -30, 0],
-              opacity: [0.3, 0.5, 0.3]
+              opacity: [0.15, 0.25, 0.15]
             }}
             transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-            style={{ 
-              position: 'absolute', top: '10%', left: '10%', width: '40vw', height: '40vw',
-              background: 'radial-gradient(circle, rgba(157, 80, 187, 0.15) 0%, transparent 70%)',
-              filter: 'blur(80px)', borderRadius: '50%'
-            }}
+            className="absolute top-[10%] left-[10%] w-[40vw] h-[40vw] bg-purple-500/10 blur-[100px] rounded-full"
           />
           <motion.div
             animate={{ 
               scale: [1.2, 1, 1.2],
               x: [0, -40, 0],
               y: [0, 40, 0],
-              opacity: [0.3, 0.4, 0.3]
+              opacity: [0.15, 0.25, 0.15]
             }}
             transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-            style={{ 
-              position: 'absolute', bottom: '10%', right: '10%', width: '45vw', height: '45vw',
-              background: 'radial-gradient(circle, rgba(64, 150, 238, 0.15) 0%, transparent 70%)',
-              filter: 'blur(80px)', borderRadius: '50%'
-            }}
+            className="absolute bottom-[10%] right-[10%] w-[45vw] h-[45vw] bg-indigo-500/10 blur-[100px] rounded-full"
           />
         </div>
 
@@ -93,64 +77,45 @@ export default function Home() {
           variants={staggerContainer(0.15, 0.2)}
           initial="hidden"
           animate="visible"
-          style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: 900 }}
+          className="relative z-10 text-center max-w-[1000px]"
         >
-          {/* Removed secondary heading */}
-
           <motion.h1 
             variants={blurIn(0.1)}
-            style={{ 
-              fontSize: 'clamp(48px, 8vw, 100px)', fontWeight: 900, color: '#fff',
-              lineHeight: 0.9, letterSpacing: '-0.05em', marginBottom: 32,
-            }}
+            className="text-[clamp(44px,8vw,96px)] font-black leading-[0.9] tracking-tighter mb-10"
           >
             Securing the <br /> 
-            <span style={{ 
-              background: 'linear-gradient(to right, var(--accent-purple), var(--accent-blue))',
-              WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-              filter: 'drop-shadow(0 0 30px rgba(157, 80, 187, 0.3))'
-            }}>Digital Horizon.</span>
+            <span className="bg-linear-to-r from-indigo-400 via-purple-400 to-indigo-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(157,80,187,0.3)]">
+              Digital Horizon.
+            </span>
           </motion.h1>
 
           <motion.p 
             variants={fadeInUp(0.3)}
-            style={{ 
-              fontSize: 20, color: '#a1a1a6', maxWidth: 640, margin: '0 auto 48px',
-              lineHeight: 1.6, fontWeight: 500
-            }}
+            className="text-t2 text-base md:text-xl max-w-2xl mx-auto mb-12 leading-relaxed font-medium"
           >
-            Connect with top-tier security researchers and protect your infrastructure 
-            with the world&apos;s most advanced crowdsourced security platform.
+            The world&apos;s most advanced crowdsourced security platform. Partner with elite security analysts to protect your infrastructure.
           </motion.p>
 
           <motion.div 
             variants={fadeInUp(0.4)}
-            style={{ display: 'flex', gap: 20, justifyContent: 'center' }}
+            className="flex flex-col sm:flex-row gap-5 justify-center items-center"
           >
-            <Link href="/programs" style={{ textDecoration: 'none' }}>
+            <Link href="/programs">
               <motion.div 
                 whileHover={hoverScale}
                 whileTap={tapScale}
-                className="glass-panel"
-                style={{ 
-                  padding: '18px 40px', borderRadius: 16, background: '#fff', color: '#000',
-                  fontWeight: 800, fontSize: 16, border: '1px solid #fff'
-                }}
+                className="px-10 py-5 bg-white text-black font-black text-sm uppercase tracking-widest rounded-2xl shadow-2xl hover:bg-white/90 transition-all"
               >
-                View Programs
+                View Opportunities
               </motion.div>
             </Link>
-            <Link href="/signup" style={{ textDecoration: 'none' }}>
+            <Link href="/signup">
               <motion.div 
                 whileHover={hoverScale}
                 whileTap={tapScale}
-                className="glass-panel"
-                style={{ 
-                  padding: '18px 40px', borderRadius: 16, background: 'rgba(255,255,255,0.03)', 
-                  color: '#fff', fontWeight: 800, fontSize: 16, border: '1px solid rgba(255,255,255,0.1)'
-                }}
+                className="px-10 py-5 bg-white/5 border border-white/10 text-white font-black text-sm uppercase tracking-widest rounded-2xl hover:bg-white/10 transition-all backdrop-blur-xl"
               >
-                Start Hacking
+                Join as Researcher
               </motion.div>
             </Link>
           </motion.div>
@@ -160,104 +125,69 @@ export default function Home() {
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 2, duration: 1 }}
-          style={{ 
-            position: 'absolute', bottom: 40, left: '50%', transform: 'translateX(-50%)',
-            display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 12,
-            zIndex: 10
-          }}
+          transition={{ delay: 1.5, duration: 1 }}
+          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 z-10"
         >
-          <motion.div
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 2, repeat: Infinity, ease: easeSmooth }}
-            style={{ 
-              width: 24, height: 40, borderRadius: 12, border: '1px solid rgba(255,255,255,0.2)',
-              position: 'relative'
-            }}
-          >
+          <div className="w-6 h-10 rounded-full border border-white/10 relative">
             <motion.div 
               animate={{ opacity: [0.3, 1, 0.3], y: [4, 24, 4] }}
               transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              style={{ 
-                position: 'absolute', top: 4, left: '50%', marginLeft: -1.5,
-                width: 3, height: 8, background: '#fff', borderRadius: 2,
-                boxShadow: '0 0 10px #fff'
-              }}
+              className="absolute top-1 left-1/2 -ml-[1.5px] w-[3px] h-2 bg-white rounded-full shadow-[0_0_8px_#fff]"
             />
-          </motion.div>
+          </div>
         </motion.div>
       </section>
 
       {/* Features Grid */}
-      <section style={{ padding: '160px 5%', position: 'relative' }}>
+      <section className="py-40 px-6 relative">
         <motion.div 
           initial="hidden"
           whileInView="visible"
-          viewport={viewportConfig}
+          viewport={{ once: true, margin: '-100px' }}
           variants={staggerContainer(0.2)}
-          style={{ maxWidth: 1400, margin: '0 auto' }}
+          className="max-w-7xl mx-auto"
         >
-          <motion.div variants={fadeInUp()} style={{ textAlign: 'center', marginBottom: 80 }}>
-            <h2 style={{ fontSize: 48, fontWeight: 900, color: '#fff', marginBottom: 20 }}>
-              The Industrial Standard
+          <motion.div variants={fadeInUp()} className="text-center mb-24">
+            <h2 className="text-4xl md:text-6xl font-black text-white mb-6 tracking-tight">
+              Built for Impact
             </h2>
-            <p style={{ color: '#a1a1a6', fontSize: 18, maxWidth: 600, margin: '0 auto' }}>
+            <p className="text-t2 text-lg md:text-xl max-w-2xl mx-auto font-medium">
               Powerful tools designed for the modern security ecosystem.
             </p>
           </motion.div>
-
-          <div style={{ 
-            display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 32
-          }}>
+ 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {features.map((feature, idx) => (
               <motion.div
                 key={idx}
                 variants={fadeInUp()}
                 onMouseEnter={() => setHoveredFeature(idx)}
                 onMouseLeave={() => setHoveredFeature(null)}
-                style={{
-                  padding: 40, borderRadius: 24, background: 'rgba(255,255,255,0.02)',
-                  border: '1px solid rgba(255,255,255,0.08)', position: 'relative',
-                  overflow: 'hidden', transition: 'all 0.5s ease'
-                }}
+                className="group p-10 rounded-[40px] bg-white/1 border border-white/5 relative overflow-hidden transition-all duration-500 hover:bg-white/2 hover:border-white/10"
               >
-                {/* Interaction Light */}
+                <div className="text-4xl mb-8 group-hover:scale-110 transition-transform duration-500 origin-left">
+                  {feature.icon}
+                </div>
+                <h3 className="text-2xl font-black text-white mb-4 tracking-tight">
+                  {feature.title}
+                </h3>
+                <p className="text-t2 text-sm leading-relaxed font-medium">
+                  {feature.desc}
+                </p>
+
                 <AnimatePresence>
                   {hoveredFeature === idx && (
                     <motion.div
-                      initial={{ opacity: 0, scale: 0 }}
-                      animate={{ opacity: 1, scale: 1 }}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.6, ease: easeOutExpo }}
+                      className="absolute inset-0 pointer-events-none"
                       style={{
-                        position: 'absolute', top: -100, left: -100, width: 400, height: 400,
-                        background: `radial-gradient(circle, ${feature.color}15 0%, transparent 70%)`,
-                        pointerEvents: 'none'
+                        background: `radial-gradient(circle at center, ${feature.color}05 0%, transparent 70%)`
                       }}
                     />
                   )}
                 </AnimatePresence>
-
-                <div style={{ fontSize: 40, marginBottom: 24 }}>{feature.icon}</div>
-                <h3 style={{ fontSize: 24, fontWeight: 700, color: '#fff', marginBottom: 16 }}>
-                  {feature.title}
-                </h3>
-                <p style={{ color: '#a1a1a6', fontSize: 16, lineHeight: 1.6 }}>
-                  {feature.desc}
-                </p>
-
-                <motion.div 
-                  className="glow-effect"
-                  animate={{ 
-                    opacity: hoveredFeature === idx ? 1 : 0,
-                    borderColor: hoveredFeature === idx ? feature.color : 'rgba(255,255,255,0.08)'
-                  }}
-                  style={{
-                    position: 'absolute', inset: 0, borderRadius: 24,
-                    border: '1px solid transparent', pointerEvents: 'none'
-                  }}
-                />
               </motion.div>
             ))}
           </div>
@@ -265,54 +195,37 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ padding: '160px 5%', textAlign: 'center' }}>
+      <section className="py-40 px-6">
         <motion.div
           initial="hidden"
           whileInView="visible"
-          viewport={viewportConfig}
+          viewport={{ once: true, margin: '-100px' }}
           variants={fadeInUp()}
-          className="glass-panel"
-          style={{
-            maxWidth: 1000, margin: '0 auto', padding: '100px 40px',
-            borderRadius: 40, position: 'relative', overflow: 'hidden',
-            background: 'linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01))'
-          }}
+          className="glass-panel max-w-5xl mx-auto p-16 md:p-32 rounded-[64px] relative overflow-hidden text-center"
         >
-          <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>
-            <div style={{
-              position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
-              width: '100%', height: '100%',
-              background: 'radial-gradient(circle, rgba(157, 80, 187, 0.05) 0%, transparent 70%)',
-              filter: 'blur(40px)'
-            }} />
-          </div>
-
-          <h2 style={{ fontSize: 'clamp(32px, 5vw, 64px)', fontWeight: 900, color: '#fff', marginBottom: 32, lineHeight: 1.1 }}>
-            Ready to secure <br /> your future?
+          <div className="absolute inset-0 bg-linear-to-br from-indigo-500/5 to-purple-500/5 pointer-events-none" />
+          
+          <h2 className="text-4xl md:text-7xl font-black text-white mb-8 tracking-tighter leading-none">
+            Join the <br /> Vanguard.
           </h2>
-          <p style={{ color: '#a1a1a6', fontSize: 20, maxWidth: 600, margin: '0 auto 48px' }}>
-            Join 10,000+ researchers and companies building a safer web together.
+          <p className="text-t2 text-lg md:text-xl max-w-2xl mx-auto mb-12 font-medium">
+            Partner with elite security analysts and industry leaders to build a safer digital future.
           </p>
-          <Link href="/signup" style={{ textDecoration: 'none' }}>
+          <Link href="/signup">
             <motion.div 
               whileHover={hoverScale}
               whileTap={tapScale}
-              style={{
-                display: 'inline-block', padding: '20px 56px', borderRadius: 20,
-                background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))',
-                color: '#fff', fontWeight: 900, fontSize: 18,
-                boxShadow: '0 20px 40px rgba(157, 80, 187, 0.2)'
-              }}
+              className="inline-block px-12 py-5 bg-linear-to-r from-indigo-600 to-purple-600 text-white font-black text-lg uppercase tracking-widest rounded-2xl shadow-[0_20px_40px_rgba(99,102,241,0.3)] hover:shadow-[0_25px_50px_rgba(99,102,241,0.4)] transition-all"
             >
-              Sign Up Now
+              Get Started
             </motion.div>
           </Link>
         </motion.div>
       </section>
 
-      <footer style={{ padding: '80px 5%', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-        <p style={{ color: '#6e6e73', fontSize: 14, fontWeight: 500 }}>
-          ┬® 2026 Debugr Platform. ALL RIGHTS RESERVED.
+      <footer className="py-20 border-t border-white/5 text-center">
+        <p className="text-white/10 text-xs font-black uppercase tracking-[0.3em]">
+          &copy; 2026 Debugr Platform. All rights reserved.
         </p>
       </footer>
     </main>

@@ -1,10 +1,18 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
-import { blurReveal, staggerContainer } from '@/lib/animations';
+import { 
+  blurReveal, 
+  staggerContainer, 
+  fadeInUp, 
+  hoverScale, 
+  tapScale,
+  springSoft
+} from '@/lib/animations';
 
 interface Program {
   id: string;
@@ -37,7 +45,7 @@ export default function SubmitReport() {
         if (res.ok) {
           const data = await res.json();
           if (data.success) {
-            setPrograms(data.programs);
+            setPrograms(data.programs || []);
           }
         }
       } catch {
@@ -76,146 +84,262 @@ export default function SubmitReport() {
   const prevStep = () => setStep(s => s - 1);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--t1)' }}>
+    <div className="min-h-screen text-white/90 selection:bg-indigo-500/30 bg-bg">
       <Navbar />
 
-      <main style={{ maxWidth: 800, margin: '0 auto', padding: '160px 24px 100px' }}>
-        <motion.div variants={staggerContainer(0.1)} initial="hidden" animate="visible">
-          <motion.p variants={blurReveal} className="mono" style={{ fontSize: 11, color: 'var(--t2)', letterSpacing: '0.4em', marginBottom: 16 }}>
-            STEP 0{step} {'//'} {step === 1 ? 'TARGET' : step === 2 ? 'DETAILS' : step === 3 ? 'TECHNICAL' : 'REVIEW'}
-          </motion.p>
-          <motion.h1 variants={blurReveal} className="metallic-text" style={{ fontSize: 48, fontWeight: 900, marginBottom: 48 }}>
-            Submit <span className="text-gradient">Intelligence.</span>
+      <main className="relative max-w-4xl mx-auto px-6 pt-40 pb-20">
+        <motion.div 
+          variants={staggerContainer(0.1)} 
+          initial="hidden" 
+          animate="visible"
+          className="mb-16"
+        >
+          <motion.div variants={blurReveal} className="flex items-center gap-3 mb-6">
+            <span className="h-px w-8 bg-white/20" />
+            <p className="subtle-mono text-[9px] text-white/30 tracking-[0.3em]">
+              Disclosure Protocol – Phase {step} / 4
+            </p>
+          </motion.div>
+          
+          <motion.h1 variants={blurReveal} className="text-5xl md:text-7xl font-black tracking-tighter hero-title leading-[0.9] uppercase italic">
+            Submit <span className="text-white/20">Disclosure.</span>
           </motion.h1>
         </motion.div>
 
-        <div className="glass-panel" style={{ padding: 48, borderRadius: 32, border: '1px solid var(--line)' }}>
-          <AnimatePresence mode="wait">
-            {step === 1 && (
-              <motion.div key="step1" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 32 }}>Select target program</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {loading ? <p>Loading targets...</p> : programs.map(p => (
-                    <button
-                      key={p.id}
-                      onClick={() => { setFormData({ ...formData, program_id: p.id }); nextStep(); }}
-                      style={{
-                        padding: '20px 24px', borderRadius: 16, textAlign: 'left',
-                        background: formData.program_id === p.id ? 'rgba(255,255,255,0.05)' : 'transparent',
-                        border: `1px solid ${formData.program_id === p.id ? '#fff' : 'var(--line)'}`,
-                        cursor: 'pointer', transition: 'all 0.2s', display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                      }}
+        <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl">
+          <div className="bg-white/1 backdrop-blur-3xl p-10 md:p-16 rounded-[44px] border border-white/5">
+            <AnimatePresence mode="wait">
+              {step === 1 && (
+                <motion.div 
+                  key="step1" 
+                  initial={{ opacity: 0, filter: 'blur(10px)', scale: 0.98 }} 
+                  animate={{ opacity: 1, filter: 'blur(0px)', scale: 1 }} 
+                  exit={{ opacity: 0, filter: 'blur(10px)', scale: 1.02 }}
+                  transition={springSoft}
+                >
+                  <div className="mb-10">
+                    <h2 className="text-3xl font-black tracking-tight mb-3">Target Selection</h2>
+                    <p className="text-t2 text-sm font-medium">Identify the program for this specific vulnerability disclosure.</p>
+                  </div>
+
+                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
+                    {loading ? (
+                      <div className="py-20 text-center opacity-20 italic font-mono text-xs tracking-widest uppercase">Initializing Registry...</div>
+                    ) : programs.length === 0 ? (
+                      <div className="py-20 text-center opacity-20 italic">No active targets found</div>
+                    ) : programs.map((p, idx) => (
+                      <motion.button
+                        key={p.id}
+                        variants={fadeInUp(idx * 0.04)}
+                        whileHover={hoverScale}
+                        whileTap={tapScale}
+                        onClick={() => { setFormData({ ...formData, program_id: p.id }); nextStep(); }}
+                        className={`
+                          w-full p-8 rounded-3xl text-left transition-all duration-500 flex items-center justify-between border
+                          ${formData.program_id === p.id 
+                            ? 'bg-white/10 border-white/20 shadow-2xl scale-[1.02]' 
+                            : 'bg-white/2 hover:bg-white/5 border-white/5'
+                          }
+                        `}
+                      >
+                        <div className="flex items-center gap-6">
+                          <div className={`w-1.5 h-1.5 rounded-full ${formData.program_id === p.id ? 'bg-indigo-400 animate-pulse' : 'bg-white/10'}`} />
+                          <span className="text-lg font-black tracking-tight text-white uppercase">{p.name}</span>
+                        </div>
+                        <span className="subtle-mono text-[9px] text-white/20 font-black tracking-widest">Ceiling: ${Number(p.reward_max).toLocaleString()}</span>
+                      </motion.button>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {step === 2 && (
+                <motion.div 
+                  key="step2" 
+                  initial={{ opacity: 0, filter: 'blur(10px)', x: 20 }} 
+                  animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }} 
+                  exit={{ opacity: 0, filter: 'blur(10px)', x: -20 }}
+                  transition={springSoft}
+                >
+                  <div className="mb-10">
+                    <h2 className="text-3xl font-black tracking-tight mb-3">Finding Overview</h2>
+                    <p className="text-t2 text-sm font-medium">Define the core identity and severity of the vulnerability.</p>
+                  </div>
+
+                  <div className="space-y-10">
+                    <div className="space-y-3">
+                      <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Finding Title</label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. Critical SQL Injection in Authentication Flow"
+                        className="w-full bg-white/3 border border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-white/20 focus:bg-white/5 transition-all text-white font-medium shadow-inner"
+                        value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="space-y-3">
+                      <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Target Identity (URL/Asset)</label>
+                      <input 
+                        type="text" 
+                        placeholder="e.g. api.vanguard.sh/v1/auth/login"
+                        className="w-full bg-white/3 border border-white/5 rounded-2xl px-6 py-5 outline-none focus:border-white/20 focus:bg-white/5 transition-all text-white font-mono text-sm shadow-inner"
+                        value={formData.asset} onChange={e => setFormData({...formData, asset: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="space-y-4">
+                      <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Severity Tier</label>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {['low', 'medium', 'high', 'critical'].map(s => (
+                          <motion.button
+                            key={s} 
+                            type="button" 
+                            whileHover={hoverScale}
+                            whileTap={tapScale}
+                            onClick={() => setFormData({...formData, severity: s})}
+                            className={`
+                              py-4 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] transition-all border shadow-lg
+                              ${formData.severity === s 
+                                ? 'bg-white text-black border-white' 
+                                : 'bg-white/5 text-white/20 border-white/5 hover:text-white/40'
+                              }
+                            `}
+                          >
+                            {s}
+                          </motion.button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex gap-4 pt-10 border-t border-white/5">
+                      <button 
+                        onClick={prevStep} 
+                        className="flex-1 p-5 rounded-2xl border border-white/5 text-[11px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-all shadow-lg"
+                      >
+                        Return
+                      </button>
+                      <motion.button 
+                        whileHover={hoverScale} whileTap={tapScale}
+                        onClick={nextStep} 
+                        className="flex-2 p-5 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-[11px] shadow-2xl hover:bg-white/90"
+                      >
+                        Next: Evidence
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {step === 3 && (
+                <motion.div 
+                  key="step3" 
+                  initial={{ opacity: 0, filter: 'blur(10px)', x: 20 }} 
+                  animate={{ opacity: 1, filter: 'blur(0px)', x: 0 }} 
+                  exit={{ opacity: 0, filter: 'blur(10px)', x: -20 }}
+                  transition={springSoft}
+                >
+                  <div className="mb-10">
+                    <h2 className="text-3xl font-black tracking-tight mb-3">Disclosure Evidence</h2>
+                    <p className="text-t2 text-sm font-medium">Provide explicit technical details and reproduction logic.</p>
+                  </div>
+
+                  <div className="space-y-10">
+                    <div className="space-y-3">
+                      <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Vulnerability Impact</label>
+                      <textarea 
+                        placeholder="Describe the operational risk and data exposure potential..."
+                        className="w-full min-h-[160px] bg-white/3 border border-white/5 rounded-3xl px-6 py-6 outline-none focus:border-white/20 focus:bg-white/5 transition-all text-white font-medium shadow-inner resize-none"
+                        value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
+                      />
+                    </div>
+                    
+                    <div className="space-y-3">
+                      <label className="subtle-mono text-[9px] text-white/30 ml-2 uppercase">Reproduction Workflow</label>
+                      <textarea 
+                        placeholder="1. Authenticate...\n2. Execute Payload..."
+                        className="w-full min-h-[160px] bg-white/3 border border-white/5 rounded-3xl px-6 py-6 outline-none focus:border-white/20 focus:bg-white/5 transition-all text-white font-mono text-sm shadow-inner resize-none"
+                        value={formData.steps_to_reproduce} onChange={e => setFormData({...formData, steps_to_reproduce: e.target.value})}
+                      />
+                    </div>
+
+                    <div className="flex gap-4 pt-10 border-t border-white/5">
+                      <button 
+                        onClick={prevStep} 
+                        className="flex-1 p-5 rounded-2xl border border-white/5 text-[11px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-all shadow-lg"
+                      >
+                        Return
+                      </button>
+                      <motion.button 
+                        whileHover={hoverScale} whileTap={tapScale}
+                        onClick={nextStep} 
+                        className="flex-2 p-5 rounded-2xl bg-white text-black font-black uppercase tracking-widest text-[11px] shadow-2xl hover:bg-white/90"
+                      >
+                        Final Review
+                      </motion.button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
+              {step === 4 && (
+                <motion.div 
+                  key="step4" 
+                  initial={{ opacity: 0, scale: 0.95, filter: 'blur(20px)' }} 
+                  animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
+                  transition={springSoft}
+                >
+                  <div className="mb-12 text-center">
+                    <h2 className="text-4xl font-black tracking-tighter mb-4 italic uppercase">Validation.</h2>
+                    <p className="text-t2 text-sm font-medium">Verify your disclosure details before submission.</p>
+                  </div>
+
+                  <div className="glass-panel p-10 rounded-[40px] border-white/10 mb-12 overflow-hidden relative shadow-2xl">
+                    <div className="absolute top-0 right-0 p-8 opacity-5 text-7xl font-black select-none uppercase tracking-tighter italic">Vanguard</div>
+                    
+                    <div className="relative z-10 space-y-10">
+                      <div>
+                        <p className="subtle-mono text-[8px] text-white/20 mb-3 uppercase tracking-widest font-black">Finding Title</p>
+                        <p className="text-2xl font-black tracking-tight uppercase text-white">{formData.title || '( No Title Provided )'}</p>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-12">
+                        <div>
+                          <p className="subtle-mono text-[8px] text-white/20 mb-3 uppercase tracking-widest font-black">Severity</p>
+                          <p className={`text-xl font-black uppercase tracking-tighter italic ${formData.severity === 'critical' ? 'text-rose-500 underline decoration-indigo-500/50 underline-offset-8' : 'text-white/60'}`}>
+                            {formData.severity}
+                          </p>
+                        </div>
+                        <div>
+                          <p className="subtle-mono text-[8px] text-white/20 mb-3 uppercase tracking-widest font-black">Target</p>
+                          <p className="text-xl font-black truncate uppercase text-white/60">{programs.find(p => p.id === formData.program_id)?.name || 'Unknown Target'}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {error && <p className="text-rose-500 text-center font-black text-[10px] mb-8 animate-pulse tracking-widest uppercase italic">!! {error} !!</p>}
+                  
+                  <div className="flex flex-col md:flex-row gap-4">
+                    <button 
+                      onClick={prevStep} 
+                      className="flex-1 p-6 rounded-2xl border border-white/5 text-[11px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-all shadow-lg"
                     >
-                      <span style={{ fontWeight: 700, color: '#fff' }}>{p.name}</span>
-                      <span className="subtle-mono" style={{ fontSize: 10 }}>UP TO ${Number(p.reward_max).toLocaleString()}</span>
+                      Refine Evidence
                     </button>
-                  ))}
-                </div>
-              </motion.div>
-            )}
-
-            {step === 2 && (
-              <motion.div key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 32 }}>Classification</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                  <div className="field">
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: 'var(--t3)', marginBottom: 8 }}>VULNERABILITY TITLE</label>
-                    <input 
-                      type="text" className="neon-focus" placeholder="e.g. SQL Injection on login endpoint"
-                      style={{ width: '100%', padding: 16, borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)', color: '#fff' }}
-                      value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})}
-                    />
+                    <motion.button 
+                      disabled={submitting} 
+                      onClick={handleSubmit}
+                      whileHover={{ scale: 1.02, y: -2 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="flex-2 p-6 rounded-3xl bg-indigo-600 text-white font-black uppercase tracking-widest text-sm shadow-2xl shadow-indigo-600/30 hover:bg-indigo-500 transition-all font-mono"
+                    >
+                      {submitting ? 'TRANSMITTING...' : 'Submit Disclosure'}
+                    </motion.button>
                   </div>
-                  <div className="field">
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: 'var(--t3)', marginBottom: 8 }}>AFFECTED ASSET</label>
-                    <input 
-                      type="text" className="neon-focus" placeholder="e.g. api.debugr.ops"
-                      style={{ width: '100%', padding: 16, borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)', color: '#fff' }}
-                      value={formData.asset} onChange={e => setFormData({...formData, asset: e.target.value})}
-                    />
-                  </div>
-                  <div className="field">
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: 'var(--t3)', marginBottom: 8 }}>SEVERITY</label>
-                    <div style={{ display: 'flex', gap: 8 }}>
-                      {['low', 'medium', 'high', 'critical'].map(s => (
-                        <button
-                          key={s} type="button" onClick={() => setFormData({...formData, severity: s})}
-                          style={{
-                            flex: 1, padding: 12, borderRadius: 8, fontSize: 12, fontWeight: 700, textTransform: 'uppercase',
-                            background: formData.severity === s ? 'rgba(255,255,255,0.1)' : 'transparent',
-                            border: `1px solid ${formData.severity === s ? '#fff' : 'var(--line)'}`,
-                            color: formData.severity === s ? '#fff' : 'var(--t3)', cursor: 'pointer'
-                          }}
-                        >
-                          {s}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                  <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>
-                    <button onClick={prevStep} style={{ flex: 1, padding: 16, borderRadius: 12, border: '1px solid var(--line)', color: '#fff', cursor: 'pointer' }}>Back</button>
-                    <button onClick={nextStep} style={{ flex: 2, padding: 16, borderRadius: 12, background: '#fff', color: '#000', fontWeight: 800, cursor: 'pointer' }}>Technical Specs</button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 3 && (
-              <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 32 }}>Technical Evidence</h2>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: 'var(--t3)', marginBottom: 8 }}>DESCRIPTION & IMPACT</label>
-                    <textarea 
-                      style={{ width: '100%', minHeight: 120, padding: 16, borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)', color: '#fff' }}
-                      value={formData.description} onChange={e => setFormData({...formData, description: e.target.value})}
-                    />
-                  </div>
-                  <div>
-                    <label style={{ display: 'block', fontSize: 11, fontWeight: 800, color: 'var(--t3)', marginBottom: 8 }}>STEPS TO REPRODUCE</label>
-                    <textarea 
-                      style={{ width: '100%', minHeight: 120, padding: 16, borderRadius: 12, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--line)', color: '#fff' }}
-                      value={formData.steps_to_reproduce} onChange={e => setFormData({...formData, steps_to_reproduce: e.target.value})}
-                    />
-                  </div>
-                  <div style={{ display: 'flex', gap: 16, marginTop: 24 }}>
-                    <button onClick={prevStep} style={{ flex: 1, padding: 16, borderRadius: 12, border: '1px solid var(--line)', color: '#fff', cursor: 'pointer' }}>Back</button>
-                    <button onClick={nextStep} style={{ flex: 2, padding: 16, borderRadius: 12, background: '#fff', color: '#000', fontWeight: 800, cursor: 'pointer' }}>Review & Transmit</button>
-                  </div>
-                </div>
-              </motion.div>
-            )}
-
-            {step === 4 && (
-              <motion.div key="step4" initial={{ opacity: 0, scale: 0.98 }} animate={{ opacity: 1, scale: 1 }}>
-                <h2 style={{ fontSize: 24, fontWeight: 800, marginBottom: 32 }}>Final Audit</h2>
-                <div style={{ background: 'rgba(255,255,255,0.02)', padding: 32, borderRadius: 24, border: '1px solid var(--line)', marginBottom: 32 }}>
-                  <p className="mono" style={{ fontSize: 10, color: 'var(--t3)', marginBottom: 8 }}>TITLE</p>
-                  <p style={{ fontWeight: 700, fontSize: 18, marginBottom: 24 }}>{formData.title}</p>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24 }}>
-                    <div>
-                      <p className="mono" style={{ fontSize: 10, color: 'var(--t3)', marginBottom: 4 }}>SEVERITY</p>
-                      <p style={{ textTransform: 'uppercase', fontWeight: 800, color: formData.severity === 'critical' ? '#e5334b' : '#fff' }}>{formData.severity}</p>
-                    </div>
-                    <div>
-                      <p className="mono" style={{ fontSize: 10, color: 'var(--t3)', marginBottom: 4 }}>TARGET</p>
-                      <p style={{ fontWeight: 700 }}>{programs.find(p => p.id === formData.program_id)?.name}</p>
-                    </div>
-                  </div>
-                </div>
-                {error && <p style={{ color: '#ff4d4d', marginBottom: 24 }}>{error}</p>}
-                <div style={{ display: 'flex', gap: 16 }}>
-                  <button onClick={prevStep} style={{ flex: 1, padding: 16, borderRadius: 12, border: '1px solid var(--line)', color: '#fff', cursor: 'pointer' }}>Back</button>
-                  <button 
-                    disabled={submitting} onClick={handleSubmit}
-                    className="btn-luminous" style={{ flex: 2, padding: 20, fontSize: 16 }}
-                  >
-                    {submitting ? 'TRANSMITTING...' : 'SECURE SUBMISSION'}
-                  </button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </main>
     </div>

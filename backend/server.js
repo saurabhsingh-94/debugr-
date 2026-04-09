@@ -40,6 +40,15 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 
+// Log Request Origin for debugging
+app.use((req, res, next) => {
+  const origin = req.headers.origin;
+  if (origin) {
+    logger.info(`[CORS Check] Incoming request from origin: ${origin}`);
+  }
+  next();
+});
+
 // Professional Logging (Morgan + Winston)
 app.use(morgan("combined", { stream: { write: (message) => logger.info(message.trim()) } }));
 

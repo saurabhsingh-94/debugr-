@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
-import { hoverScale, tapScale, springSoft } from '@/lib/animations';
+import { springSoft } from '@/lib/animations';
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -43,139 +43,121 @@ export default function Navbar() {
   };
 
   return (
-    <header style={{
-      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-      height: scrolled ? 64 : 88,
-      background: scrolled ? 'rgba(5,5,5,0.4)' : 'transparent',
-      backdropFilter: scrolled ? 'blur(32px)' : 'none',
-      borderBottom: `1px solid ${scrolled ? 'rgba(255,255,255,0.08)' : 'transparent'}`,
-      transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)',
-      display: 'flex', alignItems: 'center'
-    }}>
-      <div style={{
-        width: '100%', maxWidth: '1400px', margin: '0 auto',
-        padding: '0 40px', display: 'flex', alignItems: 'center',
-      }}>
+    <header className={`
+      fixed top-0 left-0 right-0 z-[100] transition-all duration-500 flex items-center
+      ${scrolled ? 'h-16 bg-bg/40 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
+    `}>
+      <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
+        
         {/* Logo */}
-        <Link href="/" style={{ textDecoration: 'none', marginRight: 'auto' }}>
+        <Link href="/" className="group">
           <motion.div 
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            style={{ display: 'flex', alignItems: 'center', gap: 12 }}
+            className="flex items-center gap-3"
           >
-            <div style={{ 
-              width: 32, height: 32, 
-              background: 'linear-gradient(135deg, var(--accent-purple), var(--accent-blue))', 
-              borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0 0 20px rgba(157, 80, 187, 0.3)'
-            }}>
-              <span style={{ color: '#fff', fontWeight: 900, fontSize: 18 }}>D</span>
+            <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)] group-hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all">
+              <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
             </div>
-            <span style={{ fontSize: 20, fontWeight: 900, letterSpacing: '-0.04em', color: '#fff' }}>
+            <span className="text-xl font-black tracking-tight text-white group-hover:text-white/90 transition-colors">
               Debugr
             </span>
           </motion.div>
         </Link>
 
-        {/* Links */}
-        <nav style={{ display: 'flex', gap: 8, alignItems: 'center', position: 'relative' }}>
-          {[
-            { label: 'Programs', href: '/programs' },
-            { label: 'Bounties', href: '/bounties' },
-            { label: 'Leaderboard', href: '/leaderboard' },
-          ].map((item) => (
-            <Link 
-              key={item.label} 
-              href={item.href} 
-              onMouseEnter={() => setHoveredLink(item.label)}
-              onMouseLeave={() => setHoveredLink(null)}
-              style={{ position: 'relative', padding: '10px 20px', textDecoration: 'none' }}
-            >
-              <span style={{ 
-                position: 'relative', zIndex: 2, fontSize: 13, fontWeight: 600, 
-                color: hoveredLink === item.label ? '#fff' : '#a1a1a6',
-                transition: 'color 0.3s ease'
-              }}>
-                {item.label}
-              </span>
-              <AnimatePresence>
-                {hoveredLink === item.label && (
-                  <motion.div 
-                    layoutId="navHover"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    style={{ 
-                      position: 'absolute', inset: 0, zIndex: 1,
-                      background: 'rgba(255,255,255,0.05)', borderRadius: 12,
-                      border: '1px solid rgba(255,255,255,0.05)'
-                    }}
-                    transition={springSoft}
-                  />
-                )}
-              </AnimatePresence>
-            </Link>
-          ))}
-          
-          <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)', margin: '0 16px' }} />
-          
+        {/* Navigation & Actions */}
+        <div className="flex items-center gap-2">
+          <nav className="hidden lg:flex items-center">
+            {[
+              { label: 'Programs', href: '/programs' },
+              { label: 'Intelligence', href: '/bounties' },
+              { label: 'Rankings', href: '/leaderboard' },
+            ].map((item) => (
+              <Link 
+                key={item.label} 
+                href={item.href} 
+                onMouseEnter={() => setHoveredLink(item.label)}
+                onMouseLeave={() => setHoveredLink(null)}
+                className="relative px-6 py-2.5"
+              >
+                <span className={`
+                  relative z-10 text-[13px] font-black uppercase tracking-widest transition-colors duration-300
+                  ${hoveredLink === item.label ? 'text-white' : 'text-white/30'}
+                `}>
+                  {item.label}
+                </span>
+                <AnimatePresence>
+                  {hoveredLink === item.label && (
+                    <motion.div 
+                      layoutId="navHover"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="absolute inset-0 bg-white/5 border border-white/5 rounded-xl z-0"
+                      transition={springSoft}
+                    />
+                  )}
+                </AnimatePresence>
+              </Link>
+            ))}
+          </nav>
+
+          <div className="hidden lg:block w-px h-6 bg-white/5 mx-4" />
+
           {!loading && (
             user ? (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 24 }}>
-                <Link href="/profile" style={{ textDecoration: 'none' }}>
-                  <motion.div 
-                    whileHover={{ scale: 1.1, backgroundColor: 'rgba(255,255,255,0.1)' }}
-                    whileTap={{ scale: 0.9 }}
-                    style={{
-                      width: 36, height: 36, borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      transition: 'border-color 0.3s'
-                    }}
+              <div className="flex items-center gap-6">
+                <Link href="/dashboard" className="hidden sm:block">
+                  <motion.button 
+                    whileHover={{ scale: 1.05, y: -1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-6 py-2.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/20"
                   >
-                    <span style={{ color: '#fff', fontSize: 13, fontWeight: 700 }}>
-                      {user?.name?.charAt(0) || user?.handle?.charAt(0) || 'U'}
-                    </span>
-                  </motion.div>
+                    Dashboard
+                  </motion.button>
                 </Link>
 
-                <motion.button 
-                  whileHover={{ color: '#fff', x: 2 }}
-                  onClick={handleLogout} 
-                  style={{ background: 'none', border: 'none', color: '#6e6e73', fontSize: 13, cursor: 'pointer', fontWeight: 600 }}
-                >
-                  Sign Out
-                </motion.button>
+                <div className="flex items-center gap-4">
+                  <Link href="/profile" className="relative group">
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all overflow-hidden"
+                    >
+                      <span className="text-white text-xs font-black uppercase">
+                        {user?.handle?.substring(0, 2) || '??'}
+                      </span>
+                    </motion.div>
+                  </Link>
+
+                  <button 
+                    onClick={handleLogout} 
+                    className="text-[11px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors"
+                  >
+                    Logout
+                  </button>
+                </div>
               </div>
             ) : (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
-                <Link href="/signin" style={{ textDecoration: 'none' }}>
-                  <motion.span 
-                    whileHover={{ color: '#fff' }}
-                    style={{ fontSize: 14, fontWeight: 600, color: '#a1a1a6' }}
-                  >
-                    Sign In
-                  </motion.span>
+              <div className="flex items-center gap-4">
+                <Link href="/signin">
+                  <span className="text-[13px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
+                    Login
+                  </span>
                 </Link>
-                <Link href="/signup" style={{ textDecoration: 'none' }}>
+                <Link href="/signup">
                   <motion.div 
-                    whileHover={hoverScale}
-                    whileTap={tapScale}
-                    className="glass-panel hover-glow"
-                    style={{
-                      fontSize: 13, fontWeight: 800, color: '#fff',
-                      padding: '12px 28px', borderRadius: 14,
-                      background: 'rgba(255,255,255,0.03)',
-                      border: '1px solid rgba(255,255,255,0.1)',
-                    }}
+                    whileHover={{ scale: 1.05, y: -1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-8 py-3 bg-white text-black text-[13px] font-black uppercase tracking-widest rounded-xl hover:bg-white/90 transition-all shadow-2xl"
                   >
-                    Get Started
+                    Join Now
                   </motion.div>
                 </Link>
               </div>
             )
           )}
-        </nav>
+        </div>
       </div>
     </header>
   );

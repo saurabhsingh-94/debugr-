@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { fetchWithAuth } from '@/lib/api';
-import { inView, viewportConfig } from '@/lib/animations';
+import { inView } from '@/lib/animations';
 
 interface Program {
   id: string;
@@ -49,61 +49,49 @@ export default function BountyDirectory() {
   });
 
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg)', color: 'var(--t1)' }}>
+    <div className="min-h-screen bg-bg text-white selection:bg-white/10">
       <Navbar />
 
-      <main style={{ width: '100%', display: 'grid', gridTemplateColumns: 'minmax(300px, 1fr) 2fr', minHeight: '100vh' }}>
+      <main className="w-full grid grid-cols-1 lg:grid-cols-[minmax(300px,1fr)_2fr] min-h-screen">
         
-        {/* ─── Sidebar / Hero (Left) ─── */}
-        <section style={{ 
-          padding: '160px 48px 60px 8%', 
-          borderRight: '1px solid var(--line)',
-          background: 'rgba(255,255,255,0.01)',
-          display: 'flex', flexDirection: 'column', gap: 40,
-          position: 'sticky', top: 0, height: '100vh'
-        }}>
+        {/* Sidebar / Hero (Left) */}
+        <section className="hidden lg:flex flex-col gap-10 p-[160px_48px_60px_8%] border-r border-white/5 bg-white/1 sticky top-0 h-screen overflow-y-auto">
           <motion.div variants={inView()} initial="hidden" animate="visible">
-            <p className="mono" style={{ fontSize: 11, color: 'var(--t2)', letterSpacing: '0.2em', marginBottom: 16 }}>DIRECTORY</p>
-            <h1 className="metallic-text" style={{ fontSize: 'clamp(40px, 4vw, 56px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1.1, marginBottom: 24 }}>
-              Hunt the<br />Untraceable.
+            <p className="subtle-mono mb-4 text-white/30">Verified Opportunities</p>
+            <h1 className="hero-title text-[clamp(40px,4vw,56px)] mb-6 leading-[0.9]">
+              Secure the<br /><span className="text-white/20">Future.</span>
             </h1>
-            <p style={{ color: 'var(--t2)', fontSize: 16, lineHeight: 1.6, maxWidth: 320 }}>
-              Browse verified bounty programs from elite companies. Filter by scope, reward, or platform credibility.
+            <p className="text-t2 text-[15px] leading-relaxed max-w-[320px]">
+              Explore high-impact security targets vetted by our team. Refine your search by reward size, platform, or industry standards.
             </p>
           </motion.div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <div>
-              <p className="mono" style={{ fontSize: 10, color: 'var(--t3)', letterSpacing: '0.1em', marginBottom: 12, textTransform: 'uppercase' }}>Search Targets</p>
+          <div className="flex flex-col gap-8">
+            <div className="space-y-3">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-1">Search Programs</label>
               <input 
                 type="text" 
                 placeholder="Company, keyword, or asset..."
                 value={search}
                 onChange={e => setSearch(e.target.value)}
-                style={{
-                  width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid var(--line)',
-                  borderRadius: 12, padding: '14px 18px', color: '#fff', fontSize: 14, outline: 'none',
-                  transition: 'border-color 0.2s',
-                }}
-                onFocus={e => (e.currentTarget.style.borderColor = 'rgba(255,255,255,0.2)')}
-                onBlur={e => (e.currentTarget.style.borderColor = 'var(--line)')}
+                className="input-focus-glow w-full bg-white/5 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm outline-none transition-all"
               />
             </div>
 
-            <div>
-              <p className="mono" style={{ fontSize: 10, color: 'var(--t3)', letterSpacing: '0.1em', marginBottom: 12, textTransform: 'uppercase' }}>Program Type</p>
-              <div style={{ display: 'flex', gap: 8 }}>
+            <div className="space-y-3">
+              <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/30 ml-1">Access Type</label>
+              <div className="flex gap-2">
                 {(['all', 'public', 'private'] as const).map(t => (
                   <button 
                     key={t}
                     onClick={() => setFilterType(t)}
-                    style={{
-                      flex: 1, padding: '10px 0', borderRadius: 8, fontSize: 12, fontWeight: 600,
-                      background: filterType === t ? 'rgba(255,255,255,0.08)' : 'transparent',
-                      border: `1px solid ${filterType === t ? 'rgba(255,255,255,0.2)' : 'var(--line)'}`,
-                      color: filterType === t ? '#fff' : 'var(--t3)',
-                      cursor: 'pointer', transition: 'all 0.2s', textTransform: 'capitalize'
-                    }}
+                    className={`
+                      flex-1 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all
+                      ${filterType === t 
+                        ? 'bg-white/10 text-white border border-white/20 shadow-lg' 
+                        : 'text-white/30 border border-white/5 hover:bg-white/5'
+                      }
+                    `}
                   >
                     {t}
                   </button>
@@ -112,15 +100,15 @@ export default function BountyDirectory() {
             </div>
           </div>
 
-          <div style={{ marginTop: 'auto', padding: '24px', background: 'rgba(255,255,255,0.02)', borderRadius: 16, border: '1px solid var(--line)' }}>
-            <p style={{ fontSize: 13, color: 'var(--t2)', fontWeight: 500 }}>{filtered.length} active programs found</p>
+          <div className="mt-auto p-6 rounded-3xl bg-white/3 border border-white/5">
+            <p className="text-xs font-bold text-white/40">{filtered.length} active opportunities found</p>
           </div>
         </section>
 
-        {/* ─── Main Content (Right) ─── */}
-        <section style={{ padding: '160px 8% 100px 8%', display: 'flex', flexDirection: 'column', gap: 32 }}>
+        {/* Main Content (Right) */}
+        <section className="p-[140px_8%_100px] flex flex-col gap-8">
           {loading && (
-            <div style={{ padding: 40, textAlign: 'center', color: 'var(--t3)' }}>Scanning network for targets...</div>
+            <div className="py-20 text-center text-white/20 italic">Loading active programs...</div>
           )}
 
           <AnimatePresence mode="popLayout">
@@ -133,45 +121,36 @@ export default function BountyDirectory() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.4, delay: idx * 0.05 }}
               >
-                <Link href={`/programs/${p.id}`} style={{ textDecoration: 'none', display: 'block' }}>
-                  <div className="metallic-card" style={{ 
-                    padding: '32px 40px', borderRadius: 24, transition: 'all 0.3s cubic-bezier(0.2, 0, 0, 1)',
-                    display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-                  }}
-                  onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.01) translateY(-2px)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.15)'; e.currentTarget.style.background = 'rgba(255,255,255,0.04)'; }}
-                  onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1) translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.08)'; e.currentTarget.style.background = 'rgba(255,255,255,0.03)'; }}
-                  >
-                    <div style={{ display: 'flex', gap: 32, alignItems: 'center' }}>
-                      <div style={{ 
-                        width: 64, height: 64, background: 'var(--chrome)', borderRadius: 16, 
-                        display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, fontWeight: 800, color: '#111'
-                      }}>
+                <Link href={`/programs/${p.id}`} className="block group">
+                  <div className="glass-panel p-8 md:p-10 rounded-[40px] border border-white/5 hover:border-white/10 hover:bg-white/2 transition-all duration-500 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 group-hover:shadow-[0_40px_80px_rgba(0,0,0,0.3)]">
+                    <div className="flex gap-8 items-center">
+                      <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-2xl font-black text-white group-hover:scale-110 transition-transform duration-500">
                         {p.name[0]}
                       </div>
                       <div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 8 }}>
-                          <h3 style={{ fontSize: 20, fontWeight: 800, color: '#fff', letterSpacing: '-0.02em' }}>{p.name}</h3>
-                          <span style={{ 
-                            fontSize: 10, fontWeight: 700, padding: '3px 8px', borderRadius: 4, 
-                            background: p.type === 'private' ? 'rgba(229,51,75,0.1)' : 'rgba(76,175,80,0.1)',
-                            color: p.type === 'private' ? '#e5334b' : '#4caf50',
-                            textTransform: 'uppercase', letterSpacing: '0.05em'
-                          }}>
+                        <div className="flex items-center gap-4 mb-2">
+                          <h3 className="text-2xl font-black tracking-tight text-white">{p.name}</h3>
+                          <span className={`
+                            text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest
+                            ${p.type === 'private' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-emerald-500/10 text-emerald-400'}
+                          `}>
                             {p.type}
                           </span>
                         </div>
-                        <p style={{ color: 'var(--t2)', fontSize: 14, marginBottom: 16, maxWidth: 400, lineHeight: 1.5 }}>{p.description}</p>
-                        <div style={{ display: 'flex', gap: 8 }}>
+                        <p className="text-t2 text-[14px] mb-4 max-w-sm line-clamp-2 leading-relaxed">{p.description}</p>
+                        <div className="flex flex-wrap gap-2">
                           {p.scope.slice(0, 3).map(s => (
-                            <span key={s} style={{ fontSize: 11, background: 'rgba(255,255,255,0.05)', color: 'var(--t3)', padding: '4px 10px', borderRadius: 6 }}>{s}</span>
+                            <span key={s} className="text-[11px] font-bold text-white/30 bg-white/5 px-3 py-1 rounded-full border border-white/5">{s}</span>
                           ))}
                         </div>
                       </div>
                     </div>
                     
-                    <div style={{ textAlign: 'right' }}>
-                      <p style={{ fontSize: 10, color: 'var(--t3)', fontWeight: 700, letterSpacing: '0.1em', marginBottom: 8, textTransform: 'uppercase' }}>Max Bounty</p>
-                      <p className="metallic-text" style={{ fontSize: 28, fontWeight: 800 }}>${Number(p.reward_max).toLocaleString()}</p>
+                    <div className="w-full md:w-auto text-left md:text-right p-6 md:p-0 rounded-3xl bg-white/3 md:bg-transparent border border-white/5 md:border-none">
+                      <p className="text-[10px] text-white/20 font-black uppercase tracking-[0.2em] mb-2">Bounty Pool</p>
+                      <p className="text-3xl font-black tracking-tighter text-white group-hover:scale-105 transition-transform duration-500 origin-right">
+                        ${Number(p.reward_max).toLocaleString()}
+                      </p>
                     </div>
                   </div>
                 </Link>
@@ -180,9 +159,9 @@ export default function BountyDirectory() {
           </AnimatePresence>
 
           {!loading && filtered.length === 0 && (
-            <div style={{ padding: '80px 0', textAlign: 'center' }}>
-              <p style={{ color: 'var(--t3)', fontSize: 18 }}>No programs match your current search parameters.</p>
-              <button onClick={() => {setSearch(''); setFilterType('all');}} style={{ marginTop: 24, background: 'none', border: 'none', color: '#fff', textDecoration: 'underline', cursor: 'pointer' }}>Clear Filters</button>
+            <div className="py-24 text-center">
+              <p className="text-white/20 text-lg">No programs match your search criteria.</p>
+              <button onClick={() => {setSearch(''); setFilterType('all');}} className="mt-6 text-white text-sm font-bold border-b border-white/10 pb-1 hover:border-white transition-all">Clear All Filters</button>
             </div>
           )}
         </section>

@@ -29,7 +29,7 @@ export const fadeInUp = (delay = 0, distance = 20): Variants => ({
     filter: 'blur(0px)',
     transition: {
       delay,
-      duration: 0.8,
+      duration: 0.4,
       ease: easeOutExpo,
     },
   },
@@ -46,8 +46,8 @@ export const blurIn = (delay = 0): Variants => ({
     scale: 1,
     transition: {
       delay,
-      duration: 1.2,
-      ease: easeInertia,
+      duration: 0.5,
+      ease: easeSmooth,
     },
   },
 });
@@ -61,13 +61,13 @@ export const blurReveal: Variants = {
     opacity: 1, 
     filter: 'blur(0px)', 
     y: 0,
-    transition: { duration: 1, ease: easeOutExpo }
+    transition: { duration: 0.4, ease: easeOutExpo }
   },
   exit: { 
     opacity: 0, 
-    filter: 'blur(15px)', 
-    y: -15,
-    transition: { duration: 0.6, ease: easeSmooth }
+    filter: 'blur(10px)', 
+    y: -10,
+    transition: { duration: 0.3, ease: easeSmooth }
   }
 };
 
@@ -82,7 +82,7 @@ export const inView = (delay = 0): Variants => ({
     filter: 'blur(0px)',
     transition: {
       delay,
-      duration: 0.7,
+      duration: 0.35,
       ease: easeSmooth,
     },
   },

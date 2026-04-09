@@ -38,7 +38,13 @@ export const config = {
   },
   corsWhitelist: process.env.CORS_WHITELIST 
     ? process.env.CORS_WHITELIST.split(",") 
-    : ["http://localhost:3000", "http://localhost:5173", "http://localhost:3001"],
+    : [
+        "http://localhost:3000", 
+        "http://localhost:5173", 
+        "http://localhost:3001",
+        "https://debugr-backend-production.up.railway.app",
+        "https://debugr-one.vercel.app"
+      ],
   smtp: {
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,

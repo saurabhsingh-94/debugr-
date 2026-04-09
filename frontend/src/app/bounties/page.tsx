@@ -1,10 +1,11 @@
 'use client';
+
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { fetchWithAuth } from '@/lib/api';
-import { fadeInUp } from '@/lib/animations';
+import { fadeInUp, blurReveal } from '@/lib/animations';
 
 interface Program {
   id: string;
@@ -51,55 +52,55 @@ export default function BountyExplorer() {
   });
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0a0a0b', color: '#f5f5f7' }}>
+    <div className="min-h-screen bg-bg text-[#f5f5f7] selection:bg-white/10">
       <Navbar />
 
-      <main style={{ paddingTop: 100, paddingBottom: 100 }}>
-        {/* ─── Hero / Header ─── */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 5%', marginBottom: 64 }}>
+      <main className="pt-32 pb-20">
+        {/* Hero Section */}
+        <div className="max-w-7xl mx-auto px-6 mb-16">
           <motion.div variants={fadeInUp(0.1)} initial="hidden" animate="visible">
-            <h1 className="metallic-text" style={{ fontSize: 'clamp(40px, 5vw, 64px)', fontWeight: 900, letterSpacing: '-0.04em', lineHeight: 1, marginBottom: 24 }}>
-              Hunt the Untraceable.
+            <h1 className="hero-title text-[clamp(40px,5vw,64px)] mb-6 leading-[1.1]">
+              Hunt the <br /><span className="text-white/20">Untraceable.</span>
             </h1>
-            <p style={{ color: '#a1a1a6', fontSize: 18, maxWidth: 600 }}>
-              Discover elite targets, explore program scopes, and earn bounties for finding legitimate vulnerabilities. 
-              The most transparent way to get paid fairly for your researcher impact.
+            <p className="text-t2 text-lg max-w-2xl leading-relaxed font-medium">
+              Discover high-impact targets and earn rewards for uncovering legitimate vulnerabilities. 
+              Debugr provides a transparent pathway from discovery to compensation.
             </p>
           </motion.div>
         </div>
 
-        {/* ─── Discovery Engine (Filters & List) ─── */}
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '0 5%', display: 'grid', gridTemplateColumns: '300px 1fr', gap: 48 }}>
+        {/* Intelligence Hub */}
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-12">
           
-          {/* Sidebar FILTERS */}
-          <aside style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
-            <div>
-              <p className="mono" style={{ fontSize: 10, color: '#6e6e73', letterSpacing: '0.1em', marginBottom: 16, textTransform: 'uppercase' }}>Search Hub</p>
-              <input 
-                type="text" 
-                placeholder="Find a target..."
-                value={search}
-                onChange={e => setSearch(e.target.value)}
-                style={{
-                  width: '100%', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)',
-                  borderRadius: 12, padding: '14px 18px', color: '#fff', fontSize: 14, outline: 'none'
-                }}
-              />
+          {/* Filters Sidebar */}
+          <aside className="space-y-10 lg:sticky lg:top-32 self-start">
+            <div className="space-y-4">
+              <label className="subtle-mono text-[10px] text-white/30 ml-1">Vulnerability Search</label>
+              <div className="relative group">
+                <input 
+                  type="text" 
+                  placeholder="Find a target..."
+                  value={search}
+                  onChange={e => setSearch(e.target.value)}
+                  className="w-full bg-white/3 border border-white/10 rounded-2xl px-6 py-4 text-white text-sm outline-none focus:border-white/20 focus:bg-white/5 transition-all shadow-lg"
+                />
+              </div>
             </div>
 
-            <div>
-              <p className="mono" style={{ fontSize: 10, color: '#6e6e73', letterSpacing: '0.1em', marginBottom: 16, textTransform: 'uppercase' }}>Program Visibility</p>
-              <div style={{ display: 'flex', gap: 4, background: 'rgba(255,255,255,0.03)', padding: 4, borderRadius: 10 }}>
+            <div className="space-y-4">
+              <label className="subtle-mono text-[10px] text-white/30 ml-1">Access Tier</label>
+              <div className="flex gap-2 p-1.5 bg-white/3 border border-white/5 rounded-2xl">
                 {(['all', 'public', 'private'] as const).map(t => (
                   <button 
                     key={t}
                     onClick={() => setFilterType(t)}
-                    style={{
-                      flex: 1, padding: '8px 0', borderRadius: 8, fontSize: 11, fontWeight: 700,
-                      background: filterType === t ? 'rgba(255,255,255,0.08)' : 'transparent',
-                      color: filterType === t ? '#fff' : '#6e6e73',
-                      border: 'none', cursor: 'pointer', transition: 'all 0.2s', textTransform: 'uppercase'
-                    }}
+                    className={`
+                      flex-1 py-3 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all
+                      ${filterType === t 
+                        ? 'bg-white/10 text-white shadow-xl border border-white/10' 
+                        : 'text-white/20 hover:text-white/40'
+                      }
+                    `}
                   >
                     {t}
                   </button>
@@ -107,8 +108,11 @@ export default function BountyExplorer() {
               </div>
             </div>
 
-            <div>
-              <p className="mono" style={{ fontSize: 10, color: '#6e6e73', letterSpacing: '0.1em', marginBottom: 16, textTransform: 'uppercase' }}>Minimum Max Reward (${minBounty.toLocaleString()})</p>
+            <div className="space-y-4">
+              <div className="flex justify-between items-center text-[10px] uppercase font-black tracking-widest text-white/30 px-1">
+                <span>Min Reward</span>
+                <span className="text-white">${minBounty.toLocaleString()}</span>
+              </div>
               <input 
                 type="range" 
                 min="0" 
@@ -116,21 +120,22 @@ export default function BountyExplorer() {
                 step="1000" 
                 value={minBounty}
                 onChange={e => setMinBounty(Number(e.target.value))}
-                style={{ width: '100%', accentColor: '#f5f5f7' }}
+                className="w-full h-1.5 bg-white/5 rounded-full appearance-none cursor-pointer accent-white"
               />
             </div>
 
-            <div style={{ marginTop: 40, padding: 24, background: 'linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 100%)', borderRadius: 20, border: '1px solid rgba(255,255,255,0.05)' }}>
-              <p style={{ fontSize: 14, fontWeight: 700, marginBottom: 8 }}>Pro Hunter Tip</p>
-              <p style={{ fontSize: 12, color: '#a1a1a6', lineHeight: 1.5 }}>Private programs are unlocked by proving your impact on public targets. Start broad, then specialize.</p>
+            <div className="p-8 rounded-[32px] bg-linear-to-br from-white/5 to-transparent border border-white/5 group transition-all duration-500 hover:bg-white/5">
+              <p className="text-sm font-black text-white mb-3">Professional Insight</p>
+              <p className="text-xs text-t2 leading-loose font-medium opacity-60">Private intelligence programs are unlocked by proving impact on public assets. Start broad, then specialize.</p>
             </div>
           </aside>
 
-          {/* RESULTS Feed */}
-          <section style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+          {/* Opportunities List */}
+          <section className="space-y-6">
             {loading && (
-              <div style={{ padding: 48, textAlign: 'center', opacity: 0.5 }}>
-                <p className="mono" style={{ fontSize: 12 }}>SCANNING FOR ACTIVE BOUNTIES...</p>
+              <div className="py-24 text-center">
+                <div className="w-10 h-10 border-2 border-white/5 border-t-white/40 rounded-full animate-spin mx-auto mb-6" />
+                <p className="subtle-mono text-white/20">Scanning intelligence feeds...</p>
               </div>
             )}
 
@@ -139,36 +144,41 @@ export default function BountyExplorer() {
                 <motion.div
                   key={p.id}
                   layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
+                  variants={blurReveal}
+                  initial="hidden"
+                  animate="visible"
                   transition={{ delay: idx * 0.05 }}
                 >
-                  <Link href={`/programs/${p.id}`} style={{ textDecoration: 'none' }}>
-                    <div className="metallic-card" style={{ 
-                      padding: 32, borderRadius: 24, display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                      border: '1px solid rgba(255,255,255,0.03)', background: 'rgba(255,255,255,0.01)'
-                    }}>
-                      <div style={{ display: 'flex', gap: 24, alignItems: 'center' }}>
-                        <div style={{ width: 56, height: 56, background: '#111', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 14, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 900 }}>
+                  <Link href={`/programs/${p.id}`} className="block group">
+                    <div className="glass-panel p-8 md:p-10 rounded-[48px] border border-white/5 flex flex-col md:flex-row justify-between items-start md:items-center gap-8 group-hover:bg-white/2 group-hover:border-white/10 transition-all duration-500 group-hover:shadow-2xl">
+                      <div className="flex gap-8 items-center">
+                        <div className="w-16 h-16 bg-white/5 border border-white/10 rounded-2xl flex items-center justify-center text-2xl font-black text-white group-hover:scale-110 transition-transform duration-500 shadow-inner">
                           {p.name[0]}
                         </div>
-                        <div>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 4 }}>
-                            <h3 style={{ fontSize: 18, fontWeight: 800, color: '#fff' }}>{p.name}</h3>
-                            <span style={{ fontSize: 9, fontWeight: 900, background: p.type === 'private' ? 'rgba(229,51,75,0.1)' : 'rgba(76,175,80,0.1)', color: p.type === 'private' ? '#e5334b' : '#4caf50', padding: '2px 6px', borderRadius: 4, textTransform: 'uppercase' }}>{p.type}</span>
+                        <div className="space-y-2">
+                          <div className="flex items-center gap-4">
+                            <h3 className="text-2xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">{p.name}</h3>
+                            <span className={`
+                              text-[10px] font-black px-2.5 py-1 rounded-lg uppercase tracking-widest
+                              ${p.type === 'private' ? 'bg-indigo-500/10 text-indigo-400' : 'bg-emerald-500/10 text-emerald-400'}
+                            `}>
+                              {p.type}
+                            </span>
                           </div>
-                          <p style={{ fontSize: 13, color: '#a1a1a6', marginBottom: 12, maxWidth: 400 }}>{p.description}</p>
-                          <div style={{ display: 'flex', gap: 8 }}>
+                          <p className="text-t2 text-sm max-w-md line-clamp-2 leading-relaxed font-medium">{p.description}</p>
+                          <div className="flex flex-wrap gap-2 pt-2">
                             {p.scope.slice(0, 3).map(s => (
-                              <span key={s} className="mono" style={{ fontSize: 9, color: '#a1a1a6', background: 'rgba(255,255,255,0.05)', padding: '2px 8px', borderRadius: 100 }}>{s}</span>
+                              <span key={s} className="text-[10px] font-bold text-white/20 bg-white/5 px-3 py-1 rounded-full border border-white/5 group-hover:text-white/40 transition-colors">{s}</span>
                             ))}
                           </div>
                         </div>
                       </div>
 
-                      <div style={{ textAlign: 'right' }}>
-                        <p style={{ fontSize: 10, color: '#6e6e73', fontWeight: 800, textTransform: 'uppercase', marginBottom: 4 }}>Up To</p>
-                        <p className="metallic-text" style={{ fontSize: 28, fontWeight: 900 }}>${Number(p.reward_max).toLocaleString()}</p>
+                      <div className="w-full md:w-auto text-left md:text-right p-6 md:p-0 rounded-3xl bg-white/3 md:bg-transparent border border-white/5 md:border-none">
+                        <p className="subtle-mono text-[9px] text-white/20 mb-2 uppercase">Reward Ceiling</p>
+                        <p className="hero-title text-4xl font-black tracking-tighter text-white group-hover:scale-105 transition-transform duration-500 origin-right">
+                          ${Number(p.reward_max).toLocaleString()}
+                        </p>
                       </div>
                     </div>
                   </Link>
@@ -177,12 +187,17 @@ export default function BountyExplorer() {
             </AnimatePresence>
 
             {!loading && filtered.length === 0 && (
-              <div style={{ padding: 64, textAlign: 'center', border: '1px dashed rgba(255,255,255,0.1)', borderRadius: 24 }}>
-                <p style={{ color: '#a1a1a6' }}>No bounties match your filters.</p>
+              <div className="py-24 text-center border-2 border-dashed border-white/5 rounded-[48px]">
+                <p className="text-white/20 text-lg font-medium italic">No intelligence matching your criteria.</p>
+                <button 
+                  onClick={() => {setSearch(''); setFilterType('all'); setMinBounty(0);}} 
+                  className="mt-6 text-indigo-400 text-sm font-bold border-b border-indigo-400/20 pb-1 hover:border-indigo-400 transition-all font-mono tracking-widest uppercase"
+                >
+                  Clear Protocols
+                </button>
               </div>
             )}
           </section>
-
         </div>
       </main>
     </div>

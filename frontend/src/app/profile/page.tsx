@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import Link from 'next/link';
+import { motion } from 'framer-motion';
 import Navbar from '@/components/layout/Navbar';
-import ProfileAvatar, { getAvatarGradient } from '@/components/profile/ProfileAvatar';
+import ProfileAvatar from '@/components/profile/ProfileAvatar';
 import EditProfileModal from '@/components/profile/EditProfileModal';
 import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { useRouter } from 'next/navigation';
+import { blurReveal, staggerContainer, fadeInUp } from '@/lib/animations';
 
 interface UserProfile {
   id: string;
@@ -68,161 +70,201 @@ export default function MyProfile() {
 
   if (loading) {
     return (
-      <div style={{ minHeight: '100vh', background: '#0e0e10', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
+      <div className="min-h-screen bg-[#050505] flex items-center justify-center flex-col gap-6">
         <Navbar />
-        <div style={{ width: 40, height: 40, border: '3px solid #2c2c2e', borderTopColor: '#6366f1', borderRadius: '50%', animation: 'spin 0.7s linear infinite' }} />
-        <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+        <div className="w-10 h-10 border-4 border-white/10 border-t-white rounded-full animate-spin" />
       </div>
     );
   }
 
-  if (!profile) {
-    return (
-      <div style={{ minHeight: '100vh', background: '#0e0e10', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 16 }}>
-        <Navbar />
-        <p style={{ color: '#6e6e73' }}>Could not load your profile.</p>
-        <Link href="/signin" style={{ color: '#6366f1', textDecoration: 'none' }}>Sign in →</Link>
-      </div>
-    );
-  }
+  if (!profile) return null;
 
-  const gradient = getAvatarGradient(profile.handle);
   const totalEarned = Math.floor(parseFloat(profile.stats?.total_earned || '0'));
   const joinedDate = new Date(profile.created_at).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  const resolved = parseInt(profile.stats?.resolved_bugs || '0');
-  const submissions = parseInt(profile.stats?.total_submissions || '0');
-  const reputation = Math.min(100, Math.round((resolved * 12) + (totalEarned / 500) + (submissions * 2)));
-
+  
   return (
-    <div style={{ minHeight: '100vh', background: '#0e0e10', color: '#f5f5f7', fontFamily: 'Inter, system-ui, sans-serif' }}>
-      <Navbar />
-      <style>{`
-        @keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-        @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .skill-tag:hover { border-color: rgba(99,102,241,0.5) !important; background: rgba(99,102,241,0.18) !important; }
-        .stat-block:hover { background: rgba(255,255,255,0.04) !important; }
-        .profile-action:hover { opacity: 0.85; transform: translateY(-1px); }
-        .profile-action { transition: all 0.18s; }
-      `}</style>
-
-      <div style={{ maxWidth: 640, margin: '0 auto', borderLeft: '1px solid #1c1c21', borderRight: '1px solid #1c1c21', minHeight: '100vh', animation: 'fadeUp 0.4s ease' }}>
-
-        {/* Banner */}
-        <div style={{ height: 200, background: gradient, position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, opacity: 0.15, background: 'radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 70%), url("data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'n\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.75\' numOctaves=\'4\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23n)\'/%3E%3C/svg%3E")' }} />
-          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '40%', background: 'linear-gradient(to top, #0e0e10, transparent)' }} />
-          <div style={{ position: 'absolute', top: 20, right: 20, background: 'rgba(0,0,0,0.4)', backdropFilter: 'blur(10px)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 999, padding: '5px 16px', display: 'flex', alignItems: 'center', gap: 7, fontSize: 11, fontWeight: 800, color: '#fff', letterSpacing: '0.1em' }}>
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: '#10b981', display: 'inline-block', boxShadow: '0 0 10px #10b981', animation: 'pulsate 2s infinite' }} />
-            {profile.role?.toUpperCase()} SECURITY
-          </div>
-        </div>
-
-        {/* Avatar + Actions */}
-        <div style={{ padding: '0 20px', display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginTop: -52 }}>
-          <ProfileAvatar handle={profile.handle} name={profile.name} size={100} border />
-          <div style={{ display: 'flex', gap: 8, marginTop: 60 }}>
-            <Link
-              href={`/hacker/${profile.handle}`}
-              className="profile-action"
-              style={{ padding: '7px 18px', border: '1px solid #2c2c2e', background: 'transparent', color: '#a1a1a6', fontSize: 13, fontWeight: 600, borderRadius: 10, textDecoration: 'none', display: 'inline-block' }}
-            >
-              Public View
-            </Link>
-            <button
-              onClick={() => setIsEditModalOpen(true)}
-              className="profile-action"
-              style={{ padding: '7px 18px', background: '#6366f1', color: '#fff', border: 'none', fontSize: 13, fontWeight: 700, borderRadius: 10, cursor: 'pointer', display: 'inline-block' }}
-            >
-              Edit Profile
-            </button>
-          </div>
-        </div>
-
-        {/* Identity */}
-        <div style={{ padding: '16px 20px 0' }}>
-          <h1 className="metallic-text" style={{ margin: 0, fontSize: 26, fontWeight: 900, letterSpacing: '-0.04em' }}>{profile.name || profile.handle}</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 4 }}>
-            <p style={{ margin: 0, fontSize: 15, color: '#6e6e73', fontWeight: 500 }}>@{profile.handle}</p>
-            <span style={{ width: 3, height: 3, borderRadius: '50%', background: '#333' }} />
-            <p style={{ margin: 0, fontSize: 12, color: '#4a4a52', fontWeight: 600, letterSpacing: '0.05em' }}>{profile.email}</p>
-          </div>
-        </div>
-
-        {/* Bio */}
-        {profile.bio && (
-          <div style={{ padding: '12px 20px 0', fontSize: 14.5, lineHeight: 1.65, color: '#d1d1d6' }}>{profile.bio}</div>
-        )}
-
-        {/* Meta */}
-        <div style={{ padding: '12px 20px 0', display: 'flex', flexWrap: 'wrap', gap: '6px 16px', fontSize: 13, color: '#6e6e73' }}>
-          {profile.location && <span>📍 {profile.location}</span>}
-          {profile.website && (
-            <a href={profile.website} target="_blank" rel="noopener noreferrer" style={{ color: '#6366f1', textDecoration: 'none' }}>
-              🔗 {profile.website.replace(/^https?:\/\//, '').replace(/\/$/, '')}
-            </a>
-          )}
-          <span>📅 Joined {joinedDate}</span>
-        </div>
-
-        {/* Stats */}
-        <div style={{ padding: '16px 20px', display: 'flex', gap: 4, marginTop: 8 }}>
-          {[
-            { value: profile.stats?.total_submissions || '0', label: 'Reports', icon: '📋' },
-            { value: profile.stats?.resolved_bugs || '0', label: 'Resolved', icon: '✅' },
-            { value: profile.stats?.triaged_bugs || '0', label: 'Triaged', icon: '🔍' },
-            { value: `$${totalEarned.toLocaleString()}`, label: 'Earned', icon: '💰' },
-          ].map(({ value, label, icon }) => (
-            <div key={label} className="stat-block" style={{ flex: 1, background: '#141416', border: '1px solid #1c1c21', borderRadius: 12, padding: '12px 8px', textAlign: 'center', transition: 'background 0.2s' }}>
-              <div style={{ fontSize: 18 }}>{icon}</div>
-              <div style={{ fontSize: 17, fontWeight: 800, color: '#f5f5f7', marginTop: 4, letterSpacing: '-0.02em' }}>{value}</div>
-              <div style={{ fontSize: 11, color: '#6e6e73', marginTop: 2, fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.06em' }}>{label}</div>
-            </div>
-          ))}
-        </div>
-
-        {/* Reputation */}
-        <div style={{ padding: '0 20px 20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6, fontSize: 11, color: '#6e6e73', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em' }}>
-            <span>Reputation</span>
-            <span style={{ color: reputation >= 50 ? '#10b981' : '#f59e0b' }}>{reputation}/100</span>
-          </div>
-          <div style={{ height: 6, background: '#1c1c21', borderRadius: 99, overflow: 'hidden' }}>
-            <div style={{ width: `${reputation}%`, height: '100%', background: reputation >= 50 ? 'linear-gradient(to right, #10b981, #059669)' : 'linear-gradient(to right, #f59e0b, #d97706)', borderRadius: 99 }} />
-          </div>
-        </div>
-
-        {/* Skills */}
-        {profile.skills && profile.skills.length > 0 && (
-          <div style={{ padding: '0 20px 20px', borderTop: '1px solid #1c1c21', paddingTop: 20 }}>
-            <p style={{ margin: '0 0 12px', fontSize: 11, color: '#6e6e73', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Skills</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {profile.skills.map((skill: string) => (
-                <span key={skill} className="skill-tag" style={{ padding: '5px 14px', background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.25)', color: '#818cf8', fontSize: 13, borderRadius: 999, fontWeight: 600, transition: 'all 0.2s', cursor: 'default' }}>
-                  {skill}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* CTA if profile is empty */}
-        {!profile.bio && (!profile.skills || profile.skills.length === 0) && (
-          <div style={{ margin: '0 20px 24px', padding: 24, background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 16, textAlign: 'center' }}>
-            <p style={{ margin: '0 0 6px', fontWeight: 800, fontSize: 16, color: '#fff' }}>Complete your security profile</p>
-            <p style={{ margin: '0 0 16px', fontSize: 13, color: '#6e6e73', lineHeight: 1.5 }}>Showcase your skills and experience to attract more bounty invites and climb the leaderboard.</p>
-            <button 
-              onClick={() => setIsEditModalOpen(true)}
-              style={{ background: '#fff', color: '#000', border: 'none', padding: '10px 24px', borderRadius: 99, fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.2s' }}
-              onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-2px)'}
-              onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-            >
-              Initialize Identity →
-            </button>
-          </div>
-        )}
-
+    <div className="min-h-screen bg-[#050505] text-[#f5f5f7] relative overflow-x-hidden">
+      <div className="aurora-bg">
+        <div className="aurora-blob blob-1 animate-breathing opacity-10" />
+        <div className="aurora-blob blob-2 animate-breathing opacity-10 delay-[-4s]" />
       </div>
+      
+      <Navbar />
+
+      <main className="max-w-[1300px] mx-auto px-6 pt-32 pb-20 relative z-10">
+        <div className="flex flex-col lg:grid lg:grid-cols-[380px_1fr] gap-12">
+          
+          {/* Identity Sidebar - Left Panel */}
+          <motion.aside 
+            variants={fadeInUp(0.05)}
+            initial="hidden"
+            animate="visible"
+            className="lg:sticky lg:top-32 h-fit space-y-6"
+          >
+            <div className="glass-panel rounded-[40px] border border-white/10 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)]">
+              {/* Cover Area */}
+              <div className="h-28 bg-gradient-to-br from-white/10 to-transparent relative">
+                <div className="absolute inset-0 backdrop-blur-3xl opacity-20" />
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10" />
+              </div>
+              
+              <div className="px-10 pb-12 -mt-14 relative flex flex-col items-center">
+                <div className="relative group">
+                  <div className="absolute -inset-1 bg-linear-to-r from-white/0 via-white/20 to-white/0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-md" />
+                  <ProfileAvatar handle={profile.handle} name={profile.name} size={120} border />
+                </div>
+                
+                <div className="mt-8 text-center w-full">
+                  <h1 className="text-3xl font-black tracking-tight mb-2">{profile.name || profile.handle}</h1>
+                  <p className="text-white/30 text-sm font-bold tracking-tight">@{profile.handle}</p>
+                </div>
+
+                {profile.bio && (
+                  <p className="mt-8 text-[15px] leading-relaxed text-white/40 text-center font-medium italic">
+                    &ldquo;{profile.bio}&rdquo;
+                  </p>
+                )}
+
+                <div className="w-full flex flex-col gap-4 mt-10 pt-10 border-t border-white/5 text-[13px] text-white/30 font-bold">
+                  {profile.location && (
+                    <div className="flex items-center gap-4 hover:text-white/60 transition-colors">
+                      <span className="text-lg grayscale opacity-50">📍</span> {profile.location}
+                    </div>
+                  )}
+                  {profile.github_url && (
+                    <a href={`https://${profile.github_url.replace(/^https?:\/\//, '')}`} target="_blank" className="flex items-center gap-4 text-white/50 hover:text-white transition-all">
+                      <span className="text-lg grayscale opacity-50">🔗</span> GitHub
+                    </a>
+                  )}
+                  <div className="flex items-center gap-4">
+                    <span className="text-lg grayscale opacity-50">📅</span> Member since {joinedDate}
+                  </div>
+                </div>
+
+                <motion.button 
+                  onClick={() => setIsEditModalOpen(true)}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="w-full mt-10 py-4 px-6 bg-white text-black rounded-2xl font-black text-[13px] shadow-2xl transition-all"
+                >
+                  Edit Profile
+                </motion.button>
+              </div>
+            </div>
+
+            {/* Reputation Sub-Card */}
+            <div className="glass-panel p-8 rounded-[32px] border border-white/10 flex flex-col gap-6">
+              <div className="flex justify-between items-end">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/20 mb-1">Reputation Grade</p>
+                  <h3 className="text-2xl font-black tracking-tight">Elite Tier</h3>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-black text-white/40 uppercase tracking-widest">Level</span>
+                  <div className="text-2xl font-black text-white">04</div>
+                </div>
+              </div>
+              <div className="h-1.5 bg-white/5 rounded-full overflow-hidden">
+                <motion.div 
+                  initial={{ width: 0 }}
+                  animate={{ width: '65%' }}
+                  transition={{ duration: 1.5, ease: "circOut" }}
+                  className="h-full bg-white shadow-[0_0_20px_rgba(255,255,255,0.3)]"
+                />
+              </div>
+            </div>
+          </motion.aside>
+
+          {/* Activity & Stats - Right Panel */}
+          <div className="space-y-10">
+            {/* Stats Overview Panel */}
+            <motion.div 
+              variants={staggerContainer(0.05, 0)}
+              initial="hidden"
+              animate="visible"
+              className="grid grid-cols-2 md:grid-cols-4 gap-4"
+            >
+              {[
+                { label: 'Verified Findings', value: profile.stats?.total_submissions || '0', icon: '📝' },
+                { label: 'Impact Score', value: profile.stats?.triaged_bugs || '0', icon: '⚡' },
+                { label: 'Security Fixes', value: profile.stats?.resolved_bugs || '0', icon: '🛡️' },
+                { label: 'Earnings (USD)', value: `$${totalEarned.toLocaleString()}`, icon: '💎' },
+              ].map((stat) => (
+                <motion.div 
+                  key={stat.label}
+                  variants={blurReveal}
+                  className="glass-panel p-6 rounded-[28px] border border-white/5 hover:border-white/10 transition-all group"
+                >
+                  <div className="text-xl mb-3 grayscale group-hover:grayscale-0 transition-all duration-300 opacity-30 group-hover:opacity-100">{stat.icon}</div>
+                  <p className="text-[10px] font-black uppercase tracking-widest text-white/20 mb-1">{stat.label}</p>
+                  <p className="text-2xl font-black tracking-tight text-white/90">{stat.value}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            {/* Expertise & Role Section */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <motion.div variants={fadeInUp(0.1)} className="glass-panel p-10 rounded-[40px] border border-white/5">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 mb-8 ml-2">Core Competencies</h3>
+                <div className="flex flex-wrap gap-2">
+                  {profile.skills.length > 0 ? profile.skills.map((skill: string) => (
+                    <span 
+                      key={skill} 
+                      className="px-5 py-2.5 rounded-2xl bg-white/5 border border-white/5 text-[12px] font-black text-white/40 hover:text-white hover:bg-white/10 transition-all cursor-default"
+                    >
+                      {skill}
+                    </span>
+                  )) : (
+                    <p className="text-sm text-white/10 italic p-4">Awaiting expertise declaration...</p>
+                  )}
+                </div>
+              </motion.div>
+
+              <motion.div variants={fadeInUp(0.15)} className="glass-panel p-10 rounded-[40px] border border-white/5">
+                <h3 className="text-[11px] font-black uppercase tracking-[0.2em] text-white/20 mb-8 ml-2">Researcher Profile</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center p-5 rounded-3xl bg-white/3 border border-white/5 hover:bg-white/5 transition-all">
+                    <span className="text-xs font-bold text-white/30 uppercase tracking-widest">Designation</span>
+                    <span className="text-sm font-black text-white italic">
+                      {profile.role === 'HACKER' ? 'Security Specialist' : profile.role}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center p-5 rounded-3xl bg-white/3 border border-white/5 hover:bg-white/5 transition-all">
+                    <span className="text-xs font-bold text-white/30 uppercase tracking-widest">Active Status</span>
+                    <span className="text-sm font-black text-white">{profile.experience_level || 'Awaiting Assessment'}</span>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Activity Timeline Placeholder */}
+            <motion.div 
+              variants={fadeInUp(0.2)}
+              className="glass-panel p-20 rounded-[48px] border border-white/5 min-h-[500px] flex flex-col items-center justify-center text-center group"
+            >
+              <motion.div 
+                animate={{ rotate: [0, 5, -5, 0] }}
+                transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
+                className="w-24 h-24 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-4xl mb-10 grayscale opacity-10 group-hover:opacity-30 group-hover:grayscale-0 transition-all duration-500"
+              >
+                📁
+              </motion.div>
+              <h3 className="text-3xl font-black italic mb-4 tracking-tight">Recent Engagement</h3>
+              <p className="text-white/20 max-w-sm text-sm font-bold leading-relaxed mb-10">
+                Synchronizing with the global security network. Your contributions and activity logs will materialize here shortly.
+              </p>
+              <Link href="/programs">
+                <motion.div
+                  whileHover={{ x: 5 }}
+                  className="text-[12px] font-black text-white/60 uppercase tracking-[0.2em] flex items-center gap-3 cursor-pointer"
+                >
+                  Discover Opportunities <span className="text-lg">→</span>
+                </motion.div>
+              </Link>
+            </motion.div>
+          </div>
+        </div>
+      </main>
 
       <EditProfileModal 
         isOpen={isEditModalOpen}
