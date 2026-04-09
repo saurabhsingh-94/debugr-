@@ -136,12 +136,12 @@ export default function CompanyDashboard() {
             {activeTab === tab.id && (
               <motion.div 
                 layoutId="activeTab"
-                className="absolute inset-x-0 bottom-[-1px] h-0.5 bg-white shadow-[0_0_10px_#fff]"
               />
             )}
           </button>
-        ))}
-      </div>
+        );
+      })}
+    </div>
 
       <AnimatePresence mode="wait">
         {activeTab === 'inbox' ? (
