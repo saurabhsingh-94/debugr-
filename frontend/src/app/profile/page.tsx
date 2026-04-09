@@ -90,7 +90,7 @@ export default function MyProfile() {
       <div className="min-h-screen bg-[#050505] flex items-center justify-center flex-col gap-6">
         <Navbar />
         <div className="w-10 h-10 border-4 border-white/10 border-t-indigo-500 rounded-full animate-spin" />
-        <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Syncing Identity.Vector...</p>
+        <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] italic animate-pulse">Loading Profile...</p>
       </div>
     );
   }
@@ -135,7 +135,7 @@ export default function MyProfile() {
                 <div className="mt-10 text-center w-full">
                   <div className="flex items-center justify-center gap-3 mb-3">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                    <span className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.4em] italic">[ LIVE_VECTOR ]</span>
+                    <span className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.4em] italic">ONLINE</span>
                   </div>
                   <h1 className="text-4xl font-black italic tracking-tighter uppercase leading-none mb-3">{profile.name || profile.handle}</h1>
                   <p className="subtle-mono text-[10px] text-indigo-400 font-black tracking-[0.2em] italic">@{profile.handle}</p>
@@ -150,9 +150,9 @@ export default function MyProfile() {
                 <div className="w-full flex flex-col gap-5 mt-12 pt-12 border-t border-white/5">
                   {[
                     { icon: <MapPin size={14} />, text: profile.location, show: !!profile.location },
-                    { icon: <LinkIcon size={14} />, text: 'Personal Port', link: profile.website, show: !!profile.website },
-                    { icon: <Globe size={14} />, text: 'GitHub Vector', link: profile.github_url, show: !!profile.github_url },
-                    { icon: <Calendar size={14} />, text: `Activated ${joinedDate}`, show: true },
+                    { icon: <LinkIcon size={14} />, text: 'Website', link: profile.website, show: !!profile.website },
+                    { icon: <Globe size={14} />, text: 'GitHub', link: profile.github_url, show: !!profile.github_url },
+                    { icon: <Calendar size={14} />, text: `Joined ${joinedDate}`, show: true },
                   ].map((item, idx) => item.show && (
                     <div key={idx} className="flex items-center gap-4 group/item">
                       <span className="text-white/10 group-hover/item:text-indigo-400 transition-colors">{item.icon}</span>
@@ -172,7 +172,7 @@ export default function MyProfile() {
                       whileTap={{ scale: 0.98 }}
                       className="w-full py-5 px-6 bg-white text-black rounded-[24px] font-black text-[11px] shadow-2xl uppercase tracking-[0.3em] italic flex items-center justify-center gap-3"
                     >
-                      <Terminal size={14} /> Ops Command
+                      <Terminal size={14} /> Dashboard
                     </motion.button>
                   </Link>
 
@@ -182,7 +182,7 @@ export default function MyProfile() {
                     whileTap={{ scale: 0.98 }}
                     className="w-full py-5 px-6 bg-transparent border border-white/5 text-white/20 rounded-[24px] font-black text-[11px] transition-all uppercase tracking-[0.3em] italic hover:text-white/40"
                   >
-                    Configure Profile
+                    Edit Profile
                   </motion.button>
                 </div>
               </div>
@@ -197,9 +197,9 @@ export default function MyProfile() {
                 <div>
                   <div className="flex items-center gap-2 mb-2">
                     <div className="w-1 h-1 rounded-full bg-indigo-500" />
-                    <p className="subtle-mono text-[8px] font-black uppercase tracking-[0.3em] text-white/20 italic">Vulnerability.Index</p>
+                    <p className="subtle-mono text-[8px] font-black uppercase tracking-[0.3em] text-white/20 italic">Reputation</p>
                   </div>
-                  <h3 className="text-3xl font-black tracking-tighter uppercase italic">Grade_A</h3>
+                  <h3 className="text-3xl font-black tracking-tighter uppercase italic">Level A</h3>
                 </div>
                 <div className="text-right">
                   <span className="text-[9px] font-mono text-white/10 uppercase tracking-widest italic leading-none">Status</span>
@@ -214,7 +214,7 @@ export default function MyProfile() {
                   className="h-full bg-linear-to-r from-indigo-500 to-indigo-400 shadow-[0_0_15px_rgba(99,102,241,0.5)] rounded-full"
                 />
               </div>
-              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] text-center italic">Trust_Score: 98.42%</p>
+              <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-[0.4em] text-center italic">Trust Score: 98.42%</p>
             </div>
           </motion.aside>
 
@@ -228,10 +228,10 @@ export default function MyProfile() {
               className="grid grid-cols-2 md:grid-cols-4 gap-6"
             >
               {[
-                { label: 'DISCLOSURES', value: profile.stats?.total_submissions || '0', icon: <Inbox size={14} />, highlight: false },
-                { label: 'VELOCITY', value: profile.stats?.triaged_bugs || '0', icon: <Zap size={14} />, highlight: true },
-                { label: 'NEUTRALIZED', value: profile.stats?.resolved_bugs || '0', icon: <Shield size={14} />, highlight: false },
-                { label: 'YIELD_USD', value: `$${totalEarned.toLocaleString()}`, icon: <Award size={14} />, highlight: true },
+                { label: 'REPORTS', value: profile.stats?.total_submissions || '0', icon: <Inbox size={14} />, highlight: false },
+                { label: 'RELIABILITY', value: profile.stats?.triaged_bugs || '0', icon: <Zap size={14} />, highlight: true },
+                { label: 'RESOLVED', value: profile.stats?.resolved_bugs || '0', icon: <Shield size={14} />, highlight: false },
+                { label: 'EARNINGS', value: `$${totalEarned.toLocaleString()}`, icon: <Award size={14} />, highlight: true },
               ].map((stat, i) => (
                 <motion.div 
                   key={stat.label}
@@ -254,7 +254,7 @@ export default function MyProfile() {
               <motion.div variants={fadeInUp(0.1)} className="glass-panel p-12 rounded-[56px] border border-white/5 relative overflow-hidden h-fit">
                 <div className="flex items-center gap-3 mb-10">
                   <Terminal size={12} className="text-white/20" />
-                  <h3 className="subtle-mono text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">Research.Registry</h3>
+                  <h3 className="subtle-mono text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">Skills</h3>
                 </div>
                 <div className="flex flex-wrap gap-3">
                   {profile.skills.length > 0 ? profile.skills.map((skill: string) => (
@@ -265,7 +265,7 @@ export default function MyProfile() {
                       {skill}
                     </span>
                   )) : (
-                    <p className="subtle-mono text-[10px] text-white/10 uppercase tracking-[0.4em] py-8 italic">Awaiting Skill_Declaration...</p>
+                    <p className="subtle-mono text-[10px] text-white/10 uppercase tracking-[0.4em] py-8 italic">No skills added yet.</p>
                   )}
                 </div>
               </motion.div>
@@ -273,18 +273,18 @@ export default function MyProfile() {
               <motion.div variants={fadeInUp(0.15)} className="glass-panel p-12 rounded-[56px] border border-white/5 h-fit">
                 <div className="flex items-center gap-3 mb-10">
                   <Terminal size={12} className="text-white/20" />
-                  <h3 className="subtle-mono text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">System.Identity</h3>
+                  <h3 className="subtle-mono text-[10px] font-black uppercase tracking-[0.3em] text-white/20 italic">Account Info</h3>
                 </div>
                 <div className="space-y-6">
                   <div className="flex justify-between items-center p-6 rounded-[28px] bg-white/[0.01] border border-white/5 group hover:bg-white/[0.03] transition-all">
-                    <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.3em] italic">Designation</span>
+                    <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.3em] italic">Role</span>
                     <span className="text-sm font-black text-white italic group-hover:text-indigo-400 transition-colors uppercase">
-                      {profile.role === 'HACKER' ? 'Elite_Researcher' : profile.role}
+                      {profile.role === 'HACKER' ? 'Expert Researcher' : profile.role}
                     </span>
                   </div>
                   <div className="flex justify-between items-center p-6 rounded-[28px] bg-white/[0.01] border border-white/5 group hover:bg-white/[0.03] transition-all">
-                    <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.3em] italic">Assessment</span>
-                    <span className="text-sm font-black text-white italic opacity-40 uppercase">{profile.experience_level || 'Pending...'}</span>
+                    <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.3em] italic">Experience</span>
+                    <span className="text-sm font-black text-white italic opacity-40 uppercase">{profile.experience_level || 'Pending'}</span>
                   </div>
                 </div>
               </motion.div>
@@ -304,16 +304,16 @@ export default function MyProfile() {
                 <div className="absolute inset-0 bg-indigo-500/5 blur-2xl rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
                 <Briefcase size={40} className="relative z-10 group-hover:text-indigo-400/30 transition-colors" />
               </motion.div>
-              <h3 className="text-4xl font-black italic mb-6 tracking-tight uppercase">Operational_Logs</h3>
+              <h3 className="text-4xl font-black italic mb-6 tracking-tight uppercase">Activity Log</h3>
               <p className="text-white/20 max-w-sm text-sm font-bold leading-relaxed mb-12 italic">
-                Telemetry from recent research operations and reward distributions will be streamed here.
+                Recent reports and reward distributions will be shown here.
               </p>
               <Link href="/programs">
                 <motion.div
                   whileHover={{ x: 8 }}
                   className="text-[11px] font-black text-indigo-400 uppercase tracking-[0.4em] flex items-center gap-4 cursor-pointer italic"
                 >
-                  Intercept Opportunities <ChevronRight size={14} />
+                  View Programs <ChevronRight size={14} />
                 </motion.div>
               </Link>
             </motion.div>

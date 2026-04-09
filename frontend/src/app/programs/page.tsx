@@ -76,9 +76,9 @@ export default function BountyDirectory() {
         <section className="hidden lg:flex flex-col gap-12 p-[160px_64px_60px_10%] border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl sticky top-0 h-screen overflow-y-auto">
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
-               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">[ ASSET_DISCOVERY ]</p>
+               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Bounty Directory</p>
                <h1 className="text-5xl font-black italic uppercase tracking-tighter leading-[0.85] mb-8">
-                 Registry <br /><span className="text-white/5 italic">Directory.</span>
+                 Security <br /><span className="text-white/5 italic">Programs.</span>
                </h1>
             </div>
             <p className="text-white/30 text-base leading-relaxed font-medium italic">
@@ -89,12 +89,12 @@ export default function BountyDirectory() {
           <div className="flex flex-col gap-10">
             <div className="space-y-4">
               <label className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic ml-1 flex items-center gap-3">
-                 <Search size={12} /> SEARCH_PROTOCOL
+                 <Search size={12} /> Search
               </label>
               <div className="relative group">
                  <input 
                    type="text" 
-                   placeholder="ASSET_ID, Keyword..."
+                   placeholder="Search programs..."
                    value={search}
                    onChange={e => setSearch(e.target.value)}
                    className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 text-white text-sm outline-none transition-all focus:border-indigo-500/30 focus:bg-white/[0.04] italic font-medium placeholder:text-white/10"
@@ -104,7 +104,7 @@ export default function BountyDirectory() {
 
             <div className="space-y-4">
               <label className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic ml-1 flex items-center gap-3">
-                 <Filter size={12} /> ACCESS_LEVEL
+                 <Filter size={12} /> Access Level
               </label>
               <div className="p-1 bg-white/[0.02] border border-white/5 rounded-2xl flex gap-1">
                 {(['all', 'public', 'private'] as const).map(t => (
@@ -137,7 +137,7 @@ export default function BountyDirectory() {
           {loading && (
             <div className="py-48 text-center space-y-6">
                <div className="w-10 h-10 border-2 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin mx-auto" />
-               <p className="font-mono text-[10px] text-white/10 uppercase tracking-[0.6em] italic animate-pulse">Initializing Data Stream...</p>
+               <p className="font-mono text-[10px] text-white/10 uppercase tracking-[0.6em] italic animate-pulse">Loading Programs...</p>
             </div>
           )}
 
@@ -162,13 +162,13 @@ export default function BountyDirectory() {
                       </div>
                       <div className="space-y-4 flex-1">
                         <div className="flex items-center gap-6">
-                           <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.5em] italic">[ ASSET_{p.id.slice(0, 4)} ]</p>
+                           <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.5em] italic">Program {p.id.slice(0, 4)}</p>
                            <div className={`
                              flex items-center gap-2 px-3 py-1 rounded-full border text-[9px] font-black uppercase tracking-[0.2em] italic
                              ${p.type === 'private' ? 'bg-indigo-500/5 border-indigo-500/20 text-indigo-400' : 'bg-white/5 border-white/10 text-white/30'}
                            `}>
                              {p.type === 'private' ? <Lock size={10} /> : <Unlock size={10} />}
-                             {p.type} Level
+                             {p.type}
                            </div>
                         </div>
                         <h3 className="text-3xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors uppercase italic leading-none">{p.name}</h3>
@@ -182,7 +182,7 @@ export default function BountyDirectory() {
                     
                     <div className="relative z-10 w-full md:w-auto text-left md:text-right p-10 md:p-0 rounded-[32px] bg-white/[0.02] md:bg-transparent border border-white/5 md:border-none flex flex-row md:flex-col justify-between items-center md:items-end gap-4">
                       <div className="space-y-1">
-                        <p className="font-mono text-[9px] text-white/10 font-black uppercase tracking-[0.4em] italic mb-1">POTENTIAL_VALUATION</p>
+                        <p className="font-mono text-[9px] text-white/10 font-black uppercase tracking-[0.4em] italic mb-1">MAX REWARD</p>
                         <p className="text-4xl font-black tracking-tighter text-white group-hover:scale-105 transition-transform duration-700 origin-right italic">
                           ${Number(p.reward_max).toLocaleString()}
                         </p>
@@ -197,8 +197,8 @@ export default function BountyDirectory() {
 
           {!loading && filtered.length === 0 && (
             <div className="py-48 text-center border border-dashed border-white/5 rounded-[64px] bg-white/[0.005]">
-              <p className="text-white/10 text-xl font-medium italic tracking-tight mb-8">No asset records match the specified protocol filters.</p>
-              <button onClick={() => {setSearch(''); setFilterType('all');}} className="px-10 py-5 bg-white/[0.05] hover:bg-white text-white hover:text-black font-black text-[10px] uppercase tracking-[0.4em] rounded-full transition-all italic border border-white/10">Reset Search Protocol</button>
+              <p className="text-white/10 text-xl font-medium italic tracking-tight mb-8">No programs match your search criteria.</p>
+              <button onClick={() => {setSearch(''); setFilterType('all');}} className="px-10 py-5 bg-white/[0.05] hover:bg-white text-white hover:text-black font-black text-[10px] uppercase tracking-[0.4em] rounded-full transition-all italic border border-white/10">Reset Search</button>
             </div>
           )}
         </section>

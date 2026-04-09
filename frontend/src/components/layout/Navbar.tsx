@@ -189,7 +189,7 @@ export default function Navbar() {
                     whileTap={{ scale: 0.98 }}
                     className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
                   >
-                    <span className="relative z-10 flex items-center gap-2">Initialize <ChevronRight size={14} /></span>
+                    <span className="relative z-10 flex items-center gap-2">Get Started <ChevronRight size={14} /></span>
                   </motion.div>
                 </Link>
               </div>

@@ -31,9 +31,9 @@ export default function SignUp() {
   const [role, setRole] = useState<Role>(null);
   const [formData, setFormData] = useState({ 
     email: '', password: '', confirmPassword: '',
-    name: '', handle: '', specialization: 'Web Infrastructure', industry: '', experience_level: 'Intermediate',
+    name: '', handle: '', specialization: 'Web Development', industry: '', experience_level: 'Intermediate',
     bio: '', website: '', location: '', github_url: '', skills: [] as string[], company_size: '1-10', description: '',
-    job_profile: '', business_email: ''
+    jobProfile: '', businessEmail: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -130,9 +130,9 @@ export default function SignUp() {
           >
             <motion.div variants={blurReveal}>
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-8">
-                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ REG.GATEWAY ]</span>
+                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">REGISTRATION</span>
                 <span className="w-1 h-1 rounded-full bg-indigo-400" />
-                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">IDENTITY_PROVISIONING</span>
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">CREATE YOUR PROFILE</span>
               </div>
               <h1 className="text-7xl font-black italic tracking-tighter leading-[0.9] uppercase">
                 Join the<br /><span className="text-white/20">Network.</span>
@@ -154,8 +154,8 @@ export default function SignUp() {
                   <Cpu className="text-indigo-400/60" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Engineering Toolkit</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Native integration with triage workflows and automated reporting tools designed for specialized research.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Developer Tools</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Built-in tools for reporting and tracking vulnerabilities with ease.</p>
                 </div>
               </div>
               <div className="flex gap-8 items-start group">
@@ -163,8 +163,8 @@ export default function SignUp() {
                   <Coins className="text-indigo-400/60" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Incentive Layer</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Transparent bounty structures with immediate settlement protocols upon vulnerability validation.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Bounty Program</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Get paid quickly and transparently for your security research.</p>
                 </div>
               </div>
             </motion.div>
@@ -188,11 +188,11 @@ export default function SignUp() {
               {step === 1 && (
                 <div className="flex flex-col gap-12">
                   <div className="text-center space-y-4">
-                    <span className="text-indigo-400 font-mono font-black text-xs tracking-[0.4em] uppercase">[ 01/03 ]</span>
+                    <span className="text-indigo-400 font-mono font-black text-xs tracking-[0.4em] uppercase">Step 01/03</span>
                     <h2 className="text-3xl font-black text-white italic uppercase tracking-tighter">
-                      Select Capacity.
+                      Choose Your Role.
                     </h2>
-                    <p className="text-white/30 text-[13px] font-medium italic">Define your role within the ecosystem.</p>
+                    <p className="text-white/30 text-[13px] font-medium italic">Select how you want to participate.</p>
                   </div>
                   
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -234,16 +234,16 @@ export default function SignUp() {
                         >
                           <ChevronLeft size={12} /> Capacity Selection
                         </motion.button>
-                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Identity<br /><span className="text-white/20">Config.</span></h2>
+                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Account<br /><span className="text-white/20">Setup.</span></h2>
                       </div>
-                      <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">[ 02/03 ]</span>
+                      <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">Step 02/03</span>
                     </div>
 
                     <div className="flex flex-col gap-8">
-                      <Input label="[ UNIQUE_ID ]" value={formData.handle} onChange={v => setFormData({...formData, handle: v.replace(/[^a-z0-9_]/g, '')})} placeholder="choose_handle" icon={<AtSign size={18} />} />
-                      <Input label="[ CONTACT_NODE ]" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@domain.sh" icon={<Mail size={18} />} />
-                      <Input label="[ ACCESS_PASSPHRASE ]" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} icon={<Lock size={18} />} />
-                      <Input label="[ VERIFY_PASSPHRASE ]" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} icon={<Lock size={18} />} />
+                      <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
+                      <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@email.com" icon={<Mail size={18} />} />
+                      <Input label="Password" type="password" value={formData.password} onChange={v => setFormData({...formData, password: v})} icon={<Lock size={18} />} />
+                      <Input label="Confirm Password" type="password" value={formData.confirmPassword} onChange={v => setFormData({...formData, confirmPassword: v})} icon={<Lock size={18} />} />
                     </div>
 
                     {error && (
@@ -262,7 +262,7 @@ export default function SignUp() {
                       onClick={nextStep} 
                       className="w-full py-6 text-xs font-black bg-white text-black rounded-full shadow-2xl transition-all uppercase tracking-[0.3em] italic hover:bg-neutral-200"
                     >
-                      Provision Identity
+                      Continue
                     </motion.button>
                   </div>
                 </div>
@@ -282,22 +282,22 @@ export default function SignUp() {
                         >
                           <ChevronLeft size={12} /> Return to config
                         </motion.button>
-                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Technical<br /><span className="text-white/20">Profile.</span></h2>
+                        <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">Your<br /><span className="text-white/20">Profile.</span></h2>
                       </div>
-                       <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">[ 03/03 ]</span>
+                       <span className="text-indigo-400 font-mono font-black text-[10px] tracking-[0.4em] uppercase">Step 03/03</span>
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                       {role === 'hacker' ? (
                         <>
-                          <Input label="[ CURRENT_CAPACITY ]" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Vuln Researcher" icon={<Briefcase size={16} />} />
-                          <Input label="[ GEO_COORDINATES ]" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
+                          <Input label="Job Title" value={formData.job_profile} onChange={v => setFormData({...formData, job_profile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
+                          <Input label="Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
                           <div className="col-span-1 md:col-span-2">
-                             <Input label="[ GITHUB_SOURCE ]" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/identity" icon={<Globe size={16} />} />
+                             <Input label="GitHub Profile" value={formData.github_url} onChange={v => setFormData({...formData, github_url: v})} placeholder="github.com/username" icon={<Globe size={16} />} />
                           </div>
                           
                           <div>
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">CORE_SPECIALIZATION</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Primary Skill</label>
                             <select 
                               value={formData.specialization} 
                               onChange={e => setFormData({...formData, specialization: e.target.value})}
@@ -311,7 +311,7 @@ export default function SignUp() {
                             </select>
                           </div>
                           <div>
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">CLEARANCE_LEVEL</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Experience Level</label>
                             <select 
                               value={formData.experience_level} 
                               onChange={e => setFormData({...formData, experience_level: e.target.value})}
@@ -325,7 +325,7 @@ export default function SignUp() {
                           </div>
 
                           <div className="col-span-1 md:col-span-2">
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">INTEL_BIO</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">About You</label>
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
@@ -335,7 +335,7 @@ export default function SignUp() {
                           </div>
 
                           <div className="col-span-1 md:col-span-2">
-                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-5">SKILLSET_INDEX</label>
+                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-5">Your Skills</label>
                             <div className="flex flex-wrap gap-3">
                               {['XSS', 'SQLi', 'RCE', 'SSRF', 'Auth Bypass', 'Business Logic', 'Crypto', 'API Sec'].map(skill => (
                                 <motion.button 
@@ -364,14 +364,14 @@ export default function SignUp() {
                       ) : (
                         <>
                           <div className="col-span-1 md:col-span-2">
-                            <Input label="[ ORG_NAME ]" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="Organization Identity" icon={<Briefcase size={16} />} />
+                            <Input label="Company Name" value={formData.name} onChange={v => setFormData({...formData, name: v})} placeholder="Company Name" icon={<Briefcase size={16} />} />
                           </div>
-                          <Input label="[ BIZ_HANDOFF ]" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@identity.sh" icon={<Mail size={16} />} />
-                          <Input label="[ ASSET_DOMAIN ]" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://domain.sh" icon={<Globe size={16} />} />
-                          <Input label="[ SEC_INDUSTRY ]" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Infrastructure" />
+                          <Input label="Business Email" type="email" value={formData.business_email} onChange={v => setFormData({...formData, business_email: v})} placeholder="security@company.com" icon={<Mail size={16} />} />
+                          <Input label="Website" value={formData.website} onChange={v => setFormData({...formData, website: v})} placeholder="https://website.com" icon={<Globe size={16} />} />
+                          <Input label="Industry" value={formData.industry} onChange={v => setFormData({...formData, industry: v})} placeholder="e.g. Finance" />
                           
                           <div className="col-span-1 md:col-span-2">
-                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">WORKFORCE_INDEX</label>
+                             <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Company Size</label>
                             <select 
                               value={formData.company_size} 
                               onChange={e => setFormData({...formData, company_size: e.target.value})}
@@ -385,7 +385,7 @@ export default function SignUp() {
                           </div>
 
                           <div className="col-span-1 md:col-span-2">
-                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">ASSET_CONTEXT</label>
+                            <label className="text-[9px] font-mono font-black text-white/20 ml-2 uppercase tracking-[0.4em] block mb-3">Description</label>
                             <textarea 
                               value={formData.description}
                               onChange={e => setFormData({...formData, description: e.target.value})}
@@ -410,14 +410,14 @@ export default function SignUp() {
                       whileTap={{ scale: 0.99 }}
                       className="w-full py-7 text-xs font-black bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-600/20 transition-all uppercase tracking-[0.3em] italic hover:bg-indigo-500"
                     >
-                      {loading ? 'Initializing Interface...' : 'Commit Registration'}
+                      {loading ? 'Creating Account...' : 'Create Account'}
                     </motion.button>
                   </form>
                 </div>
               )}
 
               <p className="text-center text-white/20 font-medium text-[12px] tracking-tight mt-12">
-                Already registered? <Link href="/signin" className="group text-white font-black hover:text-indigo-400 transition-all uppercase tracking-[0.2em] text-[10px] ml-3 inline-flex items-center gap-2">Protocol Access <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" /></Link>
+                Already registered? <Link href="/signin" className="group text-white font-black hover:text-indigo-400 transition-all uppercase tracking-[0.2em] text-[10px] ml-3 inline-flex items-center gap-2">Sign In <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" /></Link>
               </p>
             </motion.div>
           </AnimatePresence>

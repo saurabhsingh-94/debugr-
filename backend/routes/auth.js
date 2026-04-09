@@ -44,17 +44,20 @@ const loginValidation = [
 router.post("/register", registerValidation, validate, async (req, res, next) => {
   try {
     const { email, password, role } = req.body;
+    const normalizedEmail = email.toLowerCase();
 
     // Check if user exists
-    const userCheck = await pool.query("SELECT * FROM users WHERE email = $1", [email]);
+    const userCheck = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [normalizedEmail]);
     if (userCheck.rows.length > 0) {
       throw new ApiError(400, "Email already registered");
     }
 
     // Check if handle is taken
     const { handle } = req.body;
+    let normalizedHandle = null;
     if (handle) {
-      const handleCheck = await pool.query("SELECT * FROM users WHERE handle = $1", [handle]);
+      normalizedHandle = handle.toLowerCase();
+      const handleCheck = await pool.query("SELECT * FROM users WHERE LOWER(handle) = LOWER($1)", [normalizedHandle]);
       if (handleCheck.rows.length > 0) {
         throw new ApiError(400, "Handle is already taken");
       }
@@ -78,7 +81,7 @@ router.post("/register", registerValidation, validate, async (req, res, next) =>
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) 
        RETURNING id, email, role, handle, created_at`,
       [
-        email, hashedPassword, role, name, handle, specialization, industry, experience_level,
+        normalizedEmail, hashedPassword, role, name, normalizedHandle, specialization, industry, experience_level,
         bio, website, location, github_url, JSON.stringify(skills || []), company_size, description
       ]
     );
@@ -96,12 +99,14 @@ router.post("/register", registerValidation, validate, async (req, res, next) =>
 router.post("/login", loginValidation, validate, async (req, res, next) => {
   try {
     const { username, password } = req.body;
-    console.info("🔑 Login attempt for:", username);
+    const identifier = username.toLowerCase();
+    
+    console.info("🔑 Login attempt for:", identifier);
 
-    // Find user by email OR handle
+    // Find user by email OR handle (case-insensitive)
     const result = await pool.query(
-      "SELECT * FROM users WHERE email = $1 OR handle = $2", 
-      [username, username]
+      "SELECT * FROM users WHERE LOWER(email) = LOWER($1) OR LOWER(handle) = LOWER($2)", 
+      [identifier, identifier]
     );
 
     if (result.rows.length === 0) {

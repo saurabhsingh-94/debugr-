@@ -57,9 +57,9 @@ export default function Home() {
              className="lg:col-span-8 space-y-12"
            >
               <motion.div variants={fadeInUp()} className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
-                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ DEBUGR.V2 ]</span>
+                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">DEBUGR</span>
                 <span className="w-1 h-1 rounded-full bg-indigo-400 animate-pulse" />
-                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">BUILD_04.09.26</span>
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">SECURITY REIMAGINED</span>
               </motion.div>
 
               <motion.h1 variants={fadeInUp()} className="text-7xl md:text-[130px] font-black tracking-tighter leading-[0.85] uppercase italic">
@@ -105,7 +105,7 @@ export default function Home() {
                  <div className="space-y-8">
                     <div className="flex justify-between items-start">
                        <Terminal className="text-indigo-400/40" size={20} />
-                       <span className="text-[10px] font-mono text-white/20 tracking-widest">[ LIVE_VAL_PROTOCOL ]</span>
+                       <span className="text-[10px] font-mono text-white/20 tracking-widest uppercase">Live Activity</span>
                     </div>
                     <div className="space-y-6">
                        {[
@@ -129,7 +129,7 @@ export default function Home() {
                  <div className="pt-10 border-t border-white/5 space-y-6">
                     <div className="flex items-center gap-4 text-indigo-400/40 animate-pulse">
                        <Activity size={14} />
-                       <span className="text-[9px] font-mono uppercase tracking-[0.4em]">Coordination Synchronized</span>
+                       <span className="text-[9px] font-mono uppercase tracking-[0.4em]">System Active</span>
                     </div>
                     <div className="w-full h-1 bg-white/5 rounded-full overflow-hidden">
                        <motion.div 
@@ -157,9 +157,9 @@ export default function Home() {
               {[1,2,3,4,5,6].map((_, i) => (
                 <div key={i} className="flex items-center gap-16 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/20">
                    <div className="flex items-center gap-6">
-                      <span className="text-indigo-400/30">SESSION_HANDOFF</span>
-                      <span className="text-white/40">Nexus_Core_v4</span>
-                      <span className="text-white/10">0x8B2..A1</span>
+                      <span className="text-indigo-400/30">Secure Transfer</span>
+                      <Shield size={14} className="text-indigo-400/30" />
+                      <span className="text-indigo-400/30">Verified Impact</span>
                    </div>
                    <div className="w-1 h-1 rounded-full bg-indigo-500/20" />
                    <div className="flex items-center gap-6">
@@ -179,7 +179,7 @@ export default function Home() {
         <div className="max-w-[1200px] mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-32 items-start">
              <div className="lg:col-span-6 sticky top-32 space-y-10">
-                <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">[ WORKFLOW_INDEX ]</p>
+                <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Process Map</p>
                 <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8] mb-8">
                    Refined <br />
                    <span className="text-white/5 italic">Validation.</span>
@@ -234,7 +234,7 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto flex flex-col lg:flex-row gap-24 items-center">
             <div className="flex-1 space-y-16">
                 <div className="space-y-6">
-                  <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">[ SYSTEM_METRICS ]</p>
+                  <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Platform Performance</p>
                   <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8]">
                     Operational <br />
                     <span className="text-white/5 italic">Authority.</span>
@@ -264,8 +264,8 @@ export default function Home() {
                <div className="relative z-10 w-full max-w-sm space-y-12">
                   <div className="flex items-center justify-between pb-4 border-b border-white/5">
                       <div className="space-y-1">
-                         <p className="text-[10px] font-mono tracking-[0.4em] text-indigo-400 uppercase">[ SYSTEM.STABLE ]</p>
-                         <p className="text-[8px] font-mono text-white/10 uppercase">v2.4.b491</p>
+                         <p className="text-[10px] font-mono tracking-[0.4em] text-indigo-400 uppercase">System Status: Stable</p>
+                         <p className="text-[8px] font-mono text-white/10 uppercase">Production v2.4.0</p>
                       </div>
                       <Cpu className="text-white/10" size={18} />
                   </div>
@@ -276,8 +276,8 @@ export default function Home() {
                         <div className="absolute inset-0 bg-linear-to-t from-indigo-500/10 via-transparent to-transparent opacity-40" />
                      </div>
                      <div className="text-center space-y-4">
-                        <p className="text-4xl font-black italic tracking-tighter uppercase leading-none">Hardened.</p>
-                        <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.6em] italic">Protocol_Security_v4</p>
+                        <p className="text-4xl font-black italic tracking-tighter uppercase leading-none">Secure.</p>
+                        <p className="text-[9px] font-mono text-white/20 uppercase tracking-[0.6em] italic">Hardened Infrastructure</p>
                      </div>
                   </div>
 
@@ -301,7 +301,7 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto">
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-28 gap-8">
             <div className="text-center md:text-left space-y-6">
-              <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">[ ASSET_REGISTRY ]</p>
+              <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Available Opportunities</p>
               <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-none">Active <br /><span className="text-white/5 italic">Targets.</span></h2>
             </div>
             <Link href="/explore" className="group flex items-center gap-4 text-white/20 hover:text-white transition-all text-[11px] font-black uppercase tracking-[0.2em] pb-5 border-b-2 border-white/5 hover:border-indigo-500/40 italic">
@@ -311,9 +311,9 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
             {[
-              { name: 'Vanguard Unified', reward: '$15k - $50k', type: 'Public Access', code: 'VGD_092', desc: 'Secure the core authentication and payment protocols for a leading global infrastructure provider.' },
-              { name: 'Nexus Core Infra', reward: '$8k - $30k', type: 'Private Inv', code: 'NXS_401', desc: 'Deep-dive analysis into the distributed ledger and cloud orchestration layer of Nexus Technical.' },
-              { name: 'Solidity Financial', reward: '$20k - $80k', type: 'High Yield', code: 'SOL_772', desc: 'Examine high-level cryptographic implementations and smart contract logic across decentralized assets.' }
+              { name: 'Vanguard Unified', reward: '$15k - $50k', type: 'Public', code: 'VGD092', desc: 'Secure the core authentication and payment systems for a leading global infrastructure provider.' },
+              { name: 'Nexus Core Infra', reward: '$8k - $30k', type: 'Private', code: 'NXS401', desc: 'Deep-dive analysis into the distributed ledger and cloud orchestration layer of Nexus Technical.' },
+              { name: 'Solidity Financial', reward: '$20k - $80k', type: 'Financial', code: 'SOL772', desc: 'Examine high-level cryptographic implementations and smart contract logic across decentralized assets.' }
             ].map((p, i) => (
               <motion.div
                 key={i}
@@ -332,7 +332,7 @@ export default function Home() {
                         {p.name[0]}
                       </div>
                       <div className="text-right">
-                         <span className="text-[9px] font-mono text-white/10 block mb-2 uppercase tracking-[0.4em]">[ {p.code} ]</span>
+                         <span className="text-[9px] font-mono text-white/10 block mb-2 uppercase tracking-[0.4em]">{p.code}</span>
                          <span className="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-white/10 text-white/20 group-hover:text-white group-hover:border-indigo-500/40 transition-all italic">{p.type}</span>
                       </div>
                    </div>
@@ -342,7 +342,7 @@ export default function Home() {
 
                 <div className="space-y-8">
                    <div className="space-y-3">
-                      <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">MAX_VALUATION</p>
+                      <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">MAX BOUNTY</p>
                       <p className="text-5xl font-black text-white tracking-tighter italic group-hover:text-indigo-400 transition-colors leading-none">{p.reward}</p>
                    </div>
                    <motion.button 
@@ -370,7 +370,7 @@ export default function Home() {
               transition={{ duration: 1 }}
               className="relative z-10 space-y-16"
             >
-              <h2 className="text-7xl md:text-[140px] font-black uppercase italic tracking-tighter leading-[0.8]">
+              <h2 className="text-7xl md:text-[140px] font-black uppercase italic tracking-tighter leading-[0.8] ">
                  Secure The <br />
                  <span className="text-white/5 italic">Logic.</span>
               </h2>
@@ -385,7 +385,7 @@ export default function Home() {
                     whileTap={{ scale: 0.95 }}
                     className="group px-16 py-8 bg-white text-black font-black text-xs uppercase tracking-[0.4em] rounded-full shadow-[0_30px_70px_rgba(255,255,255,0.2)] hover:bg-neutral-200 transition-all flex items-center gap-6 italic"
                   >
-                    Establish Identity <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" />
+                    Get Started <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" />
                   </motion.button>
                 </Link>
               </div>
@@ -397,10 +397,10 @@ export default function Home() {
         <div className="max-w-[1400px] mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex items-center gap-6 group cursor-pointer">
              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center font-black italic transition-all group-hover:bg-indigo-500 group-hover:text-white shadow-xl">D</div>
-             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20 group-hover:text-white/40">DEBUGR_NETWORK</p>
+             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20 group-hover:text-white/40">Debugr Network</p>
           </div>
           <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.5em] italic order-3 md:order-2">
-            Professional Validation Layer v2.4.0
+            Security Platform v2.4.0
           </p>
           <div className="flex gap-10 order-2 md:order-3">
              <span className="text-[9px] font-mono text-white/10 hover:text-white transition-all cursor-pointer uppercase tracking-[0.4em] italic">Twitter</span>

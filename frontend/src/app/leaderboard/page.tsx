@@ -67,14 +67,14 @@ export default function Leaderboard() {
             onClick={() => window.history.back()} 
             className="group text-white/20 text-[10px] font-mono font-black tracking-[0.4em] flex items-center gap-4 uppercase italic hover:text-white transition-all w-fit"
           >
-            <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> [ RETURN_SESSION ]
+            <ChevronLeft size={14} className="group-hover:-translate-x-1 transition-transform" /> Back
           </motion.button>
           
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
-               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">[ REPUTATION_INDEX ]</p>
+               <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Top Researchers</p>
                <h1 className="text-6xl md:text-7xl font-black italic uppercase tracking-tighter leading-[0.85] mb-8">
-                 Vanguard <br /><span className="text-white/5 italic">Authority.</span>
+                 Global <br /><span className="text-white/5 italic">Authority.</span>
                </h1>
             </div>
             <p className="text-white/30 text-lg leading-relaxed font-medium italic">
@@ -83,7 +83,7 @@ export default function Leaderboard() {
           </motion.div>
 
           <div className="space-y-8">
-            <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic">METRIC_SORT_PROTOCOL</p>
+            <p className="font-mono text-[9px] text-white/10 uppercase tracking-[0.4em] font-black italic">Sort By</p>
             <div className="p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] flex gap-2 shadow-2xl">
               {(['earned', 'resolved'] as const).map(m => (
                 <button 
@@ -105,11 +105,11 @@ export default function Leaderboard() {
 
           <div className="mt-auto grid grid-cols-2 gap-6">
             <div className="p-8 bg-white/[0.01] border border-white/5 rounded-[32px] group transition-all hover:bg-white/[0.03] hover:border-indigo-500/20 shadow-xl">
-              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">AVG_REWARD_UNIT</p>
+              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">AVG REWARD</p>
               <p className="text-3xl font-black text-white italic tracking-tighter">$1,240</p>
             </div>
             <div className="p-8 bg-white/[0.01] border border-white/5 rounded-[32px] group transition-all hover:bg-white/[0.03] hover:border-indigo-500/20 shadow-xl">
-              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL_SYST_IMPACT</p>
+              <p className="font-mono text-[8px] text-white/10 mb-4 uppercase tracking-[0.3em] italic">TOTAL IMPACT</p>
               <p className="text-3xl font-black text-white italic tracking-tighter">482</p>
             </div>
           </div>
@@ -118,17 +118,17 @@ export default function Leaderboard() {
         {/* Right Content: Index Feed */}
         <section className="flex-1 p-12 lg:px-[10%] lg:py-24">
           <div className="hidden md:grid grid-cols-[100px_1fr_160px_160px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
-            <span>[ RANK ]</span>
-            <span>[ RESEARCHER_AUTH ]</span>
-            <span className="text-right">[ IMPACTS ]</span>
-            <span className="text-right">[ VALUATION ]</span>
+            <span>Rank</span>
+            <span>Researcher</span>
+            <span className="text-right">Impacts</span>
+            <span className="text-right">Valuation</span>
           </div>
 
           <div className="flex flex-col gap-6">
             {loading && (
               <div className="py-48 text-center space-y-6">
                 <div className="w-12 h-12 border-2 border-indigo-500/10 border-t-indigo-500 rounded-full animate-spin mx-auto shadow-2xl" />
-                <p className="font-mono text-[10px] text-white/10 uppercase tracking-[0.6em] italic animate-pulse">Synchronizing Authority Tiers...</p>
+                <p className="font-mono text-[10px] text-white/10 uppercase tracking-[0.6em] italic animate-pulse">Loading Rankings...</p>
               </div>
             )}
 
@@ -157,7 +157,7 @@ export default function Leaderboard() {
                          text-2xl font-mono font-black italic tracking-tighter
                          ${idx === 0 ? 'text-indigo-400' : idx === 1 ? 'text-white/60' : idx === 2 ? 'text-white/40' : 'text-white/10'}
                        `}>
-                         [ {String(idx + 1).padStart(2, '0')} ]
+                         {String(idx + 1).padStart(2, '0')}
                        </span>
                     </div>
                     
@@ -202,7 +202,7 @@ export default function Leaderboard() {
             
             {!loading && data.length === 0 && (
               <div className="py-48 text-center border border-dashed border-white/5 rounded-[64px] bg-white/[0.005]">
-                <p className="text-white/10 text-xl font-medium italic tracking-tight">No authority records found for this sorting protocol.</p>
+                <p className="text-white/10 text-xl font-medium italic tracking-tight">No rankings found for this category.</p>
               </div>
             )}
           </div>

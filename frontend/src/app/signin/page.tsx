@@ -71,12 +71,12 @@ export default function SignIn() {
           >
             <motion.div variants={blurReveal}>
               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl mb-8">
-                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ CORE.AUTH ]</span>
+                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">SIGN IN</span>
                 <span className="w-1 h-1 rounded-full bg-indigo-400" />
-                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">ENCRYPTED_SESSION</span>
+                <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">SECURE ACCESS</span>
               </div>
               <h1 className="text-7xl font-black italic tracking-tighter leading-[0.9] uppercase">
-                Access <br /><span className="text-white/20">Protocol.</span>
+                Welcome <br /><span className="text-white/20">Back.</span>
               </h1>
             </motion.div>
 
@@ -86,8 +86,8 @@ export default function SignIn() {
                    <ShieldCheck className="text-indigo-400/60" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Authenticated Interface</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Secure entry via AES-256 encrypted session handler. We prioritize researcher anonymity and asset integrity.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Secure Login</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Access your secure dashboard to manage vulnerability reports and bounty payments.</p>
                 </div>
               </div>
               <div className="flex gap-8 items-start group">
@@ -95,8 +95,8 @@ export default function SignIn() {
                    <Activity className="text-indigo-400/60" size={24} />
                 </div>
                 <div>
-                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Live Coordination</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Directly reconnect with active programs and track real-time triage updates across your dashboard.</p>
+                  <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Live Updates</h2>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Track real-time updates and collaborate directly with security teams from your account.</p>
                 </div>
               </div>
             </motion.div>
@@ -134,7 +134,7 @@ export default function SignIn() {
               <form onSubmit={handleSubmit} className="flex flex-col gap-10 relative z-10">
                 <div className="flex flex-col gap-4">
                   <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
-                    [ USERNAME_IDENTITY ]
+                    Username or Email
                   </label>
                   <div className="relative group">
                     <Fingerprint className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
@@ -151,7 +151,7 @@ export default function SignIn() {
 
                 <div className="flex flex-col gap-4">
                   <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
-                    [ CRYPTO_PASSPHRASE ]
+                    Password
                   </label>
                   <div className="relative group">
                     <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
@@ -180,23 +180,21 @@ export default function SignIn() {
                 </AnimatePresence>
 
                 <motion.button 
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  type="submit"
-                  disabled={loading}
-                  className="group w-full py-6 text-xs font-black bg-white text-black rounded-full shadow-2xl transition-all uppercase tracking-[0.3em] italic hover:bg-neutral-200 flex items-center justify-center gap-3"
+                  type="submit" 
+                  disabled={loading} 
+                  whileHover={{ scale: 1.01, y: -2 }}
+                  whileTap={{ scale: 0.99 }}
+                  className="w-full py-7 text-xs font-black bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-600/20 transition-all uppercase tracking-[0.3em] italic hover:bg-indigo-500"
                 >
-                  {loading ? 'Initializing...' : (
-                    <>Establish Connection <ChevronRight size={16} className="group-hover:translate-x-1 transition-transform" /></>
-                  )}
+                  {loading ? 'Signing In...' : 'Sign In'}
                 </motion.button>
               </form>
             </motion.div>
 
             {/* Footer Link */}
             <motion.div variants={blurReveal} className="text-center">
-              <p className="text-[12px] text-white/20 font-medium tracking-tight">
-                New identity? <Link href="/signup" className="group text-white font-black hover:text-indigo-400 transition-all uppercase tracking-[0.2em] text-[10px] ml-3 flex inline-flex items-center gap-2">Initialize Now <ArrowRight size={12} className="group-hover:translate-x-1 transition-transform" /></Link>
+              <p className="text-center text-white/20 font-medium text-[12px] tracking-tight">
+                New researcher? <Link href="/signup" className="group text-white font-black hover:text-indigo-400 transition-all uppercase tracking-[0.2em] text-[10px] ml-3 inline-flex items-center gap-2">Sign Up <ChevronRight size={12} className="group-hover:translate-x-1 transition-transform" /></Link>
               </p>
             </motion.div>
           </motion.div>

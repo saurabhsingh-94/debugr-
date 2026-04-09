@@ -52,10 +52,10 @@ export default function ExplorePage() {
   }, []);
 
   const categories = [
-    { title: 'Web Protocol', icon: <Globe size={24} />, count: 24, label: 'ASSET_WEB' },
-    { title: 'Cloud Infra', icon: <Cloud size={24} />, count: 12, label: 'INFRA_SYSTEM' },
-    { title: 'Mobile Client', icon: <Smartphone size={24} />, count: 8, label: 'ENDPOINT_MOBILE' },
-    { title: 'Data Assets', icon: <Box size={24} />, count: 15, label: 'NODE_DIST' }
+    { title: 'Web Systems', icon: <Globe size={24} />, count: 24, label: 'Web Assets' },
+    { title: 'Cloud Infrastructure', icon: <Cloud size={24} />, count: 12, label: 'Cloud Systems' },
+    { title: 'Mobile Apps', icon: <Smartphone size={24} />, count: 8, label: 'Mobile Clients' },
+    { title: 'Data Services', icon: <Box size={24} />, count: 15, label: 'Data Nodes' }
   ];
 
   return (
@@ -74,8 +74,8 @@ export default function ExplorePage() {
         <section className="mb-32">
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-6">
             <motion.div variants={fadeInUp()} className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
-              <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">[ REGISTRY.CORE ]</span>
-              <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Live Discovery Mode</span>
+              <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-indigo-400">Directory</span>
+              <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Explore Programs</span>
             </motion.div>
             <motion.h1 
               variants={blurReveal} 
@@ -123,8 +123,8 @@ export default function ExplorePage() {
         <section className="mb-48">
           <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="space-y-4">
-              <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">[ PRIORITY_VALUATION ]</p>
-              <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-none">High-Impact <span className="text-white/5">Tiers.</span></h2>
+              <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Priority Opportunities</p>
+              <h2 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-none">High-Impact <span className="text-white/5">Programs.</span></h2>
             </div>
             <Link href="/programs" className="group flex items-center gap-4 text-white/20 hover:text-white transition-all text-[11px] font-black uppercase tracking-[0.2em] pb-5 border-b-2 border-white/5 hover:border-indigo-500/40 italic">
                Access Asset Directory <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
@@ -148,24 +148,24 @@ export default function ExplorePage() {
                   className="group relative p-14 glass-panel border border-white/5 hover:border-indigo-500/30 transition-all rounded-[64px] bg-white/[0.01] overflow-hidden flex flex-col justify-between h-[580px] shadow-3xl"
                 >
                   <div className="absolute top-0 right-0 p-12">
-                     <span className="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-white/10 text-white/20 group-hover:text-white group-hover:border-indigo-500/40 transition-all italic">{p.type} Access</span>
+                     <span className="text-[10px] font-black uppercase tracking-widest px-5 py-2 rounded-full border border-white/10 text-white/20 group-hover:text-white group-hover:border-indigo-500/40 transition-all italic">{p.type}</span>
                   </div>
                   
                   <div>
                     <div className="w-16 h-16 bg-[#080808] border border-white/10 rounded-2xl flex items-center justify-center font-black text-2xl italic mb-14 group-hover:bg-white group-hover:text-black transition-all shadow-xl">{p.name[0]}</div>
                     <div className="space-y-4">
-                       <p className="text-[9px] font-mono text-white/10 uppercase tracking-[0.4em]">[ ASSETID_{p.id.slice(0, 4)} ]</p>
+                       <p className="text-[9px] font-mono text-white/10 uppercase tracking-[0.4em]">Program ID {p.id.slice(0, 4)}</p>
                        <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-tight group-hover:text-indigo-400 transition-colors">{p.name}</h3>
                     </div>
                   </div>
 
                   <div className="space-y-10">
                     <div className="space-y-3">
-                      <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">MAX_VALUATION</p>
+                      <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">MAX BOUNTY</p>
                       <p className="text-5xl font-black text-white tracking-tighter italic leading-none">${Number(p.reward_max).toLocaleString()}</p>
                     </div>
                     <Link href={`/programs/${p.id}`} className="block">
-                      <button className="w-full py-6 bg-white/[0.03] hover:bg-white text-white hover:text-black font-black text-[11px] uppercase tracking-[0.4em] rounded-full transition-all italic border border-white/5 shadow-2xl">Initialize Analysis</button>
+                       <button className="w-full py-6 bg-white/[0.03] hover:bg-white text-white hover:text-black font-black text-[11px] uppercase tracking-[0.4em] rounded-full transition-all italic border border-white/5 shadow-2xl">View Details</button>
                     </Link>
                   </div>
                 </motion.div>
@@ -205,10 +205,10 @@ export default function ExplorePage() {
         <div className="max-w-[1400px] mx-auto px-12 flex flex-col md:flex-row justify-between items-center gap-12">
           <div className="flex items-center gap-6 group cursor-pointer">
              <div className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center font-black italic group-hover:bg-indigo-500 group-hover:text-white transition-all shadow-xl">D</div>
-             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20">DEBUGR_EXPLORE</p>
+             <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20">Debugr Explore</p>
           </div>
           <p className="text-white/10 text-[9px] font-mono uppercase tracking-[0.5em] italic order-3 md:order-2">
-            Asset Discovery Layer protocol v2.4.0
+            Secure Platform v2.4.0
           </p>
           <div className="flex gap-10 order-2 md:order-3">
              <span className="text-[9px] font-mono text-white/10 hover:text-white transition-all cursor-pointer uppercase tracking-[0.4em] italic">Programs</span>
