@@ -1,6 +1,19 @@
-export const API_URL = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined') 
+const rawUrl = (process.env.NEXT_PUBLIC_API_URL && process.env.NEXT_PUBLIC_API_URL !== 'undefined') 
   ? process.env.NEXT_PUBLIC_API_URL 
   : 'https://debugr-backend-production.up.railway.app';
+
+// Sanitize URL: Ensure it starts with https:// if it doesn't already have a protocol
+const sanitizeUrl = (url: string) => {
+  if (!url) return '';
+  let sanitized = url.trim();
+  if (!sanitized.startsWith('http://') && !sanitized.startsWith('https://')) {
+    sanitized = `https://${sanitized}`;
+  }
+  // Remove trailing slashes
+  return sanitized.replace(/\/+$/, '');
+};
+
+export const API_URL = sanitizeUrl(rawUrl);
 
 if (typeof window !== 'undefined') {
   console.log('🌐 [Debugr] Using API URL:', API_URL);

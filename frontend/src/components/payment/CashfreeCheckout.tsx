@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { load } from '@cashfreepayments/cashfree-js';
 import axios from 'axios';
+import { API_URL } from '@/lib/api';
 
 interface CashfreeCheckoutProps {
   amount: number;
@@ -27,7 +28,7 @@ export default function CashfreeCheckout({ amount, customerDetails, onSuccess, o
     try {
       // 1. Create order on our backend to get payment_session_id
       const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/payments/create-order`,
+        `${API_URL}/api/payments/create-order`,
         {
           orderAmount: amount,
           orderCurrency: 'INR',

@@ -44,114 +44,126 @@ export default function Navbar() {
 
   return (
     <header className={`
-      fixed top-0 left-0 right-0 z-[100] transition-all duration-500 flex items-center
-      ${scrolled ? 'h-16 bg-bg/40 backdrop-blur-2xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
+      fixed top-0 left-0 right-0 z-[100] transition-all duration-500
+      ${scrolled ? 'h-16 bg-bg/60 backdrop-blur-3xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
     `}>
-      <div className="w-full max-w-[1400px] mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="w-full h-full flex items-center justify-between px-6 lg:px-12">
         
-        {/* Logo */}
-        <Link href="/" className="group">
-          <motion.div 
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="flex items-center gap-3"
-          >
-            <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)] group-hover:shadow-[0_0_30px_rgba(99,102,241,0.5)] transition-all">
-              <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
-            </div>
-            <span className="text-xl font-black tracking-tight text-white group-hover:text-white/90 transition-colors">
-              Debugr
-            </span>
-          </motion.div>
-        </Link>
+        {/* Brand Logo */}
+        <div className="flex-1 flex items-center">
+          <Link href="/" className="group">
+            <motion.div 
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-3"
+            >
+              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.3)]">
+                <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
+              </div>
+              <span className="hidden sm:block text-xl font-black tracking-tight text-white">
+                Debugr
+              </span>
+            </motion.div>
+          </Link>
+        </div>
 
-        {/* Navigation & Actions */}
-        <div className="flex items-center gap-2">
-          <nav className="hidden lg:flex items-center">
-            {[
-              { label: 'Programs', href: '/programs' },
-              { label: 'Bounties', href: '/bounties' },
-              { label: 'Rankings', href: '/leaderboard' },
-            ].map((item) => (
-              <Link 
-                key={item.label} 
-                href={item.href} 
-                onMouseEnter={() => setHoveredLink(item.label)}
-                onMouseLeave={() => setHoveredLink(null)}
-                className="relative px-6 py-2.5"
-              >
-                <span className={`
-                  relative z-10 text-[13px] font-black uppercase tracking-widest transition-colors duration-300
-                  ${hoveredLink === item.label ? 'text-white' : 'text-white/30'}
-                `}>
-                  {item.label}
-                </span>
-                <AnimatePresence>
-                  {hoveredLink === item.label && (
-                    <motion.div 
-                      layoutId="navHover"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      className="absolute inset-0 bg-white/5 border border-white/5 rounded-xl z-0"
-                      transition={springSoft}
-                    />
-                  )}
-                </AnimatePresence>
-              </Link>
-            ))}
-          </nav>
+        {/* Segmented Navigation */}
+        <nav className="flex items-center">
+          <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1.5 flex items-center gap-1">
+            {!loading && (() => {
+              const navItems = !user 
+                ? [
+                    { label: 'Explore', href: '/programs' },
+                    { label: 'Bounties', href: '/bounties' },
+                    { label: 'Rankings', href: '/leaderboard' },
+                  ]
+                : user.role === 'hacker'
+                ? [
+                    { label: 'Bounties', href: '/bounties' },
+                    { label: 'My Reports', href: '/dashboard' },
+                    { label: 'Rankings', href: '/leaderboard' },
+                  ]
+                : [
+                    { label: 'Programs', href: '/dashboard' },
+                    { label: 'Discovery', href: '/bounties' },
+                    { label: 'Payments', href: '/add-funds' },
+                  ];
 
-          <div className="hidden lg:block w-px h-6 bg-white/5 mx-4" />
+              return navItems.map((item) => (
+                <Link 
+                  key={item.label} 
+                  href={item.href} 
+                  onMouseEnter={() => setHoveredLink(item.label)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className="relative px-5 py-2.5 outline-none"
+                >
+                  <span className={`
+                    relative z-10 text-[11px] font-black uppercase tracking-[0.15em] transition-colors duration-300
+                    ${hoveredLink === item.label ? 'text-white' : 'text-white/40'}
+                  `}>
+                    {item.label}
+                  </span>
+                  <AnimatePresence>
+                    {hoveredLink === item.label && (
+                      <motion.div 
+                        layoutId="navSegment"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0"
+                        transition={springSoft}
+                      />
+                    )}
+                  </AnimatePresence>
+                </Link>
+              ));
+            })()}
+          </div>
+        </nav>
 
+        {/* User Actions */}
+        <div className="flex-1 flex items-center justify-end gap-3 sm:gap-6">
           {!loading && (
             user ? (
-              <div className="flex items-center gap-6">
-                <Link href="/dashboard" className="hidden sm:block">
-                  <motion.button 
-                    whileHover={{ scale: 1.05, y: -1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="px-6 py-2.5 bg-indigo-600 text-white text-[11px] font-black uppercase tracking-widest rounded-xl hover:bg-indigo-500 transition-all shadow-lg shadow-indigo-600/20"
+              <div className="flex items-center gap-4 sm:gap-6">
+                <Link href="/profile" className="relative group">
+                  <motion.div 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    className="flex items-center gap-3 pl-3 pr-1.5 py-1.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
                   >
-                    Dashboard
-                  </motion.button>
-                </Link>
-
-                <div className="flex items-center gap-4">
-                  <Link href="/profile" className="relative group">
-                    <motion.div 
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center group-hover:border-white/30 transition-all overflow-hidden"
-                    >
-                      <span className="text-white text-xs font-black uppercase">
+                    <span className="hidden md:block text-[11px] font-black text-white/50 uppercase tracking-widest">
+                      {user.handle}
+                    </span>
+                    <div className="w-7 h-7 rounded-full bg-linear-to-br from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 flex items-center justify-center">
+                      <span className="text-indigo-400 text-[10px] font-black uppercase">
                         {user?.handle?.substring(0, 2) || '??'}
                       </span>
-                    </motion.div>
-                  </Link>
+                    </div>
+                  </motion.div>
+                </Link>
 
-                  <button 
-                    onClick={handleLogout} 
-                    className="text-[11px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors"
-                  >
-                    Logout
-                  </button>
-                </div>
+                <button 
+                  onClick={handleLogout} 
+                  className="text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white transition-colors"
+                >
+                  Logout
+                </button>
               </div>
             ) : (
-              <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2 sm:gap-4">
                 <Link href="/signin">
-                  <span className="text-[13px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
-                    Sign In
+                  <span className="text-[11px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
+                    Log In
                   </span>
                 </Link>
                 <Link href="/signup">
                   <motion.div 
                     whileHover={{ scale: 1.05, y: -1 }}
                     whileTap={{ scale: 0.95 }}
-                    className="px-8 py-3 bg-white text-black text-[13px] font-black uppercase tracking-widest rounded-xl hover:bg-white/90 transition-all shadow-2xl"
+                    className="px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full hover:bg-white/90 transition-all shadow-xl"
                   >
-                    Sign Up
+                    Join
                   </motion.div>
                 </Link>
               </div>
