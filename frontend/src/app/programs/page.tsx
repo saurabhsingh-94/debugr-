@@ -59,10 +59,10 @@ export default function BountyDirectory() {
           <motion.div variants={inView()} initial="hidden" animate="visible">
             <p className="subtle-mono mb-4 text-white/30">Verified Opportunities</p>
             <h1 className="hero-title text-[clamp(40px,4vw,56px)] mb-6 leading-[0.9]">
-              Secure the<br /><span className="text-white/20">Future.</span>
+              Find your<br /><span className="text-white/20">target.</span>
             </h1>
             <p className="text-t2 text-[15px] leading-relaxed max-w-[320px]">
-              Explore high-impact security targets vetted by our team. Refine your search by reward size, platform, or industry standards.
+              Secure the frontier by identifying vulnerabilities in high-impact registries. Filter by reward, scope, or technology.
             </p>
           </motion.div>
 

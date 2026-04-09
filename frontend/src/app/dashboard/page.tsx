@@ -63,48 +63,70 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="bg-bg min-h-screen text-white selection:bg-white/10">
+    <div className="bg-[#080808] min-h-screen text-white selection:bg-white/10">
       <Navbar />
+      <div className="fixed inset-0 z-0 opacity-[0.02] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      <main className="max-w-7xl mx-auto px-6 pt-32 pb-20">
+      <main className="relative max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         
-        {/* Profile Identity Bar */}
-        <motion.div 
-          variants={fadeInUp()}
-          initial="hidden"
-          animate="visible"
-          className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16 p-8 rounded-[32px] bg-white/2 border border-white/5 backdrop-blur-3xl shadow-2xl"
-        >
-          <div className="flex items-center gap-6">
-            <div className="w-14 h-14 rounded-2xl bg-linear-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center text-xl font-black text-white shadow-inner">
-              {user?.email[0].toUpperCase()}
+        {/* Left Aspect: Identity & Status */}
+        <div className="lg:col-span-4 space-y-10 lg:sticky lg:top-40">
+          <motion.div 
+            variants={fadeInUp(0.05)}
+            initial="hidden"
+            animate="visible"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-8 bg-indigo-500" />
+              <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.3em] font-black">Active Terminal</p>
             </div>
-            <div className="space-y-1">
-              <h2 className="text-lg font-black tracking-tight text-white uppercase group-hover:text-indigo-400 transition-colors">
-                {user?.handle || user?.email.split('@')[0]}
-              </h2>
-              <div className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-widest font-black">
-                  {user?.role === 'HACKER' ? 'Elite Security Specialist' : 'Organization'} Identity
-                </p>
+            <h1 className="text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8] mb-8">
+              System <span className="text-white/20">Access.</span>
+            </h1>
+            
+            <div className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 backdrop-blur-3xl shadow-2xl space-y-8">
+              <div className="flex items-center gap-6">
+                <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-white/10 to-white/5 border border-white/10 flex items-center justify-center text-2xl font-black text-white shadow-inner shrink-0">
+                  {user?.email[0].toUpperCase()}
+                </div>
+                <div className="space-y-1 overflow-hidden">
+                  <h2 className="text-xl font-black tracking-tight text-white uppercase truncate">
+                    {user?.handle || user?.email.split('@')[0]}
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                    <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">Connected Node</p>
+                  </div>
+                </div>
               </div>
+
+              <div className="space-y-4 pt-6 border-t border-white/5">
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/20">
+                  <span>Role Classification</span>
+                  <span className="text-indigo-400">{user?.role === 'hacker' ? 'Hacker' : 'Registry Admin'}</span>
+                </div>
+                <div className="flex justify-between items-center text-[10px] font-black uppercase tracking-widest text-white/20">
+                  <span>Security Level</span>
+                  <span className="text-white/60">Tier 1 Elite</span>
+                </div>
+              </div>
+
+              <button 
+                onClick={handleLogout}
+                className="w-full py-4 rounded-2xl bg-white/5 border border-white/5 text-[9px] font-black uppercase tracking-[0.2em] text-white/20 hover:text-white hover:bg-white/10 hover:border-white/10 transition-all italic"
+              >
+                Terminate Session
+              </button>
             </div>
-          </div>
+          </motion.div>
+        </div>
 
-          <div className="flex items-center gap-4 w-full md:w-auto">
-            <button 
-              onClick={handleLogout}
-              className="w-full md:w-auto px-6 py-3 rounded-xl border border-white/5 text-[10px] font-black uppercase tracking-widest text-white/20 hover:text-white hover:bg-white/5 hover:border-white/20 transition-all"
-            >
-              Sign Out
-            </button>
-          </div>
-        </motion.div>
-
-        <section className="animate-in fade-in duration-700 delay-150 fill-mode-both">
-          {user?.role === 'company' ? <CompanyDashboard /> : <HackerDashboard />}
-        </section>
+        {/* Right Aspect: Operational Feed */}
+        <div className="lg:col-span-8">
+          <section className="animate-in fade-in duration-700 delay-150 fill-mode-both">
+            {user?.role === 'company' ? <CompanyDashboard /> : <HackerDashboard />}
+          </section>
+        </div>
 
       </main>
     </div>

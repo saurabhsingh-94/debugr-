@@ -160,7 +160,7 @@ export default function Navbar() {
                    <motion.div 
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
                   >
                     <span className="text-[13px]">⚙️</span>
                   </motion.div>

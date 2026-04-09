@@ -139,305 +139,260 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="min-h-screen text-white/90 selection:bg-indigo-500/30 bg-bg">
+    <div className="min-h-screen text-white/90 selection:bg-indigo-500/30 bg-[#080808]">
       <Navbar />
       
-      {/* Background Aurora */}
-      <div className="aurora-bg">
-        <div className="aurora-blob animate-breathing opacity-40 blur-3xl shadow-[0_0_100px_rgba(157,80,187,0.2)]" style={{ background: '#9d50bb', top: '-10%', left: '-10%' }} />
-        <div className="aurora-blob animate-breathing opacity-30 delay-[-4s] blur-2xl font-black italic" style={{ background: '#c084fc', bottom: '-10%', right: '-10%' }} />
-      </div>
+      {/* Background Noise Only */}
+      <div className="fixed inset-0 z-0 opacity-[0.02] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
-      <div className="relative max-w-7xl mx-auto px-6 pt-40 pb-20">
-        <motion.div 
-          variants={fadeInUp(0.05)}
-          initial="hidden"
-          animate="visible"
-          className="mb-16"
-        >
-          <div className="flex items-center gap-3 mb-6">
-            <span className="h-px w-8 bg-indigo-500" />
-            <p className="subtle-mono text-indigo-400">Settings / Profile</p>
-          </div>
-          <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8]">
-            Manage <span className="text-white/20">Profile.</span>
-          </h1>
-        </motion.div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-[320px_1fr] gap-12 items-start">
-          
-          {/* Sidebar Navigation */}
-          <motion.aside 
-            variants={fadeInUp(0.1)}
+      <main className="relative max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+        
+        {/* Left Aspect: Meta & Navigation */}
+        <div className="lg:col-span-4 space-y-12 lg:sticky lg:top-40">
+          <motion.div 
+            variants={fadeInUp(0.05)}
             initial="hidden"
             animate="visible"
-            className="lg:sticky lg:top-40 glass-panel p-2 rounded-[40px] border border-white/5 shadow-2xl overflow-hidden"
           >
-            <div className="bg-white/1 rounded-[38px] p-4 flex lg:flex-col gap-2 overflow-x-auto scrollbar-hide">
-              {TABS.map((tab) => (
-                <button 
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`
-                    flex items-center gap-5 px-6 py-5 rounded-3xl transition-all duration-500 text-left whitespace-nowrap relative group
-                    ${activeTab === tab.id 
-                      ? 'bg-white text-black shadow-2xl scale-[1.02]' 
-                      : 'text-white/40 hover:bg-white/5 hover:text-white/60'
-                    }
-                  `}
-                >
-                  <span className={`text-xl transition-transform duration-500 ${activeTab === tab.id ? 'scale-110' : 'group-hover:scale-110'}`}>
-                    {tab.icon}
-                  </span>
-                  <div className="flex flex-col">
-                    <span className="font-black text-[13px] uppercase tracking-tighter italic leading-none">{tab.label}</span>
-                    <span className={`text-[9px] font-medium tracking-tight mt-1 opacity-40 hidden md:block max-w-[140px] truncate ${activeTab === tab.id ? 'text-black/60' : ''}`}>
-                      {tab.description}
-                    </span>
-                  </div>
-                  {activeTab === tab.id && (
-                    <motion.div layoutId="active-tab" className="absolute right-4 w-1.5 h-1.5 rounded-full bg-black/20" />
-                  )}
-                </button>
-              ))}
-
-              <div className="h-px bg-white/5 my-4 mx-4 hidden lg:block" />
-              
-              <button 
-                onClick={() => {
-                  import('@/lib/api').then(m => {
-                    m.deleteCookie('debugr_token');
-                    window.location.href = '/signin';
-                  });
-                }}
-                className="flex items-center gap-5 px-6 py-5 rounded-3xl text-rose-500/40 hover:text-rose-500 hover:bg-rose-500/5 transition-all duration-300 text-left whitespace-nowrap group"
-              >
-                <span className="text-xl group-hover:scale-110 transition-transform">🚪</span>
-                <span className="font-black text-[13px] uppercase tracking-tighter italic leading-none">Logout</span>
-              </button>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="h-px w-8 bg-indigo-500" />
+              <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.3em] font-black">Control Panel</p>
             </div>
-          </motion.aside>
+            <h1 className="text-6xl md:text-7xl font-black italic tracking-tighter uppercase leading-[0.8] mb-8">
+              User <span className="text-white/20">Protocol.</span>
+            </h1>
+            <p className="text-t2 text-lg font-medium leading-relaxed max-w-sm">
+              Adjust your operational parameters and security verification tokens.
+            </p>
+          </motion.div>
 
-          {/* Settings Content Area */}
-          <main className="min-h-[600px]">
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeTab}
-                initial={{ opacity: 0, x: 20, filter: 'blur(20px)' }}
-                animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, x: -20, filter: 'blur(20px)' }}
-                transition={springSoft}
-                className="space-y-12"
+          <nav className="space-y-2 p-1 bg-white/[0.02] border border-white/5 rounded-3xl overflow-hidden">
+            {TABS.map((tab) => (
+              <button 
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`
+                  w-full flex items-center justify-between px-6 py-5 rounded-2xl transition-all duration-500 text-left group
+                  ${activeTab === tab.id 
+                    ? 'bg-white text-black shadow-2xl' 
+                    : 'text-white/40 hover:bg-white/5 hover:text-white/60'
+                  }
+                `}
               >
-                <div className="glass-panel p-1 border-white/5 rounded-[48px] shadow-2xl relative overflow-hidden">
-                  <div className="absolute top-0 right-0 p-12 opacity-5 text-8xl font-black select-none uppercase tracking-tighter italic">Vanguard</div>
-                  
-                  <div className="bg-white/1 backdrop-blur-3xl p-10 md:p-16 rounded-[44px] border border-white/5 relative z-10">
-                    <header className="mb-12">
-                      <h2 className="text-4xl font-black italic tracking-tighter mb-4 uppercase leading-none">
-                         {TABS.find(t => t.id === activeTab)?.label}
-                      </h2>
-                      <p className="text-white/30 text-base font-medium italic">
-                        {TABS.find(t => t.id === activeTab)?.description}
-                      </p>
-                    </header>
+                <div className="flex flex-col">
+                  <span className="font-black text-[11px] uppercase tracking-widest italic">{tab.label}</span>
+                  <span className={`text-[8px] font-bold tracking-tight mt-1 opacity-40 uppercase ${activeTab === tab.id ? 'text-black/60' : ''}`}>
+                    {tab.id}
+                  </span>
+                </div>
+                <span className={`text-lg transition-transform duration-500 ${activeTab === tab.id ? 'scale-110' : 'group-hover:scale-110'}`}>
+                  {tab.icon}
+                </span>
+              </button>
+            ))}
+          </nav>
+        </div>
 
-                    {activeTab === 'account' && (
-                      <form onSubmit={handleUpdateAccount} className="space-y-10 max-w-2xl">
-                        <div className="grid grid-cols-1 gap-10">
-                          <div className="space-y-4">
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest font-black">Professional Handle</label>
-                            <input 
-                              className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-3xl px-8 py-5 text-white font-black text-lg transition-all shadow-inner outline-none focus:border-white/20" 
-                              value={accountForm.handle}
-                              onChange={e => setAccountForm({ ...accountForm, handle: e.target.value })}
-                              placeholder="@username"
-                            />
-                            <p className="text-white/10 text-[10px] ml-4 font-medium italic uppercase tracking-tight">Only lowercase alphanumeric characters allowed.</p>
-                          </div>
-                          <div className="space-y-4">
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest font-black">Secure Email Address</label>
-                            <input 
-                              className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-3xl px-8 py-5 text-white font-medium text-lg transition-all shadow-inner outline-none focus:border-white/20" 
-                              type="email"
-                              value={accountForm.email}
-                              onChange={e => setAccountForm({ ...accountForm, email: e.target.value })}
-                              placeholder="identity@vanguard.sh"
-                            />
-                          </div>
+        {/* Right Aspect: Content Area */}
+        <div className="lg:col-span-8">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeTab}
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={springSoft}
+              className="glass-panel p-1 border-white/5 rounded-[48px] bg-white/[0.02] backdrop-blur-3xl overflow-hidden shadow-2xl"
+            >
+              <div className="p-10 md:p-20">
+                <header className="mb-16">
+                  <p className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.3em] mb-4">Module / {activeTab}</p>
+                  <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none mb-4">
+                     {TABS.find(t => t.id === activeTab)?.label}
+                  </h2>
+                  <p className="text-t2 text-sm font-medium leading-relaxed italic max-w-md">
+                    {TABS.find(t => t.id === activeTab)?.description}
+                  </p>
+                </header>
+
+                {activeTab === 'account' && (
+                  <form onSubmit={handleUpdateAccount} className="space-y-12 max-w-xl">
+                    <div className="space-y-8">
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Identity Handle</label>
+                        <input 
+                          className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 text-white font-black text-lg outline-none focus:border-white/20 focus:bg-white/5 transition-all" 
+                          value={accountForm.handle}
+                          readOnly
+                        />
+                        <p className="text-white/10 text-[9px] ml-2 font-black uppercase tracking-widest italic">Immutable Identifier.</p>
+                      </div>
+                      <div className="space-y-3">
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Contact Link</label>
+                        <input 
+                          className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 text-white font-medium outline-none focus:border-white/20 focus:bg-white/5 transition-all" 
+                          type="email"
+                          value={accountForm.email}
+                          onChange={e => setAccountForm({ ...accountForm, email: e.target.value })}
+                          placeholder="identity@vanguard.sh"
+                        />
+                      </div>
+                    </div>
+                    <div className="pt-6">
+                      <motion.button 
+                        type="submit" 
+                        disabled={saving} 
+                        whileHover={hoverScale}
+                        whileTap={tapScale}
+                        className="px-12 py-5 bg-white text-black rounded-[24px] font-black text-xs shadow-2xl hover:bg-white/90 transition-all disabled:opacity-50 uppercase tracking-widest"
+                      >
+                        {saving ? 'Transmitting...' : 'Save Parameters'}
+                      </motion.button>
+                    </div>
+                  </form>
+                )}
+
+                {activeTab === 'security' && (
+                  <div className="space-y-16 max-w-xl">
+                    <form onSubmit={handleChangePassword} className="space-y-10">
+                      <div className="space-y-4">
+                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Current Verification Key</label>
+                        <input 
+                          className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
+                          type="password"
+                          placeholder="••••••••••••"
+                          value={pwForm.oldPassword}
+                          onChange={e => setPwForm({ ...pwForm, oldPassword: e.target.value })}
+                        />
+                      </div>
+                      <div className="grid grid-cols-1 gap-8">
+                        <div className="space-y-4">
+                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">New Security Token</label>
+                          <input 
+                            className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
+                            type="password"
+                            placeholder="8+ characters"
+                            value={pwForm.newPassword}
+                            onChange={e => setPwForm({ ...pwForm, newPassword: e.target.value })}
+                          />
                         </div>
-                        <div className="pt-8 flex justify-end">
-                          <motion.button 
-                            type="submit" 
-                            disabled={saving} 
-                            whileHover={hoverScale}
-                            whileTap={tapScale}
-                            className="px-12 py-5 bg-white text-black rounded-3xl font-black text-sm shadow-2xl hover:bg-white/90 transition-all disabled:opacity-50 uppercase tracking-widest italic"
-                          >
-                            {saving ? 'Saving...' : 'Update Profile'}
-                          </motion.button>
+                        <div className="space-y-4">
+                          <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Confirm Token</label>
+                          <input 
+                            className="w-full bg-white/[0.03] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 font-mono text-sm" 
+                            type="password"
+                            placeholder="Match new token"
+                            value={pwForm.confirmPassword}
+                            onChange={e => setPwForm({ ...pwForm, confirmPassword: e.target.value })}
+                          />
                         </div>
-                      </form>
-                    )}
+                      </div>
+                      <div className="pt-6">
+                        <motion.button 
+                          type="submit" 
+                          disabled={saving}
+                          whileHover={hoverScale}
+                          whileTap={tapScale}
+                          className="px-12 py-5 border border-white/10 bg-white/5 text-white/60 hover:text-white rounded-[24px] font-black text-xs hover:bg-white/10 transition-all shadow-xl uppercase tracking-widest"
+                        >
+                          Update Key
+                        </motion.button>
+                      </div>
+                    </form>
 
-                    {activeTab === 'security' && (
-                      <div className="space-y-16 max-w-2xl">
-                        <form onSubmit={handleChangePassword} className="space-y-10">
-                          <div className="space-y-4">
-                            <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest font-black">Current verification Token</label>
-                            <input 
-                              className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-3xl px-8 py-5 outline-none transition-all shadow-inner font-mono text-sm" 
-                              type="password"
-                              placeholder="••••••••••••"
-                              value={pwForm.oldPassword}
-                              onChange={e => setPwForm({ ...pwForm, oldPassword: e.target.value })}
-                            />
-                          </div>
-                          <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-                            <div className="space-y-4">
-                              <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest font-black">New Passcode</label>
-                              <input 
-                                className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-3xl px-8 py-5 outline-none transition-all shadow-inner font-mono text-sm" 
-                                type="password"
-                                placeholder="8+ characters"
-                                value={pwForm.newPassword}
-                                onChange={e => setPwForm({ ...pwForm, newPassword: e.target.value })}
-                              />
-                            </div>
-                            <div className="space-y-4">
-                              <label className="subtle-mono text-[9px] text-white/20 ml-2 uppercase tracking-widest font-black">Verify New Passcode</label>
-                              <input 
-                                className="input-focus-glow w-full bg-white/2 border border-white/5 rounded-3xl px-8 py-5 outline-none transition-all shadow-inner font-mono text-sm" 
-                                type="password"
-                                placeholder="Match new passcode"
-                                value={pwForm.confirmPassword}
-                                onChange={e => setPwForm({ ...pwForm, confirmPassword: e.target.value })}
-                              />
-                            </div>
-                          </div>
-                          <div className="flex justify-end">
-                            <motion.button 
-                              type="submit" 
-                              disabled={saving}
-                              whileHover={hoverScale}
-                              whileTap={tapScale}
-                              className="px-12 py-5 border border-white/5 bg-white/2 text-white/40 rounded-3xl font-black text-sm hover:text-white hover:bg-white/5 transition-all shadow-xl uppercase tracking-widest italic"
-                            >
-                              Update Security
-                            </motion.button>
-                          </div>
-                        </form>
-
-                        <div className="pt-16 border-t border-white/5">
-                          <h3 className="subtle-mono text-[9px] text-white/20 uppercase tracking-[0.3em] mb-10 ml-2 font-black italic">Recent Session Logs</h3>
-                          <div className="space-y-3">
-                            {activity.length === 0 ? (
-                              <div className="py-20 text-center text-white/5 text-sm italic font-medium uppercase tracking-[0.2em]">Zero Active Sessions Detected.</div>
-                            ) : (
-                              activity.map((item, idx) => (
-                                <div key={item.id || idx} className="flex items-center justify-between p-8 rounded-[32px] bg-white/1 border border-white/5 hover:border-white/10 transition-all duration-500 group">
-                                  <div className="flex items-center gap-6">
-                                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/5 flex items-center justify-center text-xl group-hover:scale-110 transition-transform">💻</div>
-                                    <div>
-                                      <div className="font-black text-[15px] uppercase italic tracking-tight">{item.device || 'Unidentified Node'}</div>
-                                      <div className="text-[10px] text-white/20 uppercase tracking-widest font-black mt-1">
-                                        {item.location || 'Dark Sector'} • <span className="text-white/40">{item.ip_address}</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="text-[9px] font-black text-white/20 bg-white/5 border border-white/5 px-6 py-2 rounded-full uppercase tracking-[0.2em] italic">
-                                    Logged {new Date(item.created_at).toLocaleDateString()}
+                    <div className="pt-16 border-t border-white/5">
+                      <h3 className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em] mb-10 ml-2 italic">Access Logs</h3>
+                      <div className="space-y-4">
+                        {activity.length === 0 ? (
+                          <div className="py-20 text-center text-white/5 text-[10px] font-black uppercase tracking-widest italic">Zero Logs Detected.</div>
+                        ) : (
+                          activity.map((item, idx) => (
+                            <div key={item.id || idx} className="flex items-center justify-between p-6 rounded-3xl bg-white/[0.01] border border-white/5 group hover:border-white/10 transition-all">
+                              <div className="flex items-center gap-6">
+                                <span className="text-xl opacity-30 group-hover:opacity-100 transition-opacity">💻</span>
+                                <div>
+                                  <div className="font-black text-sm uppercase tracking-tight text-white/60 group-hover:text-white transition-colors">{item.device || 'Unidentified Node'}</div>
+                                  <div className="text-[9px] text-white/20 uppercase tracking-widest font-black mt-1">
+                                    {item.location || 'Dark Sector'} • {item.ip_address}
                                   </div>
                                 </div>
-                              ))
-                            )}
-                          </div>
-                        </div>
+                              </div>
+                              <span className="text-[8px] font-black text-white/20 bg-white/5 px-4 py-1.5 rounded-full uppercase tracking-widest italic">
+                                {new Date(item.created_at).toLocaleDateString()}
+                              </span>
+                            </div>
+                          ))
+                        )}
                       </div>
-                    )}
-
-                    {activeTab === 'privacy' && (
-                      <div className="space-y-16 max-w-3xl">
-                        <div className="flex items-center justify-between gap-12 p-8 rounded-[40px] bg-white/1 border border-white/5 hover:bg-white/2 transition-all duration-500 shadow-xl">
-                          <div>
-                            <h3 className="text-2xl font-black italic mb-2 uppercase tracking-tight">Stealth Mode</h3>
-                            <p className="text-white/30 text-sm font-medium leading-relaxed italic max-w-sm">Conceal your activity and reputation metrics from global rankings and public visibility.</p>
-                          </div>
-                          <div 
-                            className={`w-20 h-10 rounded-full p-1.5 cursor-pointer transition-all duration-700 shadow-inner ${privacy.is_private ? 'bg-indigo-600' : 'bg-white/5'}`}
-                            onClick={() => handleTogglePrivacy(!privacy.is_private)}
-                          >
-                            <motion.div 
-                              className="w-7 h-7 rounded-full shadow-2xl bg-white"
-                              animate={{ x: privacy.is_private ? 40 : 0 }}
-                              transition={springSoft}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="p-12 rounded-[48px] bg-rose-500/5 border border-rose-500/10 mt-16 relative overflow-hidden group">
-                          <div className="absolute top-0 right-0 p-10 opacity-5 text-6xl font-black italic uppercase select-none group-hover:opacity-10 transition-opacity">Danger</div>
-                          <div className="relative z-10">
-                            <h4 className="text-rose-500 font-black italic text-2xl mb-3 uppercase tracking-tighter">Decommission Identity</h4>
-                            <p className="text-white/20 text-sm font-medium italic mb-10 max-w-lg leading-relaxed">Permanently closing your account will purge all encrypted reports, reputation credits, and identity metadata. This action is irreversible.</p>
-                            <motion.button 
-                              whileHover={{ x: 8, color: '#f43f5e' }}
-                              className="text-rose-500/40 font-black text-xs uppercase tracking-[0.3em] transition-all flex items-center gap-4 italic"
-                              onClick={() => {
-                                if (confirm('Delete your account? This cannot be undone.')) {
-                                  fetchWithAuth(`${API_URL}/api/users/account`, { method: 'DELETE' }).then(() => {
-                                    localStorage.removeItem('token');
-                                    router.push('/');
-                                  });
-                                }
-                              }}
-                            >
-                              Delete Account →
-                            </motion.button>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {activeTab === 'notifications' && (
-                      <div className="py-40 flex flex-col items-center justify-center text-center">
-                        <motion.div 
-                          animate={{ 
-                            y: [0, -15, 0],
-                            opacity: [0.1, 0.4, 0.1],
-                            scale: [1, 1.05, 1]
-                          }}
-                          transition={{ duration: 4, repeat: Infinity }}
-                          className="text-9xl mb-12 grayscale opacity-10"
-                        >
-                          🔔
-                        </motion.div>
-                        <h3 className="text-3xl font-black italic mb-6 uppercase tracking-tighter">Notifications</h3>
-                        <p className="text-white/20 text-base font-medium italic max-w-[340px] leading-relaxed">System notifications and email alerts are currently being updated for better delivery.</p>
-                      </div>
-                    )}
+                    </div>
                   </div>
-                </div>
-              </motion.div>
-            </AnimatePresence>
-          </main>
-        </div>
-      </div>
+                )}
 
-      {/* Modern Notification System */}
+                {activeTab === 'privacy' && (
+                  <div className="space-y-16 max-w-2xl">
+                    <div className="flex items-center justify-between gap-12 p-10 rounded-[40px] bg-white/[0.01] border border-white/5 hover:border-white/10 transition-all">
+                      <div>
+                        <h3 className="text-2xl font-black italic mb-2 uppercase tracking-tight">Stealth Configuration</h3>
+                        <p className="text-white/20 text-sm font-medium leading-relaxed italic max-w-sm">Conceal identity metrics from public indices.</p>
+                      </div>
+                      <div 
+                        className={`w-20 h-10 rounded-full p-1.5 cursor-pointer transition-all duration-700 ${privacy.is_private ? 'bg-indigo-600' : 'bg-white/5'}`}
+                        onClick={() => handleTogglePrivacy(!privacy.is_private)}
+                      >
+                        <motion.div 
+                          className="w-7 h-7 rounded-full shadow-2xl bg-white"
+                          animate={{ x: privacy.is_private ? 40 : 0 }}
+                          transition={springSoft}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="pt-20 border-t border-white/5">
+                      <h4 className="text-rose-500 font-black italic text-2xl mb-4 uppercase tracking-tighter">Decommission Data</h4>
+                      <p className="text-white/20 text-sm font-medium italic mb-10 max-w-lg leading-relaxed">Permanently purge all metadata and reputation assets. This action cannot be reversed.</p>
+                      <button 
+                        className="text-rose-500/40 hover:text-rose-500 font-black text-[10px] uppercase tracking-[0.3em] transition-all italic border-b border-rose-500/0 hover:border-rose-500/20 pb-1"
+                        onClick={() => {
+                          if (confirm('Decommission identity?')) {
+                            fetchWithAuth(`${API_URL}/api/users/account`, { method: 'DELETE' }).then(() => {
+                              deleteCookie('debugr_token');
+                              window.location.href = '/';
+                            });
+                          }
+                        }}
+                      >
+                        Initiate Decommission →
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'notifications' && (
+                  <div className="py-32 flex flex-col items-center justify-center text-center opacity-20">
+                    <div className="text-6xl mb-10">🔔</div>
+                    <h3 className="text-2xl font-black italic mb-4 uppercase">Signal Protocol</h3>
+                    <p className="text-xs font-bold uppercase tracking-widest max-w-[280px] leading-relaxed italic">Updating communication relays for optimal delivery.</p>
+                  </div>
+                )}
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </main>
+
       <AnimatePresence>
         {toast && (
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9, y: 40 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.9, filter: 'blur(10px)' }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, filter: 'blur(10px)' }}
             className={`
-              fixed bottom-12 right-12 z-100 px-10 py-5 rounded-3xl font-black text-xs uppercase tracking-widest shadow-2xl glass-panel italic
-              flex items-center gap-6 border-l-4
-              ${toast.type === 'success' ? 'border-indigo-500 bg-indigo-500/5' : 'border-rose-500 bg-rose-500/5'}
+              fixed bottom-12 right-12 z-[100] px-8 py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest shadow-2xl backdrop-blur-3xl italic
+              flex items-center gap-4 border
+              ${toast.type === 'success' ? 'border-emerald-500/20 bg-emerald-500/5 text-emerald-400' : 'border-rose-500/20 bg-rose-500/5 text-rose-400'}
             `}
           >
-            <div className={`w-2.5 h-2.5 rounded-full ${toast.type === 'success' ? 'bg-indigo-400 animate-pulse shadow-[0_0_10px_#818cf8]' : 'bg-rose-500 shadow-[0_0_10px_#f43f5e]'}`} />
+            <div className={`w-1.5 h-1.5 rounded-full ${toast.type === 'success' ? 'bg-emerald-400 animate-pulse' : 'bg-rose-500'}`} />
             {toast.message}
           </motion.div>
         )}
