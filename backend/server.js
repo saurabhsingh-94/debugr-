@@ -28,7 +28,7 @@ app.use(compression());
 
 // CORS with Whitelist from Config
 const corsOptions = {
-  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+  origin: (origin, callback) => {
     // Check if the origin matches any allowed pattern or if no origin is provided (server-to-server)
     const isAllowed = !origin || config.corsWhitelist.some(allowed => {
       // Direct match
