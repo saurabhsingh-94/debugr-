@@ -1,8 +1,3 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import "./custom.css";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -11,6 +6,21 @@ const geistSans = Geist({
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+});
+
+import { Inter, DM_Mono } from "next/font/google";
+
+const inter = Inter({
+  variable: "--font-inter",
+  subsets: ["latin"],
+  display: 'swap',
+});
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  weight: ['400', '500'],
+  subsets: ["latin"],
+  display: 'swap',
 });
 
 export const metadata: Metadata = {
@@ -30,12 +40,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-x-hidden`}
+      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${dmMono.variable} antialiased overflow-x-hidden`}
     >
       <head>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
         <script src="https://sdk.cashfree.com/js/v3/cashfree.js" defer></script>
       </head>
       <body className="relative bg-[#050505] selection:bg-indigo-500/30 overflow-x-hidden">

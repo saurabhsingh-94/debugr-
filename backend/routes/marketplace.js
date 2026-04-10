@@ -6,13 +6,8 @@ import upload from "../middleware/upload.js";
 import { v2 as cloudinary } from "cloudinary";
 import config from "../config/config.js";
 import logger from "../utils/logger.js";
-import { Cashfree, CFEnvironment } from "cashfree-pg";
 import pkg from 'cashfree-pg';
-const { Cashfree as CashfreePkg, CFEnvironment as CFEnvironmentPkg } = pkg;
-
-// Use package values based on what's available (CJS/ESM interop)
-const ActualCashfree = Cashfree || CashfreePkg;
-const ActualCFEnvironment = CFEnvironment || CFEnvironmentPkg;
+const { Cashfree, CFEnvironment } = pkg;
 
 // Configure Cloudinary from config
 cloudinary.config({
@@ -22,8 +17,8 @@ cloudinary.config({
 });
 
 // Initialize Cashfree Instance (v5+)
-const cashfree = new ActualCashfree(
-  config.cashfree.env === "PROD" ? ActualCFEnvironment.PRODUCTION : ActualCFEnvironment.SANDBOX,
+const cashfree = new Cashfree(
+  config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX,
   config.cashfree.appId,
   config.cashfree.secretKey
 );

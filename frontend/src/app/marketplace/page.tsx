@@ -61,7 +61,7 @@ export default function MarketplacePage() {
     const fetchPrompts = async () => {
       setIsLoading(true);
       try {
-        const url = new URL(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace`);
+        const url = new URL(`${API_URL}/api/marketplace`);
         if (activeCategory !== 'All') url.searchParams.append('category', activeCategory);
         if (search) url.searchParams.append('search', search);
 
@@ -87,7 +87,7 @@ export default function MarketplacePage() {
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-orange-500/5 blur-[100px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay" />
         <motion.div 
           variants={scanLine}
           initial="hidden"

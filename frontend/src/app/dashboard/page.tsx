@@ -81,7 +81,7 @@ export default function Dashboard() {
       <Navbar />
 
       {/* Global Ambience */}
-      <div className="fixed inset-0 z-0 opacity-[0.03] mix-blend-overlay pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
+      <div className="fixed inset-0 z-0 opacity-[0.03] mix-blend-overlay pointer-events-none bg-[url('/noise.svg')]" />
       <div className="fixed top-0 left-0 w-full h-[500px] bg-linear-to-b from-indigo-500/5 to-transparent pointer-events-none z-0" />
       <div className="fixed bottom-0 right-0 w-[40%] h-[40%] bg-purple-500/5 blur-[120px] rounded-full pointer-events-none z-0" />
 

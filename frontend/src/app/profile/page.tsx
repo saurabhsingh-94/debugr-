@@ -123,7 +123,7 @@ export default function MyProfile() {
               {/* Cover Area */}
               <div className="h-32 bg-linear-to-br from-indigo-500/10 to-transparent relative overflow-hidden">
                 <div className="absolute inset-0 backdrop-blur-3xl opacity-20" />
-                <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.05]" />
+                <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.05]" />
               </div>
               
               <div className="px-12 pb-16 -mt-16 relative flex flex-col items-center">
