@@ -1,3 +1,4 @@
+'use client';
 import { motion, useMotionValue, useSpring, useMotionTemplate } from 'framer-motion';
 import { useEffect } from 'react';
 
