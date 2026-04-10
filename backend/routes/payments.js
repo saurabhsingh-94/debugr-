@@ -27,7 +27,11 @@ router.post("/create-order", authenticate, async (req, res, next) => {
       order_amount: orderAmount,
       order_currency: orderCurrency || "INR",
       order_id: orderId,
-      customer_details: customerDetails,
+      customer_details: {
+        ...customerDetails,
+        customer_id: String(customerDetails.customer_id),
+        customer_phone: String(customerDetails.customer_phone).slice(0, 10),
+      },
       order_meta: {
         return_url: `${req.headers.origin || 'https://debugr.app'}/add-funds/status?order_id={order_id}`
       }

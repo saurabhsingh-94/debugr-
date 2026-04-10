@@ -167,7 +167,7 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
       order_currency: "INR", // Cashfree primarily handles INR
       order_id: orderId,
       customer_details: {
-        customer_id: buyer_id,
+        customer_id: String(buyer_id),
         customer_email: buyerEmail,
         customer_phone: "9999999999", // Mock phone as it's required
       },
