@@ -31,6 +31,7 @@ interface SettingTab {
 const TABS: SettingTab[] = [
   { id: 'account', label: 'My Profile', icon: '👤', description: 'Your professional handle and contact point.' },
   { id: 'security', label: 'Security', icon: '🛡️', description: 'Manage login access and passwords.' },
+  { id: 'payout', label: 'Payout Methods', icon: '💰', description: 'Configure where you receive your bounties.' },
   { id: 'privacy', label: 'Privacy', icon: '🔒', description: 'Control how you appear on the platform.' },
   { id: 'notifications', label: 'Alert Center', icon: '🔔', description: 'Platform updates and report notifications.' }
 ];
@@ -47,6 +48,14 @@ export default function SettingsPage() {
   const [pwForm, setPwForm] = useState({ oldPassword: '', newPassword: '', confirmPassword: '' });
   const [privacy, setPrivacy] = useState({ is_private: false });
   const [activity, setActivity] = useState<ActivityItem[]>([]);
+  const [payoutMethods, setPayoutMethods] = useState<any[]>([]);
+  const [payoutForm, setPayoutForm] = useState({
+    type: 'bank_account',
+    bank_account: '',
+    ifsc: '',
+    upi_id: '',
+    name: ''
+  });
 
   const showToast = (message: string, type: 'success' | 'error') => {
     setToast({ message, type });
@@ -56,15 +65,17 @@ export default function SettingsPage() {
   useEffect(() => {
     async function load() {
       try {
-        const [profileRes, activityRes] = await Promise.all([
+        const [profileRes, activityRes, payoutRes] = await Promise.all([
           fetchWithAuth(`${API_URL}/api/users/profile/me`),
-          fetchWithAuth(`${API_URL}/api/users/activity`)
+          fetchWithAuth(`${API_URL}/api/users/activity`),
+          fetchWithAuth(`${API_URL}/api/payouts/method`)
         ]);
 
         if (profileRes.status === 401) { router.push('/signin'); return; }
         
         const profileData = await profileRes.json();
         const activityResData = await activityRes.json();
+        const payoutData = await payoutRes.json();
 
         if (profileData.success) {
           setAccountForm({
@@ -77,6 +88,20 @@ export default function SettingsPage() {
         if (activityResData.success) {
           setActivity(activityResData.activity || []);
         }
+
+        if (payoutData.success) {
+            setPayoutMethods(payoutData.methods || []);
+            if (payoutData.methods && payoutData.methods.length > 0) {
+                const existing = payoutData.methods[0];
+                setPayoutForm({
+                    type: existing.type,
+                    bank_account: '',
+                    ifsc: '',
+                    upi_id: '',
+                    name: existing.masked_details?.name || ''
+                });
+            }
+        }
       } catch {
         showToast('System synchronization failed', 'error');
       } finally {
@@ -85,6 +110,39 @@ export default function SettingsPage() {
     }
     load();
   }, [router]);
+
+  const handleSavePayout = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSaving(true);
+    try {
+        const payload = {
+            type: payoutForm.type,
+            details: payoutForm.type === 'bank_account' 
+                ? { account_number: payoutForm.bank_account, ifsc: payoutForm.ifsc, name: payoutForm.name }
+                : { upi_id: payoutForm.upi_id, name: payoutForm.name }
+        };
+
+        const res = await fetchWithAuth(`${API_URL}/api/payouts/method`, {
+            method: 'POST',
+            body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            showToast('Payout preferences secured', 'success');
+            // Refresh payout methods to show the masked update
+            const payoutRes = await fetchWithAuth(`${API_URL}/api/payouts/method`);
+            const updatedData = await payoutRes.json();
+            if (updatedData.success) setPayoutMethods(updatedData.methods);
+        } else {
+            showToast(data.error || 'Payout configuration failed', 'error');
+        }
+    } catch {
+        showToast('Secure transmission failed', 'error');
+    } finally {
+        setSaving(false);
+    }
+  };
 
   const handleUpdateAccount = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -365,6 +423,122 @@ export default function SettingsPage() {
                       </button>
                     </div>
                   </div>
+                )}
+                
+                {activeTab === 'payout' && (
+
+                    <div className="space-y-12 max-w-2xl">
+                        {/* Status Message */}
+                        <div className="p-8 rounded-[32px] bg-indigo-500/10 border border-indigo-500/20">
+                            <h4 className="text-indigo-400 font-black text-xs uppercase tracking-widest mb-2 italic">Manual Transfer Protocol</h4>
+                            <p className="text-white/40 text-[10px] font-bold uppercase leading-relaxed italic">
+                                Payouts are processed manually by the admin to eliminate transaction fees. 
+                                Details are encrypted with <span className="text-white/60">AES-256-GCM</span> and only decrypted during processing.
+                            </p>
+                        </div>
+
+                        {/* Existing Methods */}
+                        {payoutMethods.length > 0 && (
+                            <div className="space-y-4">
+                                <h3 className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Active Configuration</h3>
+                                {payoutMethods.map((m, i) => (
+                                    <div key={i} className="flex items-center justify-between p-6 rounded-3xl bg-white/[0.02] border border-white/5">
+                                        <div className="flex items-center gap-6">
+                                            <span className="text-xl">{m.type === 'bank_account' ? '🏦' : '💎'}</span>
+                                            <div>
+                                                <div className="font-black text-sm uppercase tracking-tight text-white/80 italic">{m.type.replace('_', ' ')}</div>
+                                                <div className="text-[9px] text-white/30 uppercase tracking-widest font-black mt-1">
+                                                    {m.masked_details.name} • {m.type === 'bank_account' ? m.masked_details.account_number : m.masked_details.upi_id}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <span className="text-[8px] font-black text-emerald-500 bg-emerald-500/10 px-4 py-1.5 rounded-full uppercase tracking-widest italic">Encrypted</span>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+
+                        {/* Setup Form */}
+                        <form onSubmit={handleSavePayout} className="space-y-10 border-t border-white/5 pt-12">
+                            <div className="space-y-8">
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Transfer Mode</label>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {['bank_account', 'upi'].map(mode => (
+                                            <button
+                                                key={mode}
+                                                type="button"
+                                                onClick={() => setPayoutForm({ ...payoutForm, type: mode })}
+                                                className={`py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all italic
+                                                    ${payoutForm.type === mode ? 'bg-white text-black border-white' : 'bg-white/5 text-white/40 border-white/5 hover:border-white/10'}`}
+                                            >
+                                                {mode.replace('_', ' ')}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Payee Name</label>
+                                    <input 
+                                        className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 text-sm font-medium" 
+                                        placeholder="Full legal name"
+                                        required
+                                        value={payoutForm.name}
+                                        onChange={e => setPayoutForm({ ...payoutForm, name: e.target.value })}
+                                    />
+                                </div>
+
+                                {payoutForm.type === 'bank_account' ? (
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-4">
+                                            <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">Account Number</label>
+                                            <input 
+                                                className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 text-sm font-mono" 
+                                                placeholder="00000000000"
+                                                required
+                                                value={payoutForm.bank_account}
+                                                onChange={e => setPayoutForm({ ...payoutForm, bank_account: e.target.value })}
+                                            />
+                                        </div>
+                                        <div className="space-y-4">
+                                            <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">IFSC CODE</label>
+                                            <input 
+                                                className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 text-sm font-mono" 
+                                                placeholder="HDFC0001234"
+                                                required
+                                                value={payoutForm.ifsc}
+                                                onChange={e => setPayoutForm({ ...payoutForm, ifsc: e.target.value.toUpperCase() })}
+                                            />
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="space-y-4">
+                                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] ml-2">UPI ID</label>
+                                        <input 
+                                            className="w-full bg-white/[0.02] border border-white/5 rounded-2xl px-6 py-5 outline-none transition-all focus:border-white/20 text-sm font-mono" 
+                                            placeholder="username@bank"
+                                            required
+                                            value={payoutForm.upi_id}
+                                            onChange={e => setPayoutForm({ ...payoutForm, upi_id: e.target.value })}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="pt-6">
+                                <motion.button 
+                                    type="submit" 
+                                    disabled={saving}
+                                    whileHover={hoverScale}
+                                    whileTap={tapScale}
+                                    className="px-12 py-5 bg-indigo-600 text-white rounded-[24px] font-black text-xs hover:bg-indigo-500 transition-all shadow-xl uppercase tracking-widest italic"
+                                >
+                                    {saving ? 'Encrypting...' : 'Update Payout Details'}
+                                </motion.button>
+                            </div>
+                        </form>
+                    </div>
                 )}
 
                 {activeTab === 'notifications' && (

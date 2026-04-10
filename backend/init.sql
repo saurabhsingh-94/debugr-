@@ -133,3 +133,30 @@ VALUES
 ('ShopPlatform', 'Protecting millions of global transactions daily.', 'public', 100, 8000, '["Web", "Mobile"]'),
 ('DataSafe Ltd', 'Zero-trust data storage for heavily regulated industries.', 'private', 250, 12000, '["API", "Cloud"]')
 ON CONFLICT DO NOTHING;
+
+-- Create Payout Methods Table (Encrypted)
+CREATE TABLE IF NOT EXISTS payout_methods (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('bank_account', 'upi')),
+    encrypted_data TEXT NOT NULL, -- The AES-256-GCM encrypted payload
+    iv VARCHAR(100) NOT NULL,      -- Initialization Vector
+    auth_tag VARCHAR(100) NOT NULL, -- Authentication Tag for GCM
+    is_default BOOLEAN DEFAULT TRUE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, type)
+);
+
+-- Create Withdrawal Requests Table
+CREATE TABLE IF NOT EXISTS withdrawal_requests (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+    amount DECIMAL(12, 2) NOT NULL,
+    currency VARCHAR(10) DEFAULT 'INR',
+    status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'processing', 'completed', 'failed', 'rejected')),
+    payout_id VARCHAR(255), -- Cashfree Payout Reference
+    admin_notes TEXT,
+    details JSONB DEFAULT '{}',
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);

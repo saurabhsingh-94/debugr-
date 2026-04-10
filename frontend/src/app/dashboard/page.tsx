@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Navbar from '@/components/layout/Navbar';
 import HackerDashboard from '@/components/dashboard/HackerDashboard';
 import CompanyDashboard from '@/components/dashboard/CompanyDashboard';
+import AdminDashboard from '@/components/dashboard/AdminDashboard';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { motion } from 'framer-motion';
 import { fadeInUp } from '@/lib/animations';
@@ -160,7 +161,13 @@ export default function Dashboard() {
         {/* Right Aspect: Dashboard Activity */}
         <div className="lg:col-span-9">
           <section className="animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-200 fill-mode-both">
-            {user?.role === 'company' ? <CompanyDashboard /> : <HackerDashboard />}
+            {user?.role === 'admin' ? (
+                <AdminDashboard />
+            ) : user?.role === 'company' ? (
+                <CompanyDashboard />
+            ) : (
+                <HackerDashboard />
+            )}
           </section>
         </div>
 

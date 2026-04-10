@@ -381,4 +381,26 @@ router.patch("/avatar", authMiddleware, upload.single("avatar"), async (req, res
   }
 });
 
+/**
+ * @route   GET /api/users/check-handle/:handle
+ * @desc    Check if a username handle is already taken
+ * @access  Public
+ */
+router.get("/check-handle/:handle", async (req, res, next) => {
+  try {
+    const { handle } = req.params;
+    const result = await pool.query(
+      "SELECT id FROM users WHERE LOWER(handle) = LOWER($1)",
+      [handle]
+    );
+
+    res.json({
+      success: true,
+      available: result.rows.length === 0
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
 export default router;

@@ -145,7 +145,7 @@ export default function Home() {
                 <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Process Map</p>
                 <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8] mb-8">
                    Refined <br />
-                   <span className="text-white/5 italic">Validation.</span>
+                   <span className="text-white/15 italic">Validation.</span>
                 </h2>
                 <p className="text-xl text-white/30 font-medium italic leading-relaxed max-w-md">
                    We remove the bureaucracy between identifying a vulnerability and securing its resolution.
@@ -204,7 +204,7 @@ export default function Home() {
                   <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Platform Performance</p>
                   <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8]">
                     Hacker <br />
-                    <span className="text-white/5 italic">Leaderboard.</span>
+                    <span className="text-white/15 italic">Leaderboard.</span>
                   </h2>
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-10">
@@ -269,7 +269,7 @@ export default function Home() {
           <div className="flex flex-col md:flex-row justify-between items-center md:items-end mb-28 gap-8">
             <div className="text-center md:text-left space-y-6">
               <p className="text-indigo-400 font-mono text-[9px] uppercase tracking-[0.6em] italic">Available Opportunities</p>
-              <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-none">Active <br /><span className="text-white/5 italic">Targets.</span></h2>
+              <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-none">Active <br /><span className="text-white/15 italic">Targets.</span></h2>
             </div>
             <Link href="/explore" className="group flex items-center gap-4 text-white/20 hover:text-white transition-all text-[11px] font-black uppercase tracking-[0.2em] pb-5 border-b-2 border-white/5 hover:border-indigo-500/40 italic">
                View All Programs <ArrowRight size={14} className="group-hover:translate-x-2 transition-transform" />
@@ -339,7 +339,7 @@ export default function Home() {
                
                <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8]">
                   Trade <br />
-                  <span className="text-white/5 italic">Intelligence.</span>
+                  <span className="text-white/15 italic">Intelligence.</span>
                </h2>
                
                <p className="text-xl text-white/30 font-medium italic leading-relaxed max-w-xl">
@@ -425,7 +425,7 @@ export default function Home() {
             >
               <h2 className="text-7xl md:text-[140px] font-black uppercase italic tracking-tighter leading-[0.8] ">
                  Secure The <br />
-                 <span className="text-white/5 italic">Logic.</span>
+                 <span className="text-white/15 italic">Logic.</span>
               </h2>
               <p className="text-white/20 text-2xl max-w-2xl mx-auto font-medium italic leading-relaxed">
                  Join the professional collective of researchers securing high-impact digital infrastructure.

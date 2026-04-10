@@ -33,10 +33,45 @@ export default function SignUp() {
     email: '', password: '', confirmPassword: '',
     name: '', handle: '', specialization: 'Web Development', industry: '', experience_level: 'Intermediate',
     bio: '', website: '', location: '', github_url: '', skills: [] as string[], company_size: '1-10', description: '',
-    jobProfile: '', businessEmail: ''
+    jobProfile: '', businessEmail: '',
+    otp: ''
   });
+  const [handleAvailable, setHandleAvailable] = useState<boolean | null>(null);
+  const [checkingHandle, setCheckingHandle] = useState(false);
+  const [resendTimer, setResendTimer] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+
+  // Handle Debounced Availability Check
+  useEffect(() => {
+    if (step !== 2 || !formData.handle || formData.handle.length < 3) {
+      setHandleAvailable(null);
+      return;
+    }
+
+    const timer = setTimeout(async () => {
+      setCheckingHandle(true);
+      try {
+        const res = await fetch(`${API_URL}/api/users/check-handle/${formData.handle}`);
+        const data = await res.json();
+        setHandleAvailable(data.available);
+      } catch (err) {
+        console.error("Handle check error:", err);
+      } finally {
+        setCheckingHandle(false);
+      }
+    }, 500);
+
+    return () => clearTimeout(timer);
+  }, [formData.handle, step]);
+
+  // OTP Countdown Timer
+  useEffect(() => {
+    if (resendTimer > 0) {
+      const timer = setTimeout(() => setResendTimer(resendTimer - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [resendTimer]);
 
   const nextStep = () => {
     setError('');
@@ -44,6 +79,10 @@ export default function SignUp() {
     if (step === 2) {
       if (!formData.handle || !formData.handle.match(/^[a-z0-9_]{3,20}$/)) {
         setError('Username is required (3-20 lowercase alphanumeric characters)');
+        return;
+      }
+      if (handleAvailable === false) {
+        setError('This handle is already claimed on the grid');
         return;
       }
       if (!formData.email || !formData.email.includes('@')) {
@@ -79,23 +118,9 @@ export default function SignUp() {
       });
 
       const registerData = await res.json();
-      if (registerData.success) {
-        const loginRes = await fetch(`${API_URL}/api/auth/login`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ 
-            username: formData.handle || formData.email, 
-            password: formData.password 
-          }),
-        });
-        const loginData = await loginRes.json();
-        
-        if (loginData.success) {
-          setCookie('debugr_token', loginData.token);
-          router.push('/profile');
-        } else {
-          router.push('/signin');
-        }
+      if (registerData.success && registerData.verification_required) {
+        setStep(4);
+        setResendTimer(60);
       } else {
         const errorMsg = registerData.error || registerData.message || (registerData.errors && registerData.errors[0]?.message) || 'Registration failed';
         setError(errorMsg);
@@ -103,6 +128,36 @@ export default function SignUp() {
     } catch (err) {
       console.error(err);
       setError('Connection refused. Is the backend running?');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: formData.email, 
+          otp: formData.otp,
+          type: 'signup'
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setCookie('debugr_token', data.token);
+        router.push('/dashboard');
+      } else {
+        setError(data.message || 'Invalid or expired code');
+      }
+    } catch (err) {
+      setError('Verification failed. Try again.');
     } finally {
       setLoading(false);
     }
@@ -184,6 +239,14 @@ export default function SignUp() {
               transition={{ type: 'spring', stiffness: 200, damping: 25, mass: 0.8 }}
               className={`w-full ${step === 1 ? 'max-w-5xl' : step === 3 ? 'max-w-xl' : 'max-w-[440px]'} relative z-10`}
             >
+              <div className="absolute -top-24 left-1/2 -translate-x-1/2 flex items-center gap-2 pointer-events-none">
+                {[1, 2, 3, 4].map((s) => (
+                  <div 
+                    key={s} 
+                    className={`h-1 rounded-full transition-all duration-500 ${step >= s ? 'w-8 bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]' : 'w-4 bg-white/5'}`} 
+                  />
+                ))}
+              </div>
               
               {step === 1 && (
                 <div className="flex flex-col gap-12">
@@ -247,7 +310,14 @@ export default function SignUp() {
 
                     <div className="flex flex-col gap-5 md:gap-6">
                       <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 }} className="space-y-5 md:space-y-6">
-                        <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
+                        <div className="relative">
+                          <Input label="Username" value={formData.handle} onChange={v => setFormData({...formData, handle: v.toLowerCase().replace(/[^a-z0-9_]/g, '')})} placeholder="choose_username" icon={<AtSign size={18} />} />
+                          <div className="absolute right-6 bottom-4 flex items-center gap-2">
+                             {checkingHandle && <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 1 }} className="w-3 h-3 border-2 border-indigo-500/30 border-t-indigo-500 rounded-full" />}
+                             {handleAvailable === true && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[10px] text-indigo-400 font-bold uppercase italic">Available</motion.span>}
+                             {handleAvailable === false && <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-[10px] text-rose-500 font-bold uppercase italic">Taken</motion.span>}
+                          </div>
+                        </div>
                         <Input label="Email Address" type="email" value={formData.email} onChange={v => setFormData({...formData, email: v})} placeholder="name@email.com" icon={<Mail size={18} />} />
                       </motion.div>
                       <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }} className="space-y-5 md:space-y-6">
@@ -434,6 +504,65 @@ export default function SignUp() {
                       className="w-full py-7 text-xs font-black bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-600/20 transition-all uppercase tracking-[0.3em] italic hover:bg-indigo-500"
                     >
                       {loading ? 'Creating Account...' : 'Create Account'}
+                    </motion.button>
+                  </form>
+                </div>
+              )}
+
+              {step === 4 && (
+                <div className="glass-panel p-1 rounded-[48px] shadow-[0_40px_100px_rgba(0,0,0,0.6)] border border-white/5 relative overflow-hidden">
+                   <div className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+                   
+                  <form onSubmit={handleVerifyOTP} className="bg-[#0a0a0a]/80 backdrop-blur-3xl p-8 md:p-12 border border-white/5 flex flex-col gap-8">
+                    <div className="text-center space-y-4">
+                      <Fingerprint className="mx-auto text-indigo-500" size={48} />
+                      <h2 className="text-3xl font-black italic tracking-tighter uppercase leading-none">Security<br /><span className="text-white/20">Verification.</span></h2>
+                      <p className="text-white/30 text-xs italic font-medium">We sent a 6-digit code to <span className="text-white">{formData.email}</span></p>
+                    </div>
+
+                    <div className="space-y-2">
+                       <Input 
+                        label="6-Digit Verification Code" 
+                        value={formData.otp} 
+                        onChange={v => setFormData({...formData, otp: v.replace(/[^0-9]/g, '').slice(0, 6)})} 
+                        placeholder="000000" 
+                        icon={<Shield size={18} />} 
+                      />
+                      <div className="flex justify-between items-center px-4">
+                        <span className="text-[10px] font-mono text-white/20 uppercase tracking-widest">
+                          Expires in: <span className={resendTimer < 10 ? "text-rose-500 font-black" : "text-white/40"}>{resendTimer}s</span>
+                        </span>
+                        <button 
+                          type="button"
+                          disabled={resendTimer > 0}
+                          onClick={() => {
+                            setStep(3); // Go back to profile step to trigger resend on submit
+                          }}
+                          className={`text-[10px] font-mono font-black uppercase tracking-widest italic transition-colors ${resendTimer > 0 ? "text-white/5 cursor-not-allowed" : "text-indigo-400 hover:text-white"}`}
+                        >
+                          Resend Code
+                        </button>
+                      </div>
+                    </div>
+
+                    {error && (
+                      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-rose-400 text-[10px] font-mono font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic">
+                        ERR: {error}
+                      </motion.div>
+                    )}
+                    
+                    <motion.button 
+                      type="submit" 
+                      disabled={loading || formData.otp.length < 6}
+                      whileHover={formData.otp.length === 6 ? hoverScale : {}}
+                      whileTap={formData.otp.length === 6 ? tapScale : {}}
+                      className={`w-full py-7 text-xs font-black rounded-full shadow-2xl transition-all uppercase tracking-[0.3em] italic ${
+                        formData.otp.length === 6 
+                          ? 'bg-white text-black hover:bg-neutral-200' 
+                          : 'bg-white/5 text-white/10 cursor-not-allowed border border-white/5'
+                      }`}
+                    >
+                      {loading ? 'Verifying...' : 'Complete Registration'}
                     </motion.button>
                   </form>
                 </div>

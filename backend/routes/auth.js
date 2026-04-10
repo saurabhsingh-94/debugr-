@@ -7,6 +7,8 @@ import { pool } from "../db.js";
 import ApiError from "../utils/ApiError.js";
 import config from "../config/config.js";
 import authMiddleware from "../middleware/auth.js";
+import { generateOTP, verifyOTP } from "../utils/otp.js";
+import { sendEmail } from "../utils/mailer.js";
 
 const router = express.Router();
 
@@ -86,9 +88,27 @@ router.post("/register", registerValidation, validate, async (req, res, next) =>
       ]
     );
 
+    // Generate and send OTP for registration
+    const otp = await generateOTP(normalizedEmail, 'signup');
+    await sendEmail(
+      normalizedEmail,
+      "Verify your Debugr Account",
+      `Your verification code is: ${otp}. It expires in 60 seconds.`,
+      `
+      <div style="font-family: sans-serif; padding: 20px; background: #050505; color: white; border-radius: 20px;">
+        <h2 style="color: #6366f1;">Welcome to Debugr.</h2>
+        <p>Verify your account to join the grid.</p>
+        <div style="font-size: 32px; font-weight: 900; letter-spacing: 10px; margin: 30px 0; color: #818cf8;">${otp}</div>
+        <p style="color: #4b5563; font-size: 12px;">This code expires in 60 seconds.</p>
+      </div>
+      `
+    );
+
     res.status(201).json({
       success: true,
-      user: newUser.rows[0]
+      verification_required: true,
+      email: normalizedEmail,
+      message: "OTP sent to your email"
     });
   } catch (err) {
     next(err);
@@ -125,7 +145,66 @@ router.post("/login", loginValidation, validate, async (req, res, next) => {
       throw new ApiError(401, "Invalid credentials");
     }
 
-    // Generate JWT
+    // Instead of generating JWT directly, send OTP for login (2FA)
+    const otp = await generateOTP(user.email, 'login');
+    await sendEmail(
+      user.email,
+      "Security Verification - Debugr",
+      `Your login code is: ${otp}. It expires in 60 seconds.`,
+      `
+      <div style="font-family: sans-serif; padding: 20px; background: #050505; color: white; border-radius: 20px;">
+        <h2 style="color: #6366f1;">Authorize Login.</h2>
+        <p>A login attempt was detected. Enter the code below to proceed.</p>
+        <div style="font-size: 32px; font-weight: 900; letter-spacing: 10px; margin: 30px 0; color: #818cf8;">${otp}</div>
+        <p style="color: #4b5563; font-size: 12px;">This code expires in 60 seconds.</p>
+      </div>
+      `
+    );
+
+    res.json({
+      success: true,
+      otp_required: true,
+      email: user.email,
+      message: "Verification code sent"
+    });
+  } catch (err) {
+    next(err);
+  }
+});
+
+
+/**
+ * @route   POST /api/auth/verify-otp
+ * @desc    Verify OTP and finalize Registration or Login
+ * @access  Public
+ */
+router.post("/verify-otp", async (req, res, next) => {
+  try {
+    const { email, otp, type } = req.body;
+
+    if (!email || !otp || !type) {
+      throw new ApiError(400, "Email, OTP and type are required");
+    }
+
+    const isValid = await verifyOTP(email, type, otp);
+    if (!isValid) {
+      throw new ApiError(400, "Invalid or expired verification code");
+    }
+
+    // Find the user
+    const result = await pool.query("SELECT * FROM users WHERE LOWER(email) = LOWER($1)", [email]);
+    if (result.rows.length === 0) {
+      throw new ApiError(404, "User not found");
+    }
+
+    const user = result.rows[0];
+
+    // If it was a signup, mark as verified
+    if (type === 'signup') {
+      await pool.query("UPDATE users SET is_verified = TRUE WHERE id = $1", [user.id]);
+    }
+
+    // Generate final JWT
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role, handle: user.handle },
       config.jwtSecret,
@@ -147,8 +226,11 @@ router.post("/login", loginValidation, validate, async (req, res, next) => {
   }
 });
 
-
-// Change Password
+/**
+ * @route   PATCH /api/auth/change-password
+ * @desc    Change password for authenticated user
+ * @access  Private
+ */
 router.patch("/change-password", authMiddleware, async (req, res, next) => {
   try {
     const { oldPassword, newPassword } = req.body;

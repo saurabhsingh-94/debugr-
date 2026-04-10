@@ -22,6 +22,21 @@ export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
+  const [step, setStep] = useState(1); // 1: Login, 2: OTP
+  const [userEmail, setUserEmail] = useState('');
+  const [otp, setOtp] = useState('');
+  const [resendTimer, setResendTimer] = useState(0);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (resendTimer > 0) {
+      interval = setInterval(() => {
+        setResendTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [resendTimer]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -35,7 +50,11 @@ export default function SignIn() {
       });
 
       const data = await res.json();
-      if (data.success) {
+      if (data.otp_required) {
+        setUserEmail(data.email);
+        setStep(2);
+        setResendTimer(60);
+      } else if (data.success) {
         setCookie('debugr_token', data.token);
         router.push('/explore');
       } else {
@@ -44,6 +63,53 @@ export default function SignIn() {
     } catch (err) {
       console.error(err);
       setError('Connection failed. Please check your internet.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerifyOTP = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch(`${API_URL}/api/auth/verify-otp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ 
+          email: userEmail, 
+          otp,
+          type: 'login'
+        }),
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        setCookie('debugr_token', data.token);
+        router.push('/explore');
+      } else {
+        setError(data.error || 'Invalid or expired code');
+      }
+    } catch (err) {
+      setError('Verification failed');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    if (resendTimer > 0) return;
+    setLoading(true);
+    try {
+      await fetch(`${API_URL}/api/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      setResendTimer(60);
+    } catch (err) {
+      setError('Failed to resend code');
     } finally {
       setLoading(false);
     }
@@ -131,64 +197,142 @@ export default function SignIn() {
             >
               <div className="absolute top-0 inset-x-0 h-px bg-linear-to-r from-transparent via-white/10 to-transparent" />
               
-              <form onSubmit={handleSubmit} className="flex flex-col gap-10 relative z-10">
-                <div className="flex flex-col gap-4">
-                  <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
-                    Username or Email
-                  </label>
-                  <div className="relative group">
-                    <Fingerprint className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
-                    <input 
-                      type="text" 
-                      required
-                      value={formData.username}
-                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                      placeholder="Enter handle or email"
-                      className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
-                    />
-                  </div>
-                </div>
+              <AnimatePresence mode="wait">
+                {step === 1 ? (
+                  <motion.form 
+                    key="login"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: 20 }}
+                    onSubmit={handleSubmit} 
+                    className="flex flex-col gap-10 relative z-10"
+                  >
+                    <div className="flex flex-col gap-4">
+                      <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
+                        Username or Email
+                      </label>
+                      <div className="relative group">
+                        <Fingerprint className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
+                        <input 
+                          type="text" 
+                          required
+                          value={formData.username}
+                          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                          placeholder="Enter handle or email"
+                          className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                        />
+                      </div>
+                    </div>
 
-                <div className="flex flex-col gap-4">
-                  <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
-                    Password
-                  </label>
-                  <div className="relative group">
-                    <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
-                    <input 
-                      type="password" 
-                      required
-                      value={formData.password}
-                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                      placeholder="••••••••"
-                      className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
-                    />
-                  </div>
-                </div>
+                    <div className="flex flex-col gap-4">
+                      <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
+                        Password
+                      </label>
+                      <div className="relative group">
+                        <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
+                        <input 
+                          type="password" 
+                          required
+                          value={formData.password}
+                          onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                          placeholder="••••••••"
+                          className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
+                        />
+                      </div>
+                    </div>
 
-                <AnimatePresence>
-                  {error && (
-                    <motion.div 
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      className="text-rose-400 text-[10px] font-mono font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic"
+                    {error && (
+                      <div className="text-rose-400 text-[10px] font-mono font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic">
+                        ERR: {error}
+                      </div>
+                    )}
+
+                    <motion.button 
+                      type="submit" 
+                      disabled={loading} 
+                      whileHover={{ scale: 1.01, y: -2 }}
+                      whileTap={{ scale: 0.99 }}
+                      className="w-full py-7 text-xs font-black bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-600/20 transition-all uppercase tracking-[0.3em] italic hover:bg-indigo-500"
                     >
-                      ERR: {error}
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                      {loading ? 'Signing In...' : 'Sign In'}
+                    </motion.button>
+                  </motion.form>
+                ) : (
+                  <motion.form 
+                    key="otp"
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    onSubmit={handleVerifyOTP} 
+                    className="flex flex-col gap-10 relative z-10"
+                  >
+                    <div className="text-center space-y-4 pt-4">
+                      <ShieldCheck className="mx-auto text-indigo-500" size={42} />
+                      <h2 className="text-2xl font-black italic tracking-tighter uppercase leading-none">Identity<br /><span className="text-white/20">Shield.</span></h2>
+                      <p className="text-white/30 text-[10px] italic font-medium">Verify login code sent to your email</p>
+                    </div>
 
-                <motion.button 
-                  type="submit" 
-                  disabled={loading} 
-                  whileHover={{ scale: 1.01, y: -2 }}
-                  whileTap={{ scale: 0.99 }}
-                  className="w-full py-7 text-xs font-black bg-indigo-600 text-white rounded-full shadow-2xl shadow-indigo-600/20 transition-all uppercase tracking-[0.3em] italic hover:bg-indigo-500"
-                >
-                  {loading ? 'Signing In...' : 'Sign In'}
-                </motion.button>
-              </form>
+                    <div className="flex flex-col gap-4">
+                      <label className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.4em] ml-2">
+                        6-Digit Verification Code
+                      </label>
+                      <div className="relative group">
+                        <Lock className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-indigo-500 transition-colors" size={18} />
+                        <input 
+                          type="text" 
+                          required
+                          value={otp}
+                          onChange={(e) => setOtp(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
+                          placeholder="000000"
+                          className="w-full py-6 pl-16 pr-8 rounded-2xl bg-white/[0.03] border border-white/5 text-white text-sm font-medium transition-all focus:bg-white/[0.05] focus:border-indigo-500/30 outline-none shadow-inner text-center tracking-[1em]"
+                        />
+                      </div>
+                      <div className="flex justify-between items-center px-2">
+                        <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">
+                          Expires: <span className={resendTimer < 10 ? "text-rose-500 font-bold" : "text-white/40"}>{resendTimer}s</span>
+                        </span>
+                        <button 
+                          type="button"
+                          disabled={resendTimer > 0 || loading}
+                          onClick={handleResend}
+                          className={`text-[9px] font-mono font-black uppercase tracking-[0.2em] italic transition-colors ${resendTimer > 0 ? "text-white/5" : "text-indigo-400 hover:text-white"}`}
+                        >
+                          Resend
+                        </button>
+                      </div>
+                    </div>
+
+                    {error && (
+                      <div className="text-rose-400 text-[10px] font-mono font-black text-center p-5 bg-rose-500/5 rounded-2xl border border-rose-500/10 uppercase tracking-widest italic">
+                        ERR: {error}
+                      </div>
+                    )}
+
+                    <div className="flex flex-col gap-4">
+                      <motion.button 
+                        type="submit" 
+                        disabled={loading || otp.length < 6}
+                        whileHover={otp.length === 6 ? { scale: 1.01, y: -2 } : {}}
+                        whileTap={otp.length === 6 ? { scale: 0.99 } : {}}
+                        className={`w-full py-7 text-xs font-black rounded-full shadow-2xl transition-all uppercase tracking-[0.3em] italic ${
+                          otp.length === 6 
+                            ? 'bg-white text-black hover:bg-neutral-200' 
+                            : 'bg-white/5 text-white/10 cursor-not-allowed border border-white/5'
+                        }`}
+                      >
+                        {loading ? 'Verifying...' : 'Authorize Access'}
+                      </motion.button>
+                      <button 
+                        type="button"
+                        onClick={() => setStep(1)}
+                        className="text-[10px] font-mono font-black text-white/20 hover:text-white/40 uppercase tracking-widest transition-colors flex items-center justify-center gap-2"
+                      >
+                         <ArrowLeft size={10} /> Back to Sign In
+                      </button>
+                    </div>
+                  </motion.form>
+                )}
+              </AnimatePresence>
             </motion.div>
 
             {/* Footer Link */}

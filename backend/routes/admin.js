@@ -9,6 +9,7 @@ import ApiError from "../utils/ApiError.js";
 import logger from "../utils/logger.js";
 import { logActivity } from "../utils/activity.js";
 import redis from "../utils/redis.js";
+import { decrypt } from "../utils/encryption.js";
 
 const router = express.Router();
 
@@ -196,4 +197,95 @@ router.patch(
   }
 });
 
+/**
+ * @route   GET /api/admin/payouts/pending
+ * @desc    Get all pending withdrawal requests with decrypted details
+ * @access  Admin only
+ */
+router.get("/payouts/pending", async (req, res, next) => {
+    try {
+        const result = await pool.query(`
+            SELECT wr.*, u.email as researcher_email, u.handle, pm.encrypted_data, pm.iv, pm.auth_tag, pm.type as method_type
+            FROM withdrawal_requests wr
+            JOIN users u ON wr.user_id = u.id
+            JOIN payout_methods pm ON wr.user_id = pm.user_id
+            WHERE wr.status = 'pending'
+            ORDER BY wr.created_at ASC
+        `);
+
+        // Decrypt details for each request
+        const formattedRequests = result.rows.map(row => {
+            let paymentDetails = null;
+            try {
+                const encryptedString = `${row.iv}:${row.auth_tag}:${row.encrypted_data}`;
+                paymentDetails = JSON.parse(decrypt(encryptedString));
+            } catch (decErr) {
+                logger.error(`Failed to decrypt payout details for user ${row.user_id}: ${decErr.message}`);
+                paymentDetails = { error: "Decryption failed" };
+            }
+
+            return {
+                id: row.id,
+                amount: row.amount,
+                status: row.status,
+                created_at: row.created_at,
+                researcher: {
+                    email: row.researcher_email,
+                    handle: row.handle
+                },
+                method: {
+                    type: row.method_type,
+                    details: paymentDetails
+                }
+            };
+        });
+
+        res.json({
+            success: true,
+            requests: formattedRequests
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
+/**
+ * @route   POST /api/admin/payouts/approve/:id
+ * @desc    Mark a payout as completed after manual transfer
+ * @access  Admin only
+ */
+router.post("/payouts/approve/:id", async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const { transaction_ref } = req.body; // Reference ID from the bank app
+
+        // 1. Update withdrawal request
+        const updateWR = await pool.query(
+            "UPDATE withdrawal_requests SET status = 'completed', payout_id = $1, updated_at = CURRENT_TIMESTAMP WHERE id = $2 RETURNING *",
+            [transaction_ref || `manual_${Date.now()}`, id]
+        );
+
+        if (updateWR.rows.length === 0) {
+            throw new ApiError(404, "Withdrawal request not found");
+        }
+
+        const withdrawal = updateWR.rows[0];
+
+        // 2. Update the corresponding transaction in the wallet
+        await pool.query(
+            "UPDATE transactions SET status = 'completed' WHERE reference_id = $1",
+            [`withdraw_${id}`]
+        );
+
+        res.json({
+            success: true,
+            message: "Payout marked as completed successfully.",
+            withdrawal
+        });
+    } catch (err) {
+        next(err);
+    }
+});
+
 export default router;
+

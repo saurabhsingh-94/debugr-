@@ -15,7 +15,9 @@ import {
   ChevronRight,
   Terminal,
   Clock,
-  ExternalLink
+  ExternalLink,
+  AlertTriangle,
+  ArrowRight
 } from 'lucide-react';
 
 type Severity = 'Critical' | 'High' | 'Medium' | 'Low';
@@ -53,13 +55,19 @@ export default function HackerDashboard() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<Severity | 'All'>('All');
   const [balance, setBalance] = useState('0');
+  const [withdrawModal, setWithdrawModal] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState('');
+  const [withdrawing, setWithdrawing] = useState(false);
+  const [withdrawError, setWithdrawError] = useState('');
+  const [hasPayoutMethod, setHasPayoutMethod] = useState(false);
 
   useEffect(() => {
     async function loadData() {
       try {
-        const [reportsRes, profileRes] = await Promise.all([
+        const [reportsRes, profileRes, payoutRes] = await Promise.all([
           fetchWithAuth(API_ENDPOINTS.MY_REPORTS),
-          fetchWithAuth(API_ENDPOINTS.PROFILE)
+          fetchWithAuth(API_ENDPOINTS.PROFILE),
+          fetchWithAuth(`${API_URL}/api/payouts/method`)
         ]);
 
         if (profileRes.ok) {
@@ -67,6 +75,16 @@ export default function HackerDashboard() {
           if (profileData.success) {
             setBalance(profileData.user.wallet_balance || '0');
           }
+        }
+
+        if (payoutRes.ok) {
+            const payoutData = await payoutRes.json();
+            setHasPayoutMethod(payoutData.success && payoutData.methods && payoutData.methods.length > 0);
+        }
+
+        if (payoutRes.ok) {
+            const payoutData = await payoutRes.json();
+            setHasPayoutMethod(payoutData.success && payoutData.methods && payoutData.methods.length > 0);
         }
 
         if (reportsRes.ok) {
@@ -93,6 +111,46 @@ export default function HackerDashboard() {
     }
     loadData();
   }, []);
+
+  const handleWithdrawalRequest = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setWithdrawError('');
+    
+    const amount = Number(withdrawAmount);
+    if (isNaN(amount) || amount < 1000) {
+        setWithdrawError('Minimum withdrawal is ₹1,000');
+        return;
+    }
+
+    if (amount > Number(balance)) {
+        setWithdrawError('Insufficient balance');
+        return;
+    }
+
+    setWithdrawing(true);
+    try {
+        const res = await fetchWithAuth('/api/payouts/request', {
+            method: 'POST',
+            body: JSON.stringify({ amount })
+        });
+        const data = await res.json();
+        
+        if (data.success) {
+            setWithdrawModal(false);
+            setWithdrawAmount('');
+            // Refresh balance
+            const profileRes = await fetchWithAuth(API_ENDPOINTS.PROFILE);
+            const profileData = await profileRes.json();
+            if (profileData.success) setBalance(profileData.user.wallet_balance);
+        } else {
+            setWithdrawError(data.error || 'Withdrawal request failed');
+        }
+    } catch (err) {
+        setWithdrawError('System transmission failure');
+    } finally {
+        setWithdrawing(false);
+    }
+  };
 
   const filtered = filter === 'All' ? reports : reports.filter(r => r.severity === filter);
 
@@ -137,6 +195,15 @@ export default function HackerDashboard() {
               <p className={`text-4xl font-black tracking-tighter italic ${s.highlight ? 'text-white' : 'text-white/40'}`}>
                 {s.value}
               </p>
+              {s.label === 'Total Earnings' && (
+                <motion.button
+                  onClick={() => setWithdrawModal(true)}
+                  whileHover={{ x: 5 }}
+                  className="flex items-center gap-2 text-[9px] font-black text-indigo-400 uppercase tracking-widest mt-2 group"
+                >
+                  Withdraw Funds <ArrowRight size={10} className="group-hover:translate-x-1 transition-transform" />
+                </motion.button>
+              )}
             </motion.div>
           ))}
         </div>
@@ -275,6 +342,101 @@ export default function HackerDashboard() {
             <span className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">Session expires in: <span className="text-white/40 ml-2">4h 12m</span></span>
          </div>
       </div>
+      </div>
+
+      {/* ── Withdrawal Modal ── */}
+      <AnimatePresence>
+        {withdrawModal && (
+            <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setWithdrawModal(false)}
+                    className="absolute inset-0 bg-black/80 backdrop-blur-xl"
+                />
+                
+                <motion.div 
+                    initial={{ scale: 0.9, opacity: 0, y: 20 }}
+                    animate={{ scale: 1, opacity: 1, y: 0 }}
+                    exit={{ scale: 0.9, opacity: 0, y: 20 }}
+                    className="relative w-full max-w-lg bg-[#0a0a0a] border border-white/5 rounded-[48px] overflow-hidden shadow-2xl"
+                >
+                    <div className="p-12 space-y-10">
+                        <header className="space-y-4">
+                            <p className="subtle-mono text-[9px] text-indigo-400 uppercase tracking-[0.4em] font-black italic">Funds Withdrawal</p>
+                            <h2 className="text-4xl font-black italic tracking-tighter uppercase leading-none">
+                                Request <span className="text-white/10">Payout.</span>
+                            </h2>
+                        </header>
+
+                        {!hasPayoutMethod ? (
+                            <div className="space-y-8">
+                                <div className="p-8 rounded-[32px] bg-rose-500/5 border border-rose-500/10 flex gap-6">
+                                    <AlertTriangle className="text-rose-500 shrink-0" size={24} />
+                                    <div className="space-y-2">
+                                        <p className="text-sm font-black uppercase text-rose-500 italic">No Payout Method Found</p>
+                                        <p className="text-[10px] uppercase font-bold text-white/20 leading-relaxed italic">
+                                            You must configure a bank account or UPI ID in your settings before requesting a withdrawal.
+                                        </p>
+                                    </div>
+                                </div>
+                                <Link href="/settings">
+                                    <button className="w-full py-5 bg-white text-black rounded-[24px] font-black text-xs uppercase tracking-widest italic shadow-2xl hover:bg-neutral-200 transition-all">
+                                        Go to Settings →
+                                    </button>
+                                </Link>
+                            </div>
+                        ) : (
+                            <form onSubmit={handleWithdrawalRequest} className="space-y-10">
+                                <div className="space-y-6">
+                                    <div className="flex justify-between items-end px-2">
+                                        <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Amount (INR)</label>
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400 italic">Balance: ₹{Number(balance).toLocaleString()}</span>
+                                    </div>
+                                    <div className="relative group">
+                                        <span className="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-black text-white/10 italic group-focus-within:text-indigo-500 transition-colors">₹</span>
+                                        <input 
+                                            type="number"
+                                            required
+                                            min="1000"
+                                            placeholder="1,000.00"
+                                            className="w-full bg-white/[0.02] border border-white/5 rounded-3xl py-6 pl-14 pr-6 outline-none focus:border-indigo-500/40 text-2xl font-black italic tracking-tighter text-white transition-all placeholder:text-white/5"
+                                            value={withdrawAmount}
+                                            onChange={e => setWithdrawAmount(e.target.value)}
+                                        />
+                                    </div>
+                                    <p className="text-[9px] text-white/10 uppercase font-black tracking-widest italic ml-2">Min: ₹1,000 • Protocol: Manual Transfer</p>
+                                </div>
+
+                                {withdrawError && (
+                                    <p className="text-rose-500 text-[9px] font-black uppercase tracking-widest italic text-center animate-pulse">{withdrawError}</p>
+                                )}
+
+                                <div className="flex gap-4">
+                                    <button 
+                                        type="button"
+                                        onClick={() => setWithdrawModal(false)}
+                                        className="flex-1 py-5 rounded-[24px] border border-white/5 text-white/20 hover:text-white font-black text-xs uppercase tracking-widest transition-all italic"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button 
+                                        type="submit"
+                                        disabled={withdrawing || !withdrawAmount || Number(withdrawAmount) < 1000}
+                                        className="flex-[2] py-5 bg-indigo-600 text-white rounded-[24px] font-black text-xs uppercase tracking-widest shadow-2xl hover:bg-indigo-500 disabled:opacity-20 transition-all italic"
+                                    >
+                                        {withdrawing ? 'Transmitting...' : 'Request Withdrawal'}
+                                    </button>
+                                </div>
+                            </form>
+                        )}
+                    </div>
+                </motion.div>
+            </div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }
+

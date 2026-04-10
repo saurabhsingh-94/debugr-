@@ -14,6 +14,7 @@ import userRoutes from "./routes/users.js";
 import programRoutes from "./routes/programs.js";
 import paymentRoutes from "./routes/payments.js";
 import marketplaceRoutes from "./routes/marketplace.js";
+import payoutRoutes from "./routes/payouts.js";
 import logger from "./utils/logger.js";
 import ApiError from "./utils/ApiError.js";
 
@@ -118,6 +119,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/programs", programRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/marketplace", marketplaceRoutes);
+app.use("/api/payouts", payoutRoutes);
 
 // 404 Handler
 app.use((req, res, next) => {
