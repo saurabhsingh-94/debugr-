@@ -164,64 +164,66 @@ export default function Navbar() {
         {/* User Actions & Mobile Toggle */}
         <div className="flex-1 flex items-center justify-end gap-3 sm:gap-6">
           <div className="hidden sm:flex items-center gap-4">
-            {!loading && user && (
-              <div className="flex items-center gap-3 sm:gap-4">
-                <Link href="/profile" className="relative group">
-                  <Magnetic strength={0.2}>
-                    <motion.div 
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                      className="flex items-center gap-2.5 pl-2.5 pr-1 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
-                    >
-                      <span className="hidden lg:block text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">
-                        {user.handle}
-                      </span>
-                      <ProfileAvatar 
-                        handle={user.handle} 
-                        name={user.name} 
-                        avatarUrl={user.avatar_url} 
-                        size={28} 
-                        border={false} 
-                      />
-                    </motion.div>
-                  </Magnetic>
-                </Link>
+            {!loading && (
+              user ? (
+                <div className="flex items-center gap-3 sm:gap-4">
+                  <Link href="/profile" className="relative group">
+                    <Magnetic strength={0.2}>
+                      <motion.div 
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="flex items-center gap-2.5 pl-2.5 pr-1 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                      >
+                        <span className="hidden lg:block text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">
+                          {user.handle}
+                        </span>
+                        <ProfileAvatar 
+                          handle={user.handle} 
+                          name={user.name} 
+                          avatarUrl={user.avatar_url} 
+                          size={28} 
+                          border={false} 
+                        />
+                      </motion.div>
+                    </Magnetic>
+                  </Link>
 
-                <Link href="/settings" className="relative group">
-                  <Magnetic strength={0.3}>
-                    <motion.div 
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
-                    >
-                      <Settings size={16} className="text-white/40" />
-                    </motion.div>
-                  </Magnetic>
-                </Link>
-              </div>
-            ) : (
-              <div className="flex items-center gap-2 sm:gap-4">
-                <Link href="/signin">
-                  <Magnetic strength={0.2}>
-                    <span className="inline-block text-[11px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
-                      Log In
-                    </span>
-                  </Magnetic>
-                </Link>
-                <Link href="/signup">
-                  <Magnetic strength={0.3}>
-                    <motion.div 
-                      whileHover={{ scale: 1.02, y: -1 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
-                    >
-                      <span className="relative z-10 flex items-center gap-2">Get Started <ChevronRight size={14} /></span>
-                    </motion.div>
-                  </Magnetic>
-                </Link>
-              </div>
-            )
-          )}
+                  <Link href="/settings" className="relative group">
+                    <Magnetic strength={0.3}>
+                      <motion.div 
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
+                      >
+                        <Settings size={16} className="text-white/40" />
+                      </motion.div>
+                    </Magnetic>
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex items-center gap-2 sm:gap-4">
+                  <Link href="/signin">
+                    <Magnetic strength={0.2}>
+                      <span className="inline-block text-[11px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
+                        Log In
+                      </span>
+                    </Magnetic>
+                  </Link>
+                  <Link href="/signup">
+                    <Magnetic strength={0.3}>
+                      <motion.div 
+                        whileHover={{ scale: 1.02, y: -1 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
+                      >
+                        <span className="relative z-10 flex items-center gap-2">Get Started <ChevronRight size={14} /></span>
+                      </motion.div>
+                    </Magnetic>
+                  </Link>
+                </div>
+              )
+            )}
+          </div>
           
           {/* Mobile Hamburger Toggle */}
           <button 

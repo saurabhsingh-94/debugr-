@@ -218,8 +218,10 @@ export default function Leaderboard() {
               </div>
             )}
           </div>
-        </section>
-      </main>
+        </div>
+      </div>
+    </section>
+  </main>
     </div>
   );
 }
