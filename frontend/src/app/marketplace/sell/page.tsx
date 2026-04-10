@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { ArrowLeft, Coins, Rocket, Shield, HelpCircle, CheckCircle2, AlertTriangle, Sparkles, BrainCircuit } from 'lucide-react';
+import { ArrowLeft, Coins, Rocket, Shield, HelpCircle, CheckCircle2, AlertTriangle, Sparkles, BrainCircuit, Loader2 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import { fadeInUp, staggerContainer, blurReveal } from '@/lib/animations';
 import Magnetic from '@/components/animation/Magnetic';

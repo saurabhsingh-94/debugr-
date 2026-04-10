@@ -15,11 +15,12 @@ cloudinary.config({
   api_secret: config.cloudinary.apiSecret
 });
 
-// Configure Cashfree
-// Configure Cashfree Core
-Cashfree.XClientId = config.cashfree.appId;
-Cashfree.XClientSecret = config.cashfree.secretKey;
-Cashfree.XEnvironment = config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+// Initialize Cashfree Instance (v5+)
+const cashfree = new Cashfree(
+  config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX,
+  config.cashfree.appId,
+  config.cashfree.secretKey
+);
 
 const router = express.Router();
 
@@ -175,7 +176,7 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
       }
     };
 
-    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
+    const response = await cashfree.PGCreateOrder("2023-08-01", request);
     
     // Log transaction as pending
     await pool.query(`
@@ -256,7 +257,7 @@ router.post("/comment/:id", authMiddleware, async (req, res, next) => {
 router.get("/order-status/:orderId", authMiddleware, async (req, res, next) => {
   try {
     const { orderId } = req.params;
-    const response = await Cashfree.PGFetchOrder("2023-08-01", orderId);
+    const response = await cashfree.PGFetchOrder("2023-08-01", orderId);
     
     // If PAID, update the local transaction and grant access
     if (response.data.order_status === "PAID") {
