@@ -18,6 +18,7 @@ import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api
 import { springSoft } from '@/lib/animations';
 import ProfileAvatar from '@/components/profile/ProfileAvatar';
 import Magnetic from '@/components/animation/Magnetic';
+import CurrencySwitcher from '@/components/ui/CurrencySwitcher';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -115,12 +116,14 @@ export default function Navbar() {
                     { label: 'Explore', href: '/explore', icon: null },
                     { label: 'Bounties', href: '/programs', icon: null },
                     { label: 'Rankings', href: '/leaderboard', icon: null },
+                    { label: 'Marketplace', href: '/marketplace', icon: null },
                   ]
                 : user.role === 'hacker'
                 ? [
                     { label: 'Explore', href: '/explore', icon: null },
                     { label: 'Bounties', href: '/programs', icon: null },
                     { label: 'Rankings', href: '/leaderboard', icon: null },
+                    { label: 'Marketplace', href: '/marketplace', icon: null },
                   ]
                 : [
                     { label: 'Explore', href: '/explore', icon: null },
@@ -186,7 +189,11 @@ export default function Navbar() {
                         />
                       </motion.div>
                     </Magnetic>
-                  </Link>
+                    </Link>
+                    
+                    <div className="flex items-center">
+                      <CurrencySwitcher />
+                    </div>
 
                   <Link href="/settings" className="relative group">
                     <Magnetic strength={0.3}>
@@ -264,6 +271,7 @@ export default function Navbar() {
                 { label: 'Explore', href: '/explore' },
                 { label: 'Bounties', href: '/programs' },
                 { label: 'Rankings', href: '/leaderboard' },
+                { label: 'Marketplace', href: '/marketplace' },
               ].map((item, i) => (
                 <motion.div
                   key={item.label}
@@ -296,6 +304,9 @@ export default function Navbar() {
                     <div className="grid grid-cols-2 gap-4">
                       <Link href="/profile" className="py-4 rounded-2xl bg-white/5 border border-white/5 text-[10px] font-black uppercase text-center tracking-widest italic" onClick={() => setIsMenuOpen(false)}>Profile</Link>
                       <button onClick={handleLogout} className="py-4 rounded-2xl bg-white/5 border border-white/5 text-[10px] font-black uppercase text-center tracking-widest italic text-red-500/50">Logout</button>
+                    </div>
+                    <div className="flex justify-center pt-2">
+                      <CurrencySwitcher />
                     </div>
                   </div>
                 ) : (

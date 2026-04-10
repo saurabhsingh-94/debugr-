@@ -17,7 +17,10 @@ import {
   Lock,
   Cpu,
   Monitor,
-  Code2
+  Code2,
+  ShoppingCart,
+  Coins,
+  BrainCircuit
 } from 'lucide-react';
 import { getCookie } from '@/lib/api';
 import { useRouter } from 'next/navigation';
@@ -308,6 +311,92 @@ export default function Home() {
             ))}
           </div>
         </div>
+      </section>
+
+      {/* AI Prompt Marketplace - Gold Tier Section */}
+      <section className="py-56 px-6 lg:px-12 bg-amber-500/[0.02] relative overflow-hidden">
+         <div className="absolute top-0 left-0 w-full h-px bg-linear-to-r from-transparent via-amber-500/20 to-transparent" />
+         <div className="absolute bottom-0 left-0 w-full h-px bg-linear-to-r from-transparent via-amber-500/20 to-transparent" />
+         
+         <div className="max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center">
+            <div className="space-y-12">
+               <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-500/5 border border-amber-500/10 backdrop-blur-xl">
+                 <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-amber-500">New Protocol</span>
+                 <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
+                 <span className="text-[9px] font-mono text-amber-500/40 uppercase tracking-[0.2em]">Prompt Marketplace</span>
+               </div>
+               
+               <h2 className="text-7xl md:text-9xl font-black uppercase italic tracking-tighter leading-[0.8]">
+                  Trade <br />
+                  <span className="text-white/5 italic">Intelligence.</span>
+               </h2>
+               
+               <p className="text-xl text-white/30 font-medium italic leading-relaxed max-w-xl">
+                  The first premium marketplace for high-performance AI interaction protocols. Sell your optimized prompts and earn 80% on every license sold.
+               </p>
+
+               <div className="flex flex-wrap gap-12">
+                  <div className="space-y-2">
+                     <p className="text-4xl font-black text-amber-500 italic tracking-tighter">80%</p>
+                     <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-widest italic">Creator Share</p>
+                  </div>
+                  <div className="space-y-2">
+                     <p className="text-4xl font-black text-white/80 italic tracking-tighter">24H</p>
+                     <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-widest italic">Fast Payouts</p>
+                  </div>
+                  <div className="space-y-2">
+                     <p className="text-4xl font-black text-white/80 italic tracking-tighter">SSL</p>
+                     <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-widest italic">Encrypted Payloads</p>
+                  </div>
+               </div>
+
+               <div className="pt-6">
+                  <Link href="/marketplace">
+                    <Magnetic strength={0.3}>
+                      <motion.button
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="px-12 py-6 bg-amber-500 text-black font-black text-xs uppercase tracking-[0.3em] rounded-full shadow-[0_20px_60px_rgba(245,158,11,0.2)]"
+                      >
+                        Enter Marketplace
+                      </motion.button>
+                    </Magnetic>
+                  </Link>
+               </div>
+            </div>
+
+            <div className="relative group">
+               <div className="absolute inset-0 bg-amber-500/10 blur-[120px] rounded-full opacity-50 group-hover:opacity-100 transition-opacity" />
+               <div className="relative glass-panel border border-amber-500/10 rounded-[64px] p-16 bg-[#080808] overflow-hidden shadow-2xl">
+                  <div className="flex items-center justify-between mb-16">
+                     <div className="w-16 h-16 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-500">
+                        <BrainCircuit size={32} />
+                     </div>
+                     <div className="flex gap-2">
+                        <div className="w-2 h-2 rounded-full bg-amber-500/40" />
+                        <div className="w-2 h-2 rounded-full bg-amber-500/20" />
+                        <div className="w-2 h-2 rounded-full bg-amber-500/10" />
+                     </div>
+                  </div>
+
+                  <div className="space-y-8">
+                     <div className="h-6 w-3/4 bg-white/5 rounded-full" />
+                     <div className="h-6 w-1/2 bg-white/5 rounded-full" />
+                     <div className="pt-8 border-t border-white/5 space-y-6">
+                        <div className="flex justify-between items-end">
+                           <div className="space-y-2">
+                              <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-widest italic">Market Value</p>
+                              <p className="text-5xl font-black text-white italic tracking-tighter">$149</p>
+                           </div>
+                           <div className="w-14 h-14 rounded-full bg-amber-500 text-black flex items-center justify-center">
+                              <ShoppingCart size={24} />
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </section>
 
       {/* Final CTA - Dark & Minimal */}

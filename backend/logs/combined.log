@@ -1067,3 +1067,8 @@
 2026-04-10 00:50:25:5025 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
 2026-04-10 00:50:25:5025 info: 🚀 Server running on port 5000 in development mode
 2026-04-10 00:50:29:5029 info: ✅ Database initialized successfully
+2026-04-10 16:36:08:368 info: Starting Marketplace migration...
+2026-04-10 16:36:11:3611 info: ✓ Prompts table created
+2026-04-10 16:36:12:3612 info: ✓ Marketplace likes table created
+2026-04-10 16:36:12:3612 info: ✓ Marketplace comments table created
+2026-04-10 16:36:13:3613 info: ✓ Prompt purchases table created
