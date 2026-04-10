@@ -177,6 +177,11 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
       }
     };
 
+    // Check if Cashfree is configured
+    if (!config.cashfree.appId || !config.cashfree.secretKey) {
+      throw new ApiError(503, "Payment gateway not configured. Please add CASHFREE_APP_ID and CASHFREE_SECRET_KEY to environment.");
+    }
+
     const response = await cashfree.PGCreateOrder("2023-08-01", request);
     
     // Log transaction as pending
@@ -191,7 +196,11 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
       order_id: orderId
     });
   } catch (err) {
-    logger.error("Cashfree Order Creation Error:", err);
+    if (err.response?.data?.message) {
+      logger.error("Cashfree API Error:", err.response.data.message);
+      return next(new ApiError(err.response.status || 400, `Payment Provider Error: ${err.response.data.message}`));
+    }
+    logger.error("Marketplace Buy Order Error:", err);
     next(err);
   }
 });

@@ -33,6 +33,11 @@ router.post("/create-order", authenticate, async (req, res, next) => {
       }
     };
 
+    // Check if Cashfree is configured
+    if (!config.cashfree.appId || !config.cashfree.secretKey) {
+      throw new ApiError(503, "Payment gateway not configured. Please add CASHFREE_APP_ID and CASHFREE_SECRET_KEY to environment.");
+    }
+
     const response = await Cashfree.PGCreateOrder("2023-08-01", request);
     
     res.json({
@@ -44,8 +49,12 @@ router.post("/create-order", authenticate, async (req, res, next) => {
     });
 
   } catch (error) {
-    logger.error(`Cashfree Create Order Error: ${error.response?.data?.message || error.message}`);
-    next(new ApiError(500, error.response?.data?.message || "Failed to create payment order"));
+    if (error.response?.data?.message) {
+      logger.error(`Cashfree API Error: ${error.response.data.message}`);
+      return next(new ApiError(error.response.status || 400, `Payment Provider Error: ${error.response.data.message}`));
+    }
+    logger.error(`Cashfree Create Order Error: ${error.message}`);
+    next(new ApiError(500, error.message || "Failed to create payment order"));
   }
 });
 
