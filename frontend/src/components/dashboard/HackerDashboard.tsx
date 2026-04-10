@@ -335,13 +335,13 @@ export default function HackerDashboard() {
          <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Status: Online</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-6">
+         <div className="flex items-center gap-3">
+            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+            <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Status: Online</span>
+         </div>
+         <div className="flex items-center gap-6">
             <span className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">Session expires in: <span className="text-white/40 ml-2">4h 12m</span></span>
          </div>
-      </div>
       </div>
 
       {/* ── Withdrawal Modal ── */}
