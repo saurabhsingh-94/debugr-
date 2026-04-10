@@ -21,6 +21,7 @@ import {
 import Navbar from '@/components/layout/Navbar';
 import { useCurrency } from '@/context/CurrencyContext';
 import { fetchWithAuth, API_URL } from '@/lib/api';
+import Magnetic from '@/components/animation/Magnetic';
 
 interface PromptDetail {
   id: string;
