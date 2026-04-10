@@ -54,7 +54,7 @@ export default function SellPromptPage() {
   const handleSubmit = async () => {
     setIsSubmitting(true);
     try {
-      const response = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace`, {
+      const response = await fetchWithAuth(`/api/marketplace`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

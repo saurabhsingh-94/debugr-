@@ -24,7 +24,7 @@ import {
   Loader2,
   Star
 } from 'lucide-react';
-import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
+import { fetchWithAuth, API_ENDPOINTS, API_URL } from '@/lib/api';
 import { useCurrency } from '@/context/CurrencyContext';
 import { useEffect } from 'react';
 

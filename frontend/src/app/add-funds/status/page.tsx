@@ -6,6 +6,8 @@ import axios from 'axios';
 import Navbar from '@/components/layout/Navbar';
 import Link from 'next/link';
 
+import { API_URL } from '@/lib/api';
+
 interface CashfreePayment {
   payment_status: string;
   [key: string]: unknown;
@@ -26,7 +28,7 @@ function PaymentStatusContent() {
     const verifyPayment = async () => {
       try {
         const res = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/payments/verify`,
+          `${API_URL}/api/payments/verify`,
           { orderId },
           { withCredentials: true }
         );

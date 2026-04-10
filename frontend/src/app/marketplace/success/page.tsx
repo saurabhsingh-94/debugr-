@@ -22,7 +22,7 @@ function SuccessContent() {
 
     const checkStatus = async () => {
       try {
-        const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace/order-status/${orderId}`);
+        const res = await fetchWithAuth(`/api/marketplace/order-status/${orderId}`);
         const data = await res.json();
         
         if (data.success && data.status === 'PAID') {

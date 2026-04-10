@@ -20,9 +20,7 @@ import {
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import { useCurrency } from '@/context/CurrencyContext';
-import { fetchWithAuth } from '@/lib/api';
-import Magnetic from '@/components/animation/Magnetic';
-import axios from 'axios';
+import { fetchWithAuth, API_URL } from '@/lib/api';
 
 interface PromptDetail {
   id: string;
@@ -62,7 +60,7 @@ export default function PromptDetailPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace/${id}`);
+        const res = await fetch(`${API_URL}/api/marketplace/${id}`);
         const data = await res.json();
         if (data.success) {
           setPrompt(data.prompt);
@@ -79,7 +77,7 @@ export default function PromptDetailPage() {
 
   const handleLike = async () => {
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace/like/${id}`, {
+      const res = await fetchWithAuth(`/api/marketplace/like/${id}`, {
         method: 'POST'
       });
       const data = await res.json();
@@ -95,7 +93,7 @@ export default function PromptDetailPage() {
   const handleCheckout = async () => {
     setIsBuying(true);
     try {
-      const res = await fetchWithAuth(`${process.env.NEXT_PUBLIC_API_URL || 'https://debugr-backend-production.up.railway.app'}/api/marketplace/buy/${id}`, {
+      const res = await fetchWithAuth(`/api/marketplace/buy/${id}`, {
         method: 'POST'
       });
       const data = await res.json();

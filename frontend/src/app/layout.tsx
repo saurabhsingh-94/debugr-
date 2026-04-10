@@ -1,13 +1,4 @@
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
+import type { Metadata } from "next";
 import { Inter, DM_Mono } from "next/font/google";
 
 const inter = Inter({
@@ -40,7 +31,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${inter.variable} ${dmMono.variable} antialiased overflow-x-hidden`}
+      className={`${inter.variable} ${dmMono.variable} antialiased overflow-x-hidden`}
     >
       <head>
         <script src="https://sdk.cashfree.com/js/v3/cashfree.js" defer></script>
