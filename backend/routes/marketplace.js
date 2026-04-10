@@ -159,30 +159,38 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
     const orderId = `order_${Date.now()}_${Math.random().toString(36).substring(7)}`;
 
     // Get buyer info for Cashfree
-    const userResult = await pool.query("SELECT email FROM users WHERE id = $1", [buyer_id]);
-    const buyerEmail = userResult.rows[0].email;
+    const userResult = await pool.query("SELECT email, name, handle FROM users WHERE id = $1", [buyer_id]);
+    const user = userResult.rows[0];
+    const buyerEmail = user.email;
+    const buyerName = user.name || user.handle || "Hacker";
 
     const request = {
       order_amount: orderAmount,
-      order_currency: "INR", // Cashfree primarily handles INR
+      order_currency: "INR",
       order_id: orderId,
       customer_details: {
         customer_id: String(buyer_id),
         customer_email: buyerEmail,
-        customer_phone: "9999999999", // Mock phone as it's required
+        customer_phone: "9999999999", 
+        customer_name: buyerName
       },
       order_meta: {
-        return_url: `${config.corsWhitelist[0]}/marketplace/success?order_id={order_id}`,
+        return_url: `${req.headers.origin || 'https://debugr.app'}/marketplace/success?order_id={order_id}`,
         notify_url: `${process.env.BACKEND_URL}/api/payments/webhook`,
       }
     };
 
     // Check if Cashfree is configured
     if (!config.cashfree.appId || !config.cashfree.secretKey) {
-      throw new ApiError(503, "Payment gateway not configured. Please add CASHFREE_APP_ID and CASHFREE_SECRET_KEY to environment.");
+      throw new ApiError(503, "Payment gateway configuration missing. Please update CASHFREE_APP_ID and CASHFREE_SECRET_KEY.");
     }
 
-    const response = await cashfree.PGCreateOrder("2023-08-01", request);
+    // Set instance configs before calling
+    Cashfree.XClientId = config.cashfree.appId;
+    Cashfree.XClientSecret = config.cashfree.secretKey;
+    Cashfree.XEnvironment = config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
+
+    const response = await Cashfree.PGCreateOrder("2023-08-01", request);
     
     // Log transaction as pending
     await pool.query(`
@@ -245,9 +253,10 @@ router.post("/comment/:id", authMiddleware, async (req, res, next) => {
 
     if (!message || !rating) throw new ApiError(400, "Message and rating are required");
 
-    await pool.query(`
+    const commentResult = await pool.query(`
       INSERT INTO marketplace_comments (prompt_id, user_id, message, rating)
       VALUES ($1, $2, $3, $4)
+      RETURNING *
     `, [id, userId, message, rating]);
 
     // Update average rating
@@ -257,7 +266,15 @@ router.post("/comment/:id", authMiddleware, async (req, res, next) => {
     );
     await pool.query("UPDATE prompts SET avg_rating = $1 WHERE id = $2", [avgResult.rows[0].avg, id]);
 
-    res.json({ success: true, message: "Review submitted" });
+    // Get the full comment with user info for frontend update
+    const userResult = await pool.query("SELECT handle, avatar_url FROM users WHERE id = $1", [userId]);
+    const comment = {
+      ...commentResult.rows[0],
+      handle: userResult.rows[0].handle,
+      avatar_url: userResult.rows[0].avatar_url
+    };
+
+    res.json({ success: true, message: "Review submitted", comment });
   } catch (err) {
     next(err);
   }

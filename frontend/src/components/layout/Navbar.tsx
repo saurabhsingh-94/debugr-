@@ -59,8 +59,8 @@ export default function Navbar() {
     
     const base = [
       { label: 'Explore', href: '/explore' },
-      { label: user?.role === 'hacker' || !user ? 'Bounties' : 'Programs', href: '/programs' },
-      { label: 'Marketplace', href: '/marketplace' },
+      { label: user?.role === 'company' ? 'Programs' : 'Bounties', href: '/programs' },
+      { label: 'Market', href: '/marketplace' },
       { label: 'Rankings', href: '/leaderboard' },
     ];
 
@@ -298,7 +298,7 @@ export default function Navbar() {
                 )
               )}
               <div className="pt-10 border-t border-white/10 flex justify-between items-center">
-                 <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">Debugr // Mobile Protocol</p>
+                 <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic">Debugr // Mobile Portal</p>
                  <div className="flex gap-4">
                    <div className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse" />
                    <div className="w-1 h-1 rounded-full bg-indigo-500 animate-pulse delay-75" />

@@ -90,8 +90,8 @@ export default function CashfreeCheckout({ amount, customerDetails, onSuccess, o
           >
             <AlertCircle size={18} className="text-red-500 shrink-0 mt-0.5" />
             <div className="space-y-1">
-              <p className="text-[10px] font-black uppercase tracking-widest text-red-500">Security Fault</p>
-              <p className="text-xs font-medium italic text-red-500/60 leading-relaxed">{errorMsg}</p>
+              <p className="text-[10px] font-bold uppercase tracking-widest text-red-500">Transaction Error</p>
+              <p className="text-xs font-medium text-red-500/60 leading-relaxed">{errorMsg}</p>
             </div>
           </motion.div>
         )}
@@ -104,37 +104,36 @@ export default function CashfreeCheckout({ amount, customerDetails, onSuccess, o
           whileHover={{ scale: 1.01 }}
           whileTap={{ scale: 0.99 }}
           className={`
-            w-full py-8 px-10 rounded-[32px] font-black uppercase tracking-[0.4em] italic text-xs 
+            w-full py-8 px-10 rounded-[32px] font-bold uppercase tracking-[0.4em] text-xs 
             flex items-center justify-center gap-4 transition-all overflow-hidden relative group
-            ${loading ? 'bg-white/10 text-white/20' : 'bg-white text-black shadow-[0_20px_40px_rgba(255,255,255,0.15)] hover:shadow-[0_25px_50px_rgba(255,255,255,0.2)]'}
+            ${loading ? 'bg-white/10 text-white/20' : 'bg-indigo-600 text-white shadow-[0_20px_40px_rgba(79,70,229,0.3)] hover:shadow-[0_25px_50px_rgba(79,70,229,0.4)]'}
             disabled:opacity-50 disabled:cursor-not-allowed
           `}
         >
           {loading ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Processing Protocol...
+              Verifying...
             </>
           ) : (
             <>
-              Inject Capital <Rocket size={18} />
+              Add to Balance <Rocket size={18} />
             </>
           )}
           
-          {/* Subtle reflection effect */}
-          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:animate-shimmer" />
+          <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" />
         </motion.button>
       </Magnetic>
       
-      <div className="flex items-center justify-center gap-6 opacity-20 filter grayscale">
-         <div className="flex items-center gap-2">
+      <div className="flex items-center justify-center gap-6 opacity-30 filter grayscale">
+         <div className="flex items-center gap-2 text-white">
             <CreditCard size={12} />
-            <span className="text-[8px] font-mono font-black uppercase tracking-widest italic">Visa / MC</span>
+            <span className="text-[8px] font-bold uppercase tracking-widest">Card</span>
          </div>
          <div className="w-1 h-1 rounded-full bg-white/20" />
-         <div className="flex items-center gap-2">
-            <Rocket size={12} />
-            <span className="text-[8px] font-mono font-black uppercase tracking-widest italic">UPI Nodes</span>
+         <div className="flex items-center gap-2 text-white">
+            <Zap size={12} />
+            <span className="text-[8px] font-bold uppercase tracking-widest">UPI</span>
          </div>
       </div>
     </div>

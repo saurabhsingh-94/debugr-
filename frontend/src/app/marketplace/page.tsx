@@ -110,9 +110,9 @@ export default function MarketplacePage() {
           >
             <div className="space-y-8">
               <motion.div variants={fadeInUp()} className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-xl">
-                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-amber-500">Prompt Marketplace</span>
+                <span className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-amber-500">Market</span>
                 <span className="w-1 h-1 rounded-full bg-amber-500 animate-pulse" />
-                <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Verified Intelligence</span>
+                <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.2em]">Verified Hacks</span>
               </motion.div>
               
               <motion.h1 
@@ -131,7 +131,7 @@ export default function MarketplacePage() {
               </motion.h1>
               
               <motion.p variants={fadeInUp()} className="text-xl text-white/30 font-medium italic max-w-xl leading-relaxed">
-                Source and sell high-performance AI interaction protocols. From security jailbreaks to logic optimization, trade knowledge directly.
+                Source and sell high-performance AI methods. From bypass methods to logic optimization, trade knowledge directly.
               </motion.p>
             </div>
 
@@ -158,7 +158,7 @@ export default function MarketplacePage() {
               <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-white/10 group-focus-within:text-amber-500 transition-colors" size={20} />
               <input 
                 type="text" 
-                placeholder="Search protocols, models, or creators..."
+                placeholder="Search methods, models, or hunters..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 className="w-full py-6 pl-16 pr-8 rounded-[32px] bg-white/[0.02] border border-white/5 text-white italic font-medium placeholder:text-white/10 outline-none transition-all focus:bg-white/[0.04] focus:border-amber-500/20 shadow-2xl"
@@ -199,7 +199,7 @@ export default function MarketplacePage() {
                <p className="text-xs font-bold text-white/30 italic">No protocols found matching your query.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16">
               <AnimatePresence mode="popLayout">
                 {prompts.map((p, i) => (
                   <motion.div
@@ -212,7 +212,7 @@ export default function MarketplacePage() {
                   >
                     <Link href={`/marketplace/prompt/${p.id}`}>
                       <Magnetic strength={0.1}>
-                        <div className="h-[520px] p-12 rounded-[56px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-amber-500/30 transition-all duration-500 flex flex-col justify-between group shadow-3xl relative overflow-hidden">
+                        <div className="aspect-square p-14 rounded-[64px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-amber-500/30 transition-all duration-500 flex flex-col justify-between group shadow-3xl relative overflow-hidden">
                            <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
 
                            <div>
@@ -225,10 +225,10 @@ export default function MarketplacePage() {
                                  </div>
                               </div>
 
-                              <h3 className="text-3xl font-black text-white italic uppercase tracking-tighter leading-tight mb-4 group-hover:text-amber-500 transition-colors">
+                              <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-tight mb-6 group-hover:text-amber-500 transition-colors">
                                 {p.title}
                               </h3>
-                              <p className="text-white/20 text-xs font-medium italic line-clamp-3 leading-relaxed mb-8 group-hover:text-white/40 transition-colors">
+                              <p className="text-white/30 text-sm font-medium italic line-clamp-4 leading-relaxed mb-10 group-hover:text-white/50 transition-colors">
                                 {p.description}
                               </p>
 

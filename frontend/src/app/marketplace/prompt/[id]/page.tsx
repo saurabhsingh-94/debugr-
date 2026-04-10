@@ -57,6 +57,9 @@ export default function PromptDetailPage() {
   const [isBuying, setIsBuying] = useState(false);
   const [liked, setLiked] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [commentText, setCommentText] = useState('');
+  const [commentRating, setCommentRating] = useState(5);
+  const [isSubmittingComment, setIsSubmittingComment] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +94,32 @@ export default function PromptDetailPage() {
     }
   };
 
+  const handleCommentSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!commentText.trim()) return;
+    setIsSubmittingComment(true);
+    try {
+      const res = await fetchWithAuth(`/api/marketplace/comment/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: commentText, rating: commentRating })
+      });
+      const data = await res.json();
+      if (data.success) {
+        setComments([data.comment, ...comments]);
+        setCommentText('');
+        setCommentRating(5);
+      } else {
+        alert(data.error || "Failed to post review");
+      }
+    } catch (err) {
+      console.error("Comment error:", err);
+      alert("Error posting review.");
+    } finally {
+      setIsSubmittingComment(false);
+    }
+  };
+
   const handleCheckout = async () => {
     setIsBuying(true);
     try {
@@ -122,12 +151,12 @@ export default function PromptDetailPage() {
     return (
       <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center gap-6">
         <Loader2 className="w-12 h-12 text-amber-500 animate-spin" />
-        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">Decrypting Protocol...</p>
+        <p className="text-[10px] font-black uppercase tracking-[0.5em] text-white/20">Loading Hack...</p>
       </div>
     );
   }
 
-  if (!prompt) return <div className="min-h-screen bg-[#050505] flex items-center justify-center text-white/40 italic">Protocol Nullized.</div>;
+  if (!prompt) return <div className="min-h-screen bg-[#050505] flex items-center justify-center text-white/40 italic">Prompt Not Found.</div>;
 
   return (
     <div className="min-h-screen bg-[#050505] text-[#f5f5f7] selection:bg-amber-500/30 overflow-x-hidden">
@@ -148,10 +177,10 @@ export default function PromptDetailPage() {
           <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-amber-500/50 group-hover:bg-amber-500/10 transition-all">
             <ArrowLeft size={14} />
           </div>
-          Back to Terminal
+          Back to Market
         </button>
 
-        <section className="grid grid-cols-1 lg:grid-cols-[1.2fr_1fr] gap-20 items-start">
+        <section className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-32 items-start">
           
           {/* Left: Media & Details */}
           <div className="space-y-12">
@@ -211,7 +240,7 @@ export default function PromptDetailPage() {
 
                <div className="flex items-center gap-10 py-8 border-y border-white/5">
                   <div className="space-y-1">
-                    <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">Protocol Rating</p>
+                    <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">User Rating</p>
                     <div className="flex items-center gap-2">
                        <div className="flex gap-0.5">
                           {[1, 2, 3, 4, 5].map(s => (
@@ -229,7 +258,7 @@ export default function PromptDetailPage() {
                     <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">Social Karma</p>
                     <div className="flex items-center gap-2">
                        <Heart size={14} className="text-pink-500 fill-pink-500" />
-                       <span className="text-xs font-black text-white italic">{prompt.likes_count} Likes</span>
+                       <span className="text-xs font-black text-white italic">{prompt.likes_count} Loves</span>
                     </div>
                   </div>
                   <div className="space-y-1">
@@ -257,7 +286,7 @@ export default function PromptDetailPage() {
              <div className="p-10 rounded-[56px] border border-white/10 bg-white/[0.02] backdrop-blur-3xl space-y-10 shadow-3xl">
                 <div className="space-y-4">
                    <div className="flex justify-between items-end">
-                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 italic">Investment</p>
+                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 italic">Price</p>
                       <div className="flex items-center gap-2 text-green-500">
                          <ShieldCheck size={14} />
                          <span className="text-[9px] font-black uppercase tracking-widest">Escrow Protected</span>
@@ -278,17 +307,17 @@ export default function PromptDetailPage() {
                       {isBuying ? (
                         <>
                           <Loader2 className="w-5 h-5 animate-spin" />
-                          Initializing...
+                          Processing...
                         </>
                       ) : (
                         <>
-                          Initialize Protocol <ShoppingCart size={16} />
+                          Buy Prompt <ShoppingCart size={16} />
                         </>
                       )}
                     </button>
                   </Magnetic>
                   <p className="text-center text-[8px] font-mono font-black text-white/10 uppercase tracking-widest">
-                    Encrypted Key will be delivered to your profile after block confirmation
+                    Prompt details will be revealed in your dashboard after payment
                   </p>
                 </div>
 
@@ -331,10 +360,44 @@ export default function PromptDetailPage() {
                    <h3 className="text-xs font-black uppercase tracking-[0.4em] italic text-white/40">Reviews ({comments.length})</h3>
                 </div>
 
+                {/* Comment Form */}
+                <form onSubmit={handleCommentSubmit} className="p-8 rounded-[32px] bg-white/[0.04] border border-white/10 space-y-6">
+                    <div className="flex justify-between items-center">
+                       <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40 italic">Post a Review</h4>
+                       <div className="flex gap-1">
+                          {[1, 2, 3, 4, 5].map(s => (
+                            <button 
+                              key={s} 
+                              type="button" 
+                              onClick={() => setCommentRating(s)}
+                              className="transition-transform active:scale-90"
+                            >
+                               <Star size={14} className={s <= commentRating ? 'text-amber-500 fill-amber-500' : 'text-white/10'} />
+                            </button>
+                          ))}
+                       </div>
+                    </div>
+                    <textarea 
+                       value={commentText}
+                       onChange={e => setCommentText(e.target.value)}
+                       placeholder="Share your thoughts on this hack..."
+                       className="w-full min-h-[100px] p-6 rounded-2xl bg-black/40 border border-white/5 text-sm text-white focus:border-amber-500/30 outline-none resize-none italic font-medium placeholder:text-white/10"
+                    />
+                    <motion.button 
+                      type="submit"
+                      disabled={isSubmittingComment}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full py-4 bg-amber-500 text-black rounded-xl font-black uppercase tracking-widest italic text-[10px] disabled:opacity-50"
+                    >
+                       {isSubmittingComment ? 'Posting...' : 'Post Review'}
+                    </motion.button>
+                </form>
+
                 <div className="space-y-4">
                   {comments.length === 0 ? (
                     <div className="p-8 rounded-[32px] border border-dashed border-white/5 text-center">
-                       <p className="text-[10px] font-black text-white/10 uppercase tracking-widest italic">No intelligence logs found for this protocol.</p>
+                       <p className="text-[10px] font-black text-white/10 uppercase tracking-widest italic">No reviews found for this hack.</p>
                     </div>
                   ) : (
                     comments.map(c => (
@@ -364,10 +427,10 @@ export default function PromptDetailPage() {
          <div className="max-w-[1400px] mx-auto px-12 flex justify-between items-center">
             <div className="flex items-center gap-4">
                <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-black italic text-xs">D</div>
-               <p className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-white/10">Protocol Audit v4.1 // SECURE</p>
+               <p className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-white/10">Portal Audit v4.1 // SECURE</p>
             </div>
             <p className="text-[8px] font-mono text-white/10 uppercase tracking-widest italic flex items-center gap-2">
-               <ShieldCheck size={12} /> Verified by Debugr Intel
+               <ShieldCheck size={12} /> Verified by Debugr Support
             </p>
          </div>
       </footer>

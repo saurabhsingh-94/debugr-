@@ -219,7 +219,7 @@ export default function SignUp() {
                 </div>
                 <div>
                   <h2 className="text-base font-black uppercase italic tracking-widest text-white mb-2">Bounty Program</h2>
-                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Get paid quickly and transparently for your security research.</p>
+                  <p className="text-white/30 text-xs italic font-medium leading-relaxed max-w-sm">Get paid quickly and transparently for your security hacks.</p>
                 </div>
               </div>
             </motion.div>
@@ -261,11 +261,11 @@ export default function SignUp() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
                     {[
                       { 
-                        id: 'hacker', title: 'Researcher', desc: 'Secure vulnerable logic and earn performance-based rewards.', icon: <Zap size={100} />,
+                        id: 'hacker', title: 'Hacker', desc: 'Secure vulnerable logic and earn performance-based rewards.', icon: <Zap size={100} />,
                         Effect: LightningField
                       },
                       { 
-                        id: 'company', title: 'Organization', desc: 'Managed programs for continuous verification and assurance.', icon: <Shield size={100} />,
+                        id: 'company', title: 'Company', desc: 'Managed programs for continuous verification and assurance.', icon: <Shield size={100} />,
                         Effect: ShieldWall
                       }
                     ].map((r, i) => (
@@ -371,7 +371,7 @@ export default function SignUp() {
                       {role === 'hacker' ? (
                         <>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}>
-                            <Input label="Job Title" value={formData.jobProfile} onChange={v => setFormData({...formData, jobProfile: v})} placeholder="e.g. Security Researcher" icon={<Briefcase size={16} />} />
+                            <Input label="Job Title" value={formData.jobProfile} onChange={v => setFormData({...formData, jobProfile: v})} placeholder="e.g. Bug Hunter / Hacker" icon={<Briefcase size={16} />} />
                           </motion.div>
                           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}>
                             <Input label="Location" value={formData.location} onChange={v => setFormData({...formData, location: v})} placeholder="City, Country" icon={<MapPin size={16} />} />
@@ -413,7 +413,7 @@ export default function SignUp() {
                             <textarea 
                               value={formData.bio}
                               onChange={e => setFormData({...formData, bio: e.target.value})}
-                              placeholder="Brief overview of research history..."
+                              placeholder="Brief overview of your hacking journey..."
                               className="w-full min-h-[80px] p-6 rounded-2xl bg-white/[0.03] border border-white/5 text-white resize-none text-sm font-medium transition-all focus:border-indigo-500/30 outline-none shadow-inner placeholder:text-white/10"
                             />
                           </motion.div>
