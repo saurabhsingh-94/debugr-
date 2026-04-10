@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 };
 
 import LenisProvider from "@/components/providers/LenisProvider";
+import MouseGlow from "@/components/animation/MouseGlow";
 
 export default function RootLayout({
   children,
@@ -35,7 +36,8 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
       </head>
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col relative">
+        <MouseGlow />
         <LenisProvider>
           {children}
         </LenisProvider>

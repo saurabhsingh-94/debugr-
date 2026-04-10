@@ -25,7 +25,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import Navbar from '@/components/layout/Navbar';
-import { fadeInUp, staggerContainer, blurReveal } from '@/lib/animations';
+import { fadeInUp, staggerContainer, blurReveal, drift, scanLine } from '@/lib/animations';
+import Magnetic from '@/components/animation/Magnetic';
 
 export default function Home() {
   const router = useRouter();
@@ -44,6 +45,12 @@ export default function Home() {
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-purple-500/5 blur-[100px] rounded-full" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+        <motion.div 
+          variants={scanLine}
+          initial="hidden"
+          animate="visible"
+          className="absolute left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-indigo-500/20 to-transparent z-10"
+        />
       </div>
 
       <Navbar />
@@ -63,9 +70,20 @@ export default function Home() {
                 <span className="text-[9px] font-mono text-white/40 uppercase tracking-[0.2em]">REGISTERED SECURITY PLATFORM</span>
               </motion.div>
 
-              <motion.h1 variants={fadeInUp()} className="text-7xl md:text-[130px] font-black tracking-tighter leading-[0.85] uppercase italic">
-                <span className="block text-white/5">Precision</span>
-                <span className="block bg-linear-to-b from-white via-white to-white/40 bg-clip-text text-transparent -mt-2">Security.</span>
+              <motion.h1 
+                variants={staggerContainer(0.1, 0.4)}
+                className="text-7xl md:text-[130px] font-black tracking-tighter leading-[0.85] uppercase italic"
+              >
+                <div className="block overflow-hidden">
+                  {["Precision"].map((word, i) => (
+                    <motion.span key={i} variants={drift(i * 0.1)} className="inline-block text-white/5">{word}</motion.span>
+                  ))}
+                </div>
+                <div className="block overflow-hidden">
+                   {["Security."].map((word, i) => (
+                    <motion.span key={i} variants={drift(i * 0.1 + 0.3)} className="inline-block bg-linear-to-b from-white via-white to-white/40 bg-clip-text text-transparent -mt-2">{word} </motion.span>
+                  ))}
+                </div>
               </motion.h1>
 
               <motion.div variants={fadeInUp()} className="max-w-xl space-y-10">
@@ -75,22 +93,26 @@ export default function Home() {
                 
                 <div className="flex flex-wrap items-center gap-8 pt-4">
                   <Link href="/signup">
-                    <motion.button
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="group px-10 py-6 bg-white text-black font-black text-xs uppercase tracking-[0.3em] rounded-full shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all flex items-center gap-4"
-                    >
-                      Claim your handle <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
+                    <Magnetic strength={0.2}>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="group px-10 py-6 bg-white text-black font-black text-xs uppercase tracking-[0.3em] rounded-full shadow-[0_20px_60px_rgba(255,255,255,0.15)] transition-all flex items-center gap-4"
+                      >
+                        Claim your handle <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                      </motion.button>
+                    </Magnetic>
                   </Link>
                   <Link href="/explore">
-                    <motion.button
-                      whileHover={{ scale: 1.02, y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="px-10 py-6 bg-white/5 hover:bg-white/10 text-white font-black text-xs uppercase tracking-[0.3em] rounded-full border border-white/10 backdrop-blur-md transition-all"
-                    >
-                      Explore Programs
-                    </motion.button>
+                    <Magnetic strength={0.3}>
+                      <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        className="px-10 py-6 bg-white/5 hover:bg-white/10 text-white font-black text-xs uppercase tracking-[0.3em] rounded-full border border-white/10 backdrop-blur-md transition-all"
+                      >
+                        Explore Programs
+                      </motion.button>
+                    </Magnetic>
                   </Link>
                 </div>
               </motion.div>
@@ -142,8 +164,12 @@ export default function Home() {
                     transition={{ delay: i * 0.15, duration: 0.8 }}
                     className="group relative p-12 glass-panel border border-white/5 hover:border-indigo-500/20 transition-all rounded-[40px] bg-white/[0.01] flex flex-col sm:flex-row gap-10 items-start shadow-2xl"
                   >
-                    <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0 group-hover:bg-indigo-500/10 group-hover:scale-110 transition-all">
-                       {item.icon}
+                    <div className="w-16 h-16 shrink-0">
+                      <Magnetic strength={0.5}>
+                        <div className="w-16 h-16 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-indigo-500/10 group-hover:scale-110 transition-all">
+                           {item.icon}
+                        </div>
+                      </Magnetic>
                     </div>
                     <div className="space-y-4">
                        <h3 className="text-2xl font-black text-white italic uppercase tracking-tight">{item.title}</h3>
@@ -307,13 +333,15 @@ export default function Home() {
               
               <div className="flex justify-center pt-8">
                 <Link href="/signup">
-                  <motion.button 
-                    whileHover={{ scale: 1.05, y: -4 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="group px-16 py-8 bg-white text-black font-black text-xs uppercase tracking-[0.4em] rounded-full shadow-[0_30px_70px_rgba(255,255,255,0.2)] hover:bg-neutral-200 transition-all flex items-center gap-6 italic"
-                  >
-                    Get Started <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" />
-                  </motion.button>
+                  <Magnetic strength={0.4}>
+                    <motion.button 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="group px-16 py-8 bg-white text-black font-black text-xs uppercase tracking-[0.4em] rounded-full shadow-[0_30px_70px_rgba(255,255,255,0.2)] hover:bg-neutral-200 transition-all flex items-center gap-6 italic"
+                    >
+                      Get Started <ChevronRight size={20} className="group-hover:translate-x-2 transition-transform" />
+                    </motion.button>
+                  </Magnetic>
                 </Link>
               </div>
             </motion.div>

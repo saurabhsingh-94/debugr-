@@ -5,7 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import Navbar from '@/components/layout/Navbar';
 import { fetchWithAuth } from '@/lib/api';
-import { fadeInUp, blurReveal, staggerContainer } from '@/lib/animations';
+import { fadeInUp, blurReveal, staggerContainer, drift, scanLine } from '@/lib/animations';
+import Magnetic from '@/components/animation/Magnetic';
 import { 
   Globe, 
   Cloud, 
@@ -105,6 +106,12 @@ export default function ExplorePage() {
         <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-indigo-500/5 blur-[120px] rounded-full animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] bg-purple-500/5 blur-[100px] rounded-full" />
         <div className="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+        <motion.div 
+          variants={scanLine}
+          initial="hidden"
+          animate="visible"
+          className="absolute left-0 right-0 h-[2px] bg-linear-to-r from-transparent via-indigo-500/20 to-transparent z-10"
+        />
       </div>
 
       <Navbar />
@@ -130,7 +137,15 @@ export default function ExplorePage() {
                 variants={blurReveal} 
                 className="text-7xl md:text-9xl font-black italic tracking-tighter leading-[0.8] uppercase"
               >
-                Explore <br /><span className="text-white/5 italic">Opportunities.</span>
+                {Array.from("Explore").map((char, i) => (
+                  <motion.span key={i} variants={drift(i * 0.05)} className="inline-block">{char}</motion.span>
+                ))}
+                <br />
+                <span className="text-white/5 italic">
+                  {Array.from("Opportunities.").map((char, i) => (
+                    <motion.span key={i} variants={drift(i * 0.05 + 0.3)} className="inline-block">{char}</motion.span>
+                  ))}
+                </span>
               </motion.h1>
               
               <motion.p variants={fadeInUp()} className="text-xl text-white/30 font-medium italic max-w-xl leading-relaxed">
@@ -197,27 +212,31 @@ export default function ExplorePage() {
           {/* Quick Categories */}
           <div className="flex flex-wrap gap-4">
             {categories.map((cat) => (
-              <motion.button
-                key={cat.title}
-                whileHover={{ y: -2 }}
-                whileTap={{ scale: 0.98 }}
-                onClick={() => setActiveCategory(cat.title)}
-                className={`
-                  flex items-center gap-4 px-8 py-5 rounded-[24px] border transition-all italic
-                  ${activeCategory === cat.title 
-                    ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400 shadow-[0_0_40px_rgba(99,102,241,0.1)]' 
-                    : 'bg-white/[0.01] border-white/5 text-white/30 hover:border-white/10 hover:text-white'
-                  }
-                `}
-              >
-                <div className={`${activeCategory === cat.title ? 'text-indigo-400' : 'text-white/20'}`}>
-                  {cat.icon}
-                </div>
-                <div className="text-left">
-                   <p className="text-[8px] font-mono font-black uppercase tracking-widest opacity-50">{cat.label}</p>
-                   <p className="text-sm font-black uppercase tracking-tight">{cat.title}</p>
-                </div>
-              </motion.button>
+              <Magnetic key={cat.title} strength={0.15}>
+                <motion.button
+                  whileHover={{ y: -4 }}
+                  whileTap={{ scale: 0.98 }}
+                  onClick={() => setActiveCategory(cat.title)}
+                  className={`
+                    group flex items-center gap-4 px-8 py-5 rounded-[24px] border transition-all italic relative overflow-hidden
+                    ${activeCategory === cat.title 
+                      ? 'bg-indigo-500/10 border-indigo-500/30 text-indigo-400 shadow-[0_0_40px_rgba(99,102,241,0.1)]' 
+                      : 'bg-white/[0.01] border-white/5 text-white/30 hover:border-white/10 hover:text-white'
+                    }
+                  `}
+                >
+                  <motion.div 
+                    whileHover={{ x: 2, y: -2 }}
+                    className={`${activeCategory === cat.title ? 'text-indigo-400' : 'text-white/20'}`}
+                  >
+                    {cat.icon}
+                  </motion.div>
+                  <div className="text-left">
+                     <p className="text-[8px] font-mono font-black uppercase tracking-widest opacity-50">{cat.label}</p>
+                     <p className="text-sm font-black uppercase tracking-tight">{cat.title}</p>
+                  </div>
+                </motion.button>
+              </Magnetic>
             ))}
           </div>
         </section>
@@ -240,14 +259,18 @@ export default function ExplorePage() {
                   {filteredPrograms.map((p, i) => (
                     <motion.div
                       key={p.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ delay: i * 0.05 }}
-                      whileHover={{ y: -12, scale: 1.01 }}
+                      initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                      animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                      exit={{ opacity: 0, scale: 0.95, filter: 'blur(10px)' }}
+                      transition={{ 
+                        delay: i * 0.05,
+                        duration: 0.5,
+                        ease: [0.19, 1, 0.22, 1]
+                      }}
                     >
                       <Link href={`/programs/${p.id}`} className="block h-full">
-                        <div className="h-full glass-panel p-12 rounded-[56px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-indigo-500/30 transition-all duration-500 flex flex-col justify-between group shadow-3xl relative overflow-hidden">
+                        <Magnetic strength={0.1}>
+                          <div className="h-full glass-panel p-12 rounded-[56px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-indigo-500/30 transition-all duration-500 flex flex-col justify-between group shadow-3xl relative overflow-hidden">
                            {/* Ambient Glow */}
                            <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
 
@@ -293,8 +316,9 @@ export default function ExplorePage() {
                               </div>
                            </div>
                         </div>
-                      </Link>
-                    </motion.div>
+                      </Magnetic>
+                    </Link>
+                  </motion.div>
                   ))}
                 </motion.div>
               </AnimatePresence>
@@ -342,13 +366,15 @@ export default function ExplorePage() {
                  
                  <div className="shrink-0">
                     <Link href="/signup">
-                       <motion.button 
-                         whileHover={{ scale: 1.05, y: -4 }}
-                         whileTap={{ scale: 0.95 }}
-                         className="px-16 py-8 bg-white text-black font-black text-[11px] uppercase tracking-[0.5em] rounded-full shadow-[0_30px_80px_rgba(255,255,255,0.2)] hover:bg-neutral-200 transition-all italic flex items-center gap-8"
-                       >
-                         Join Private Network <ChevronRight size={20} />
-                       </motion.button>
+                       <Magnetic strength={0.4}>
+                          <motion.button 
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                            className="px-16 py-8 bg-white text-black font-black text-[11px] uppercase tracking-[0.5em] rounded-full shadow-[0_30px_80px_rgba(255,255,255,0.2)] hover:bg-neutral-200 transition-all italic flex items-center gap-8"
+                          >
+                            Join Private Network <ChevronRight size={20} />
+                          </motion.button>
+                       </Magnetic>
                     </Link>
                  </div>
               </div>

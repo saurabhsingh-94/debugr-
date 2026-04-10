@@ -17,6 +17,7 @@ import {
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
 import { springSoft } from '@/lib/animations';
 import ProfileAvatar from '@/components/profile/ProfileAvatar';
+import Magnetic from '@/components/animation/Magnetic';
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -66,34 +67,38 @@ export default function Navbar() {
         <div className="flex-1 flex items-center gap-2 sm:gap-4">
           <AnimatePresence>
             {!['/', '/dashboard', '/leaderboard'].includes(pathname) && (
-              <motion.button
-                initial={{ opacity: 0, scale: 0.8, x: -10 }}
-                animate={{ opacity: 1, scale: 1, x: 0 }}
-                exit={{ opacity: 0, scale: 0.8, x: -10 }}
-                whileHover={{ scale: 1.1, x: -2 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => window.history.back()}
-                className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all mr-2"
-                title="Go Back"
-              >
-                <ArrowLeft size={16} />
-              </motion.button>
+              <Magnetic strength={0.2}>
+                <motion.button
+                  initial={{ opacity: 0, scale: 0.8, x: -10 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, x: -10 }}
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={() => window.history.back()}
+                  className="w-9 h-9 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 text-white/40 hover:text-white transition-all mr-2"
+                  title="Go Back"
+                >
+                  <ArrowLeft size={16} />
+                </motion.button>
+              </Magnetic>
             )}
           </AnimatePresence>
 
           <Link href="/" className="group">
-            <motion.div 
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="flex items-center gap-3"
-            >
-              <div className="w-9 h-9 bg-linear-to-br from-indigo-500 via-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
-                <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
-              </div>
-              <span className="hidden sm:block text-xl font-black tracking-tight text-white italic">
-                Debugr
-              </span>
-            </motion.div>
+            <Magnetic strength={0.3}>
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-3"
+              >
+                <div className="w-9 h-9 bg-linear-to-br from-indigo-500 via-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+                  <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
+                </div>
+                <span className="hidden sm:block text-xl font-black tracking-tight text-white italic">
+                  Debugr
+                </span>
+              </motion.div>
+            </Magnetic>
           </Link>
         </div>
 
@@ -120,32 +125,33 @@ export default function Navbar() {
                   ];
 
               return navItems.map((item) => (
-                <Link 
-                  key={item.label} 
-                  href={item.href} 
-                  onMouseEnter={() => setHoveredLink(item.label)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                  className="relative px-5 py-2.5 outline-none"
-                >
-                  <span className={`
-                    relative z-10 text-[11px] font-black uppercase tracking-[0.15em] transition-colors duration-300
-                    ${hoveredLink === item.label ? 'text-white' : 'text-white/40'}
-                  `}>
-                    {item.label}
-                  </span>
-                  <AnimatePresence>
-                    {hoveredLink === item.label && (
-                      <motion.div 
-                        layoutId="navSegment"
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0 shadow-lg"
-                        transition={springSoft}
-                      />
-                    )}
-                  </AnimatePresence>
-                </Link>
+                <Magnetic key={item.label} strength={0.15}>
+                  <Link 
+                    href={item.href} 
+                    onMouseEnter={() => setHoveredLink(item.label)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                    className="relative px-5 py-2.5 outline-none block"
+                  >
+                    <span className={`
+                      relative z-10 text-[11px] font-black uppercase tracking-[0.15em] transition-colors duration-300
+                      ${hoveredLink === item.label ? 'text-white' : 'text-white/40'}
+                    `}>
+                      {item.label}
+                    </span>
+                    <AnimatePresence>
+                      {hoveredLink === item.label && (
+                        <motion.div 
+                          layoutId="navSegment"
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          exit={{ opacity: 0, scale: 0.9 }}
+                          className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0 shadow-lg"
+                          transition={springSoft}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </Link>
+                </Magnetic>
               ));
             })()}
           </div>
@@ -157,49 +163,57 @@ export default function Navbar() {
             user ? (
               <div className="flex items-center gap-3 sm:gap-4">
                 <Link href="/profile" className="relative group">
-                  <motion.div 
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2.5 pl-2.5 pr-1 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
-                  >
-                    <span className="hidden lg:block text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">
-                      {user.handle}
-                    </span>
-                    <ProfileAvatar 
-                      handle={user.handle} 
-                      name={user.name} 
-                      avatarUrl={user.avatar_url} 
-                      size={28} 
-                      border={false} 
-                    />
-                  </motion.div>
+                  <Magnetic strength={0.2}>
+                    <motion.div 
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="flex items-center gap-2.5 pl-2.5 pr-1 py-1 bg-white/5 hover:bg-white/10 border border-white/10 rounded-full transition-all"
+                    >
+                      <span className="hidden lg:block text-[10px] font-black text-white/40 uppercase tracking-widest ml-1">
+                        {user.handle}
+                      </span>
+                      <ProfileAvatar 
+                        handle={user.handle} 
+                        name={user.name} 
+                        avatarUrl={user.avatar_url} 
+                        size={28} 
+                        border={false} 
+                      />
+                    </motion.div>
+                  </Magnetic>
                 </Link>
 
                 <Link href="/settings" className="relative group">
-                   <motion.div 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
-                  >
-                    <Settings size={16} className="text-white/40" />
-                  </motion.div>
+                  <Magnetic strength={0.3}>
+                    <motion.div 
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      className="p-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl transition-all"
+                    >
+                      <Settings size={16} className="text-white/40" />
+                    </motion.div>
+                  </Magnetic>
                 </Link>
               </div>
             ) : (
               <div className="flex items-center gap-2 sm:gap-4">
                 <Link href="/signin">
-                  <span className="text-[11px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
-                    Log In
-                  </span>
+                  <Magnetic strength={0.2}>
+                    <span className="inline-block text-[11px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-colors px-4 py-2">
+                      Log In
+                    </span>
+                  </Magnetic>
                 </Link>
                 <Link href="/signup">
-                  <motion.div 
-                    whileHover={{ scale: 1.02, y: -1 }}
-                    whileTap={{ scale: 0.98 }}
-                    className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
-                  >
-                    <span className="relative z-10 flex items-center gap-2">Get Started <ChevronRight size={14} /></span>
-                  </motion.div>
+                  <Magnetic strength={0.3}>
+                    <motion.div 
+                      whileHover={{ scale: 1.02, y: -1 }}
+                      whileTap={{ scale: 0.98 }}
+                      className="relative group overflow-hidden px-6 sm:px-8 py-2.5 sm:py-3 bg-white text-black text-[11px] font-black uppercase tracking-widest rounded-full transition-all shadow-[0_10px_30px_rgba(255,255,255,0.2)]"
+                    >
+                      <span className="relative z-10 flex items-center gap-2">Get Started <ChevronRight size={14} /></span>
+                    </motion.div>
+                  </Magnetic>
                 </Link>
               </div>
             )

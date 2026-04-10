@@ -54,21 +54,58 @@ export const blurIn = (delay = 0): Variants => ({
 });
 
 /**
- * Ultra-smooth reveal for text and panels.
+ * Ultra-smooth reveal for text and panels with a slight drift.
  */
 export const blurReveal: Variants = {
-  hidden: { opacity: 0, filter: 'blur(8px)', y: 10 },
+  hidden: { opacity: 0, filter: 'blur(12px)', y: 20, scale: 0.98 },
   visible: { 
     opacity: 1, 
     filter: 'blur(0px)', 
     y: 0,
-    transition: { duration: 0.3, ease: easeOutExpo }
+    scale: 1,
+    transition: { 
+      duration: 0.8, 
+      ease: easeOutExpo
+    }
   },
   exit: { 
     opacity: 0, 
-    filter: 'blur(6px)', 
-    y: -8,
-    transition: { duration: 0.2, ease: easeSmooth }
+    filter: 'blur(8px)', 
+    y: -10,
+    transition: { duration: 0.3, ease: easeSmooth }
+  }
+};
+
+/**
+ * Character/Word drift animation.
+ */
+export const drift = (delay = 0): Variants => ({
+  hidden: { opacity: 0, x: -10, filter: 'blur(4px)' },
+  visible: {
+    opacity: 1,
+    x: 0,
+    filter: 'blur(0px)',
+    transition: {
+      delay,
+      duration: 0.6,
+      ease: easeOutExpo,
+    },
+  },
+});
+
+/**
+ * Scan line animation for hacker aesthetic.
+ */
+export const scanLine: Variants = {
+  hidden: { top: '-10%', opacity: 0 },
+  visible: {
+    top: '110%',
+    opacity: [0, 0.4, 0.4, 0],
+    transition: {
+      duration: 4,
+      repeat: Infinity,
+      ease: "linear",
+    }
   }
 };
 
