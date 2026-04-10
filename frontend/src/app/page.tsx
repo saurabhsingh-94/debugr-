@@ -33,7 +33,7 @@ export default function Home() {
   useEffect(() => {
     const token = getCookie('debugr_token');
     if (token) {
-      router.push('/dashboard');
+      router.push('/explore');
     }
   }, [router]);
 

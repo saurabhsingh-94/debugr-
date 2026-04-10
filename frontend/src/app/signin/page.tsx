@@ -37,7 +37,7 @@ export default function SignIn() {
       const data = await res.json();
       if (data.success) {
         setCookie('debugr_token', data.token);
-        router.push('/dashboard');
+        router.push('/explore');
       } else {
         setError(data.error || data.message || 'Authentication failed');
       }
