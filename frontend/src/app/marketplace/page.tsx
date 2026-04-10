@@ -49,6 +49,14 @@ export default function MarketplacePage() {
   const [isLoading, setIsLoading] = useState(true);
   const { formatPrice } = useCurrency();
 
+  const categories = [
+    { title: 'All', icon: <Sparkles size={20} />, label: 'Intelligence' },
+    { title: 'Jailbreak', icon: <Lock size={20} />, label: 'Bypass' },
+    { title: 'Security', icon: <ShieldCheck size={20} />, label: 'Protection' },
+    { title: 'Optimization', icon: <Zap size={20} />, label: 'Performance' },
+    { title: 'Logic', icon: <BrainCircuit size={20} />, label: 'Reasoning' }
+  ];
+
   useEffect(() => {
     const fetchPrompts = async () => {
       setIsLoading(true);

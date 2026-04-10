@@ -6,7 +6,7 @@ import upload from "../middleware/upload.js";
 import { v2 as cloudinary } from "cloudinary";
 import config from "../config/config.js";
 import logger from "../utils/logger.js";
-import { Cashfree } from "cashfree-pg";
+import { Cashfree, CFEnvironment, CFConfig } from "cashfree-pg";
 
 // Configure Cloudinary from config
 cloudinary.config({
@@ -16,9 +16,10 @@ cloudinary.config({
 });
 
 // Configure Cashfree
+// Configure Cashfree Core
 Cashfree.XClientId = config.cashfree.appId;
 Cashfree.XClientSecret = config.cashfree.secretKey;
-Cashfree.XEnvironment = config.cashfree.env === "PROD" ? Cashfree.Environment.PRODUCTION : Cashfree.Environment.SANDBOX;
+Cashfree.XEnvironment = config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
 
 const router = express.Router();
 
