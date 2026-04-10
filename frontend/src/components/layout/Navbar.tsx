@@ -7,11 +7,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, 
   Settings, 
-  Compass, 
-  Trophy, 
-  Target,
-  Wallet,
-  Menu,
   ChevronRight
 } from 'lucide-react';
 import { getCookie, deleteCookie, fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
@@ -33,8 +28,6 @@ export default function Navbar() {
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', fn, { passive: true });
-    
-    // Close menu on route change
     setIsMenuOpen(false);
     
     const fetchUser = async () => {
@@ -61,10 +54,29 @@ export default function Navbar() {
     window.location.href = '/signin';
   };
 
+  const getNavItems = () => {
+    if (loading) return [];
+    
+    const base = [
+      { label: 'Explore', href: '/explore' },
+      { label: user?.role === 'hacker' || !user ? 'Bounties' : 'Programs', href: '/programs' },
+      { label: 'Marketplace', href: '/marketplace' },
+      { label: 'Rankings', href: '/leaderboard' },
+    ];
+
+    if (user?.role === 'company' || user?.role === 'admin') {
+      base.push({ label: 'Payments', href: '/add-funds' });
+    }
+
+    return base;
+  };
+
+  const navItems = getNavItems();
+
   return (
     <header className={`
       fixed top-0 left-0 right-0 z-[100] transition-all duration-500
-      ${scrolled ? 'h-16 bg-bg/60 backdrop-blur-3xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
+      ${scrolled ? 'h-16 bg-[#050505]/60 backdrop-blur-3xl border-b border-white/5 shadow-2xl' : 'h-24 bg-transparent'}
     `}>
       <div className="w-full h-full flex items-center justify-between px-6 lg:px-12 relative z-50">
         
@@ -96,7 +108,7 @@ export default function Navbar() {
                 whileTap={{ scale: 0.95 }}
                 className="flex items-center gap-3"
               >
-                <div className="w-9 h-9 bg-linear-to-br from-indigo-500 via-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
+                <div className="w-9 h-9 bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-700 rounded-xl flex items-center justify-center shadow-[0_0_30px_rgba(99,102,241,0.3)]">
                   <span className="text-white font-black text-xl italic mt-[-1px]">D</span>
                 </div>
                 <span className="hidden sm:block text-xl font-black tracking-tight text-white italic">
@@ -110,57 +122,35 @@ export default function Navbar() {
         {/* Segmented Navigation (Desktop) */}
         <nav className="hidden lg:flex items-center">
           <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1.5 flex items-center gap-1">
-            {!loading && (() => {
-              const navItems = !user 
-                ? [
-                    { label: 'Explore', href: '/explore', icon: null },
-                    { label: 'Bounties', href: '/programs', icon: null },
-                    { label: 'Rankings', href: '/leaderboard', icon: null },
-                    { label: 'Marketplace', href: '/marketplace', icon: null },
-                  ]
-                : user.role === 'hacker'
-                ? [
-                    { label: 'Explore', href: '/explore', icon: null },
-                    { label: 'Bounties', href: '/programs', icon: null },
-                    { label: 'Rankings', href: '/leaderboard', icon: null },
-                    { label: 'Marketplace', href: '/marketplace', icon: null },
-                  ]
-                : [
-                    { label: 'Explore', href: '/explore', icon: null },
-                    { label: 'Programs', href: '/programs', icon: null },
-                    { label: 'Payments', href: '/add-funds', icon: null },
-                  ];
-
-              return navItems.map((item) => (
-                <Magnetic key={item.label} strength={0.15}>
-                  <Link 
-                    href={item.href} 
-                    onMouseEnter={() => setHoveredLink(item.label)}
-                    onMouseLeave={() => setHoveredLink(null)}
-                    className="relative px-5 py-2.5 outline-none block"
-                  >
-                    <span className={`
-                      relative z-10 text-[11px] font-black uppercase tracking-[0.15em] transition-colors duration-300
-                      ${hoveredLink === item.label ? 'text-white' : 'text-white/40'}
-                    `}>
-                      {item.label}
-                    </span>
-                    <AnimatePresence>
-                      {hoveredLink === item.label && (
-                        <motion.div 
-                          layoutId="navSegment"
-                          initial={{ opacity: 0, scale: 0.9 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.9 }}
-                          className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0 shadow-lg"
-                          transition={springSoft}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Link>
-                </Magnetic>
-              ));
-            })()}
+            {navItems.map((item) => (
+              <Magnetic key={item.label} strength={0.15}>
+                <Link 
+                  href={item.href} 
+                  onMouseEnter={() => setHoveredLink(item.label)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className="relative px-5 py-2.5 outline-none block"
+                >
+                  <span className={`
+                    relative z-10 text-[11px] font-black uppercase tracking-[0.15em] transition-colors duration-300
+                    ${hoveredLink === item.label ? 'text-white' : 'text-white/40'}
+                  `}>
+                    {item.label}
+                  </span>
+                  <AnimatePresence>
+                    {hoveredLink === item.label && (
+                      <motion.div 
+                        layoutId="navSegment"
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        className="absolute inset-0 bg-white/10 border border-white/10 rounded-full z-0 shadow-lg"
+                        transition={springSoft}
+                      />
+                    )}
+                  </AnimatePresence>
+                </Link>
+              </Magnetic>
+            ))}
           </div>
         </nav>
 
@@ -189,11 +179,9 @@ export default function Navbar() {
                         />
                       </motion.div>
                     </Magnetic>
-                    </Link>
-                    
-                    <div className="flex items-center">
-                      <CurrencySwitcher />
-                    </div>
+                  </Link>
+                  
+                  <CurrencySwitcher />
 
                   <Link href="/settings" className="relative group">
                     <Magnetic strength={0.3}>
@@ -232,7 +220,6 @@ export default function Navbar() {
             )}
           </div>
           
-          {/* Mobile Hamburger Toggle */}
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="lg:hidden w-12 h-12 flex flex-col items-center justify-center gap-1.5 rounded-2xl bg-white/5 border border-white/10 text-white relative z-[110]"
@@ -253,7 +240,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isMenuOpen && (
           <motion.div
@@ -267,12 +253,7 @@ export default function Navbar() {
             </div>
 
             <nav className="relative z-10 flex flex-col gap-6">
-              {[
-                { label: 'Explore', href: '/explore' },
-                { label: 'Bounties', href: '/programs' },
-                { label: 'Rankings', href: '/leaderboard' },
-                { label: 'Marketplace', href: '/marketplace' },
-              ].map((item, i) => (
+              {navItems.map((item, i) => (
                 <motion.div
                   key={item.label}
                   initial={{ opacity: 0, x: -20 }}
