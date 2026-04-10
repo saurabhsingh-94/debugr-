@@ -58,7 +58,7 @@ export default function Leaderboard() {
 
       <Navbar />
 
-      <main className="relative z-10 w-full flex flex-col lg:flex-row min-h-screen pt-32">
+      <main className="relative z-10 w-full max-w-full overflow-hidden flex flex-col lg:flex-row min-h-screen pt-32">
         
         {/* Left Sidebar: Index Info */}
         <section className="w-full lg:w-[480px] lg:h-[calc(100vh-8rem)] lg:sticky lg:top-32 p-12 lg:pl-12 lg:pr-16 border-b lg:border-b-0 lg:border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl flex flex-col gap-16">
@@ -73,7 +73,7 @@ export default function Leaderboard() {
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Leaderboard</p>
-               <h1 className="text-6xl md:text-7xl font-black italic uppercase tracking-tighter leading-[0.85] mb-8">
+               <h1 className="text-6xl md:text-7xl font-black italic uppercase tracking-tighter leading-tight mb-8">
                  Researcher <br /><span className="text-white/5 italic">Rankings.</span>
                </h1>
             </div>
@@ -123,7 +123,7 @@ export default function Leaderboard() {
         </section>
 
         {/* Right Content: Index Feed */}
-        <section className="flex-1 p-8 md:p-12 lg:pl-20 lg:pr-32 lg:py-24">
+        <section className="flex-1 min-w-0 p-8 md:p-12 lg:pl-20 lg:pr-32 lg:py-24">
           <div className="hidden md:grid grid-cols-[80px_1fr_180px_180px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
             <span>Rank</span>
             <span>Identity</span>

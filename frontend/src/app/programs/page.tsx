@@ -70,10 +70,10 @@ export default function BountyDirectory() {
 
       <Navbar />
 
-      <main className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-[minmax(400px,450px)_1fr] min-h-screen">
+      <main className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-[minmax(400px,450px)_1fr] min-h-screen pt-32 lg:pt-0">
         
         {/* Sidebar / Filter (Left) */}
-        <section className="hidden lg:flex flex-col gap-12 p-[160px_64px_60px_10%] border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl sticky top-0 h-screen overflow-y-auto">
+        <section className="hidden lg:flex flex-col gap-12 p-[160px_64px_60px_10%] border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl sticky top-0 self-start">
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Bounty Directory</p>
@@ -133,7 +133,7 @@ export default function BountyDirectory() {
         </section>
 
         {/* Main Content (Right) */}
-        <section className="p-8 md:p-16 lg:p-[160px_10%_120px] flex flex-col gap-10 lg:h-screen lg:overflow-y-auto">
+        <section className="p-8 md:p-16 lg:p-[160px_10%_120px] flex flex-col gap-10">
           {/* Mobile Header & Filters */}
           <div className="lg:hidden space-y-12 mb-8">
             <div className="space-y-4">
