@@ -135,7 +135,7 @@ export default function ExplorePage() {
               
               <motion.h1 
                 variants={blurReveal} 
-                className="text-7xl md:text-8xl font-black italic tracking-tighter leading-[0.8] uppercase"
+                className="text-5xl md:text-8xl font-black italic tracking-tighter leading-[0.8] uppercase"
               >
                 {Array.from("Explore").map((char, i) => (
                   <motion.span key={i} variants={drift(i * 0.05)} className="inline-block">{char}</motion.span>
@@ -156,7 +156,7 @@ export default function ExplorePage() {
             {/* Platform Stats Display */}
             <motion.div 
               variants={fadeInUp()} 
-              className="grid grid-cols-2 gap-4 lg:w-80"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 lg:w-80"
             >
               <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/5 backdrop-blur-md">
                  <p className="text-[8px] font-mono font-black text-white/20 uppercase tracking-widest mb-2 italic">Total Payouts</p>
@@ -190,7 +190,7 @@ export default function ExplorePage() {
             </div>
 
             {/* Type Filter */}
-            <div className="p-1.5 bg-white/[0.02] border border-white/5 rounded-full flex gap-1 h-[76px] items-center px-4">
+            <div className="p-1.5 bg-white/[0.02] border border-white/5 rounded-full flex gap-1 h-[76px] items-center px-4 overflow-x-auto no-scrollbar">
               {(['all', 'public', 'private'] as const).map(t => (
                 <button 
                   key={t}
@@ -210,7 +210,7 @@ export default function ExplorePage() {
           </div>
 
           {/* Quick Categories */}
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-nowrap lg:flex-wrap gap-4 overflow-x-auto lg:overflow-visible pb-4 lg:pb-0 no-scrollbar">
             {categories.map((cat) => (
               <Magnetic key={cat.title} strength={0.15}>
                 <motion.button

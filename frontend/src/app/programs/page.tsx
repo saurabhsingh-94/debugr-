@@ -73,11 +73,11 @@ export default function BountyDirectory() {
       <main className="relative z-10 w-full grid grid-cols-1 lg:grid-cols-[minmax(400px,450px)_1fr] min-h-screen pt-32 lg:pt-0">
         
         {/* Sidebar / Filter (Left) */}
-        <section className="hidden lg:flex flex-col gap-12 p-[160px_64px_60px_10%] border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl sticky top-0 self-start">
+        <section className="hidden lg:flex flex-col gap-12 p-[120px_64px_60px_10%] border-r border-white/5 bg-white/[0.01] backdrop-blur-3xl sticky top-0 self-start">
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Bounty Directory</p>
-               <h1 className="text-5xl font-black italic uppercase tracking-tighter leading-[0.85] mb-8">
+               <h1 className="text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-tight mb-8">
                  Security <br /><span className="text-white/5 italic">Programs.</span>
                </h1>
             </div>
@@ -138,7 +138,7 @@ export default function BountyDirectory() {
           <div className="lg:hidden space-y-12 mb-8">
             <div className="space-y-4">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Bounty Directory</p>
-               <h1 className="text-6xl font-black italic uppercase tracking-tighter leading-[0.85]">
+               <h1 className="text-4xl font-black italic uppercase tracking-tighter leading-tight">
                  Security <br /><span className="text-white/5 italic">Programs.</span>
                </h1>
             </div>

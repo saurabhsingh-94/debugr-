@@ -14,6 +14,7 @@
   z-index: -1;
   overflow: hidden;
   background: var(--bg);
+  will-change: transform;
 }
 
 .aurora-blob {
@@ -25,6 +26,7 @@
   border-radius: 50%;
   pointer-events: none;
   animation: blob-float 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+  will-change: transform;
 }
 
 .blob-1 { background: #9d50bb; top: -20%; left: -10%; animation-delay: 0s; box-shadow: 0 0 150px rgba(157, 80, 187, 0.4); }

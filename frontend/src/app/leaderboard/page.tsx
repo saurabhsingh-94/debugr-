@@ -73,7 +73,7 @@ export default function Leaderboard() {
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Leaderboard</p>
-               <h1 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-tight mb-8">
+               <h1 className="text-4xl md:text-6xl font-black italic uppercase tracking-tighter leading-tight mb-8">
                  Researcher <br /><span className="text-white/5 italic">Rankings.</span>
                </h1>
             </div>
@@ -123,8 +123,10 @@ export default function Leaderboard() {
         </section>
 
         {/* Right Content: Index Feed */}
-        <section className="flex-1 min-w-0 p-8 md:p-12 lg:pl-20 lg:pr-32 lg:py-24">
-          <div className="hidden md:grid grid-cols-[80px_1fr_180px_180px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
+        <section className="flex-1 min-w-0 p-6 md:p-12 lg:pl-20 lg:pr-32 lg:py-24">
+          <div className="overflow-x-auto no-scrollbar -mx-6 px-6 md:mx-0 md:px-0">
+            <div className="min-w-[800px] md:min-w-0">
+              <div className="hidden md:grid grid-cols-[80px_1fr_180px_180px] px-12 mb-10 text-[9px] font-mono font-black uppercase tracking-[0.5em] text-white/5 italic">
             <span>Rank</span>
             <span>Identity</span>
             <span className="text-right">Verified Resolved</span>
