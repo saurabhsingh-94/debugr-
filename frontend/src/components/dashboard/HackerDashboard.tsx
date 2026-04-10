@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { fetchWithAuth, API_ENDPOINTS } from '@/lib/api';
+import { fetchWithAuth, API_ENDPOINTS, API_URL } from '@/lib/api';
 import { fadeInUp, blurReveal } from '@/lib/animations';
 import { 
   Activity, 
@@ -82,11 +82,6 @@ export default function HackerDashboard() {
             setHasPayoutMethod(payoutData.success && payoutData.methods && payoutData.methods.length > 0);
         }
 
-        if (payoutRes.ok) {
-            const payoutData = await payoutRes.json();
-            setHasPayoutMethod(payoutData.success && payoutData.methods && payoutData.methods.length > 0);
-        }
-
         if (reportsRes.ok) {
           const data = await reportsRes.json();
           if (data.success) {
@@ -118,7 +113,7 @@ export default function HackerDashboard() {
     
     const amount = Number(withdrawAmount);
     if (isNaN(amount) || amount < 1000) {
-        setWithdrawError('Minimum withdrawal is ₹1,000');
+        setWithdrawError('Minimum withdrawal is 1,000');
         return;
     }
 
@@ -138,7 +133,6 @@ export default function HackerDashboard() {
         if (data.success) {
             setWithdrawModal(false);
             setWithdrawAmount('');
-            // Refresh balance
             const profileRes = await fetchWithAuth(API_ENDPOINTS.PROFILE);
             const profileData = await profileRes.json();
             if (profileData.success) setBalance(profileData.user.wallet_balance);
@@ -156,7 +150,6 @@ export default function HackerDashboard() {
 
   return (
     <div className="space-y-16">
-      {/* ── Dashboard Overview ── */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-12 pb-16 border-b border-white/5">
         <div className="space-y-8">
           <div className="flex items-center gap-4">
@@ -209,7 +202,6 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── Report Filters ── */}
       <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
         <div className="flex items-center gap-2 p-1.5 bg-white/[0.02] border border-white/5 rounded-[24px] overflow-x-auto">
           {(['All', 'Critical', 'High', 'Medium', 'Low'] as const).map(s => (
@@ -246,7 +238,6 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── Dashboard Activity ── */}
       <div className="glass-panel rounded-[40px] overflow-hidden border border-white/5 shadow-[0_40px_80px_rgba(0,0,0,0.5)]">
         <div className="hidden lg:grid grid-cols-[160px_1fr_180px_120px_160px_140px] px-12 py-6 bg-white/[0.02] border-b border-white/5">
           {['Report ID', 'Vulnerability Title', 'Organization', 'Severity', 'Status', 'Bounty'].map(h => (
@@ -289,9 +280,7 @@ export default function HackerDashboard() {
                     className="grid grid-cols-1 lg:grid-cols-[160px_1fr_180px_120px_160px_140px] px-12 py-10 items-center border-b border-white/[0.03] hover:bg-white/[0.02] transition-all group relative overflow-hidden"
                   >
                     <div className="absolute inset-y-0 left-0 w-1 bg-indigo-500/0 group-hover:bg-indigo-500/40 transition-all" />
-                    
                     <span className="subtle-mono text-[11px] text-white/10 group-hover:text-white/40 transition-colors italic font-black">[ {r.id} ]</span>
-                    
                     <div className="pr-12 space-y-2">
                       <p className="text-lg font-black text-white group-hover:text-indigo-400 transition-colors uppercase tracking-tight italic select-none">{r.title}</p>
                       <div className="flex items-center gap-3">
@@ -299,16 +288,13 @@ export default function HackerDashboard() {
                          <p className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">SUBMITTED: {r.submitted}</p>
                       </div>
                     </div>
-
                     <div className="flex items-center gap-3">
                        <span className="w-6 h-6 rounded-lg bg-white/5 border border-white/5 flex items-center justify-center text-[10px] font-black text-white/20 group-hover:bg-white group-hover:text-black transition-all">{r.company[0]}</span>
                        <span className="text-xs font-black text-white/30 tracking-tight uppercase italic group-hover:text-white/60 transition-colors">{r.company}</span>
                     </div>
-
                     <div className="flex items-center gap-3">
                        <span className={`subtle-mono text-xs font-black italic tracking-tighter ${sc}`}>{r.cvss.toFixed(1)}</span>
                     </div>
-
                     <div>
                       <span className={`
                         inline-block px-5 py-2 rounded-[14px] text-[9px] font-black uppercase tracking-widest border italic
@@ -317,7 +303,6 @@ export default function HackerDashboard() {
                         {r.status}
                       </span>
                     </div>
-
                     <div className="flex flex-col items-end lg:items-start group/reward">
                        <span className="text-2xl font-black text-white tracking-tighter italic group-hover:scale-110 transition-transform origin-left">{r.earned}</span>
                        <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest mt-1">Validated</span>
@@ -330,21 +315,18 @@ export default function HackerDashboard() {
         </div>
       </div>
 
-      {/* ── Status Bar ── */}
       <div className="flex items-center justify-between px-10 py-6 rounded-[32px] bg-white/[0.01] border border-white/5">
          <div className="flex items-center gap-8">
             <div className="flex items-center gap-3">
                <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-         <div className="flex items-center gap-3">
-            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-            <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Status: Online</span>
-         </div>
-         <div className="flex items-center gap-6">
+               <span className="subtle-mono text-[9px] font-black text-white/20 uppercase tracking-[0.2em] italic">Status: Online</span>
+            </div>
+          </div>
+          <div className="flex items-center gap-6">
             <span className="subtle-mono text-[9px] text-white/10 uppercase tracking-widest italic">Session expires in: <span className="text-white/40 ml-2">4h 12m</span></span>
          </div>
       </div>
 
-      {/* ── Withdrawal Modal ── */}
       <AnimatePresence>
         {withdrawModal && (
             <div className="fixed inset-0 z-[100] flex items-center justify-center p-6">
@@ -383,7 +365,7 @@ export default function HackerDashboard() {
                                 </div>
                                 <Link href="/settings">
                                     <button className="w-full py-5 bg-white text-black rounded-[24px] font-black text-xs uppercase tracking-widest italic shadow-2xl hover:bg-neutral-200 transition-all">
-                                        Go to Settings →
+                                        Go to Settings &rarr;
                                     </button>
                                 </Link>
                             </div>
@@ -392,10 +374,10 @@ export default function HackerDashboard() {
                                 <div className="space-y-6">
                                     <div className="flex justify-between items-end px-2">
                                         <label className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">Amount (INR)</label>
-                                        <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400 italic">Balance: ₹{Number(balance).toLocaleString()}</span>
+                                        <span className="text-[9px] font-black uppercase tracking-widest text-indigo-400 italic">Balance: INR {Number(balance).toLocaleString()}</span>
                                     </div>
                                     <div className="relative group">
-                                        <span className="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-black text-white/10 italic group-focus-within:text-indigo-500 transition-colors">₹</span>
+                                        <span className="absolute left-6 top-1/2 -translate-y-1/2 text-2xl font-black text-white/10 italic group-focus-within:text-indigo-500 transition-colors">INR</span>
                                         <input 
                                             type="number"
                                             required
@@ -406,7 +388,7 @@ export default function HackerDashboard() {
                                             onChange={e => setWithdrawAmount(e.target.value)}
                                         />
                                     </div>
-                                    <p className="text-[9px] text-white/10 uppercase font-black tracking-widest italic ml-2">Min: ₹1,000 • Protocol: Manual Transfer</p>
+                                    <p className="text-[9px] text-white/10 uppercase font-black tracking-widest italic ml-2">Min: 1,000 | Protocol: Manual Transfer</p>
                                 </div>
 
                                 {withdrawError && (
@@ -439,4 +421,3 @@ export default function HackerDashboard() {
     </div>
   );
 }
-
