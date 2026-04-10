@@ -5,7 +5,7 @@ import { load } from '@cashfreepayments/cashfree-js';
 import axios from 'axios';
 import { API_URL } from '@/lib/api';
 import { motion, AnimatePresence } from 'framer-motion';
-import { CreditCard, Rocket, AlertCircle, Loader2 } from 'lucide-react';
+import { CreditCard, Rocket, AlertCircle, Loader2, Zap } from 'lucide-react';
 import Magnetic from '@/components/animation/Magnetic';
 
 interface CashfreeCheckoutProps {
