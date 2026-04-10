@@ -34,6 +34,7 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${dmMono.variable} antialiased overflow-x-hidden`}
+      style={{ colorScheme: 'dark' }}
     >
       <head>
         <script src="https://sdk.cashfree.com/js/v3/cashfree.js" defer></script>
