@@ -135,7 +135,7 @@ export default function ExplorePage() {
               
               <motion.h1 
                 variants={blurReveal} 
-                className="text-7xl md:text-9xl font-black italic tracking-tighter leading-[0.8] uppercase"
+                className="text-7xl md:text-8xl font-black italic tracking-tighter leading-[0.8] uppercase"
               >
                 {Array.from("Explore").map((char, i) => (
                   <motion.span key={i} variants={drift(i * 0.05)} className="inline-block">{char}</motion.span>

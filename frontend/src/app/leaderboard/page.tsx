@@ -73,7 +73,7 @@ export default function Leaderboard() {
           <motion.div variants={staggerContainer(0.1, 0)} initial="hidden" animate="visible" className="space-y-8">
             <div className="space-y-2">
                <p className="font-mono text-[9px] text-indigo-400 uppercase tracking-[0.6em] italic">Leaderboard</p>
-               <h1 className="text-6xl md:text-7xl font-black italic uppercase tracking-tighter leading-tight mb-8">
+               <h1 className="text-5xl md:text-6xl font-black italic uppercase tracking-tighter leading-tight mb-8">
                  Researcher <br /><span className="text-white/5 italic">Rankings.</span>
                </h1>
             </div>
