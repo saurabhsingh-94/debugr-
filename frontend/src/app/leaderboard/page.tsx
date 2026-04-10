@@ -53,7 +53,7 @@ export default function Leaderboard() {
       {/* Background Ambience */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[20%] right-[-10%] w-[50%] h-[50%] bg-indigo-500/5 blur-[150px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.03] mix-blend-overlay" />
+
       </div>
 
       <Navbar />

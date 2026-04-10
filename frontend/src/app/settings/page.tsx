@@ -143,7 +143,7 @@ export default function SettingsPage() {
       <Navbar />
       
       {/* Background Noise Only */}
-      <div className="fixed inset-0 z-0 opacity-[0.02] mix-blend-overlay pointer-events-none bg-[url('/noise.svg')]" />
+
 
       <main className="relative max-w-[1400px] mx-auto px-6 lg:px-12 pt-40 pb-20 z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
         

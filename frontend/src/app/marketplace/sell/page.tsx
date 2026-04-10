@@ -88,7 +88,7 @@ export default function SellPromptPage() {
       {/* Background ambience */}
       <div className="fixed inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-amber-500/[0.03] blur-[150px] rounded-full" />
-        <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.02] mix-blend-overlay" />
+
       </div>
 
       <Navbar />
