@@ -104,29 +104,53 @@ export default function CompanyDashboard() {
           </p>
         </div>
 
-        <div className="flex gap-12 items-end">
-          {[
-            { label: 'Wallet Balance', value: `$${Number(balance).toLocaleString()}`, highlight: true, icon: <Zap size={14} /> },
-            { label: 'Total Paid', value: `$${totalPaid.toLocaleString()}`, icon: <Layers size={14} /> },
-            { label: 'Pending Reports', value: String(pendingCount), icon: <Inbox size={14} /> },
-          ].map((s, i) => (
+          <div className="flex flex-col md:flex-row gap-12 items-end">
             <motion.div 
-              key={s.label}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 + i * 0.1 }}
-              className="space-y-4 text-right md:text-left"
+              transition={{ delay: 0.2 }}
+              className="space-y-6 text-right md:text-left p-8 rounded-[32px] bg-white/[0.03] border border-white/5 relative group overflow-hidden"
             >
+              <div className="absolute inset-0 bg-indigo-500/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="flex items-center gap-3 justify-end md:justify-start">
-                <span className="text-white/10">{s.icon}</span>
-                <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">{s.label}</p>
+                <span className="text-white/10"><Zap size={14} /></span>
+                <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">Wallet Balance</p>
               </div>
-              <p className={`text-4xl font-black tracking-tighter italic ${s.highlight ? 'text-white' : 'text-white/40'}`}>
-                {s.value}
+              <p className="text-5xl font-black tracking-tighter italic text-white">
+                ${Number(balance).toLocaleString()}
               </p>
+              <Link href="/add-funds">
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="mt-4 px-6 py-2.5 bg-indigo-500 text-white rounded-xl text-[9px] font-black uppercase tracking-widest flex items-center gap-2 group/btn shadow-xl shadow-indigo-500/20"
+                >
+                  Add Funds <Plus size={12} className="group-hover/btn:rotate-90 transition-transform" />
+                </motion.button>
+              </Link>
             </motion.div>
-          ))}
-        </div>
+
+            {[
+              { label: 'Total Paid', value: `$${totalPaid.toLocaleString()}`, icon: <Layers size={14} /> },
+              { label: 'Pending Reports', value: String(pendingCount), icon: <Inbox size={14} /> },
+            ].map((s, i) => (
+              <motion.div 
+                key={s.label}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 + i * 0.1 }}
+                className="space-y-4 text-right md:text-left mb-4"
+              >
+                <div className="flex items-center gap-3 justify-end md:justify-start">
+                  <span className="text-white/10">{s.icon}</span>
+                  <p className="subtle-mono text-[8px] text-white/20 uppercase tracking-[0.2em] font-black italic">{s.label}</p>
+                </div>
+                <p className="text-4xl font-black tracking-tighter italic text-white/40">
+                  {s.value}
+                </p>
+              </motion.div>
+            ))}
+          </div>
       </div>
 
       {/* ── Dashboard Tabs ── */}

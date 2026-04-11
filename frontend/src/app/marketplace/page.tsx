@@ -199,7 +199,7 @@ export default function MarketplacePage() {
                <p className="text-xs font-bold text-white/30 italic">No protocols found matching your query.</p>
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-16">
+            <div className="grid grid-cols-1 lg:grid-cols-1 gap-12 lg:gap-24">
               <AnimatePresence mode="popLayout">
                 {prompts.map((p, i) => (
                   <motion.div
@@ -210,50 +210,73 @@ export default function MarketplacePage() {
                     exit={{ opacity: 0, scale: 0.95 }}
                     transition={{ delay: i * 0.05 }}
                   >
-                    <Link href={`/marketplace/prompt/${p.id}`}>
-                      <Magnetic strength={0.1}>
-                        <div className="aspect-square p-14 rounded-[64px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.02] hover:border-amber-500/30 transition-all duration-500 flex flex-col justify-between group shadow-3xl relative overflow-hidden">
-                           <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500/5 blur-3xl rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity" />
-
-                           <div>
-                              <div className="flex justify-between items-start mb-10">
-                                 <div className="w-14 h-14 bg-[#080808] border border-white/10 rounded-2xl flex items-center justify-center text-xl text-amber-500 group-hover:bg-amber-500 group-hover:text-black transition-all">
-                                    <MessageSquareCode size={24} />
+                    <Link href={`/marketplace/prompt/${p.id}`} className="block">
+                      <Magnetic strength={0.02}>
+                        <div className="min-h-[500px] md:min-h-[640px] p-10 md:p-24 rounded-[96px] border border-white/5 bg-white/[0.01] hover:bg-white/[0.03] hover:border-amber-500/40 transition-all duration-1000 flex flex-col lg:flex-row gap-20 group relative overflow-hidden backdrop-blur-3xl shadow-[0_0_100px_rgba(0,0,0,0.5)]">
+                           {/* Premium Atmosphere */}
+                           <div className="absolute -top-32 -right-32 w-96 h-96 bg-amber-500/[0.03] blur-[150px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                           <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-orange-500/[0.02] blur-[150px] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+                           
+                           {/* Details */}
+                           <div className="flex-1 flex flex-col justify-between relative z-10">
+                              <div>
+                                 <div className="flex items-center gap-6 mb-12">
+                                    <div className="w-20 h-20 bg-black/60 border border-white/10 rounded-[32px] flex items-center justify-center text-3xl text-amber-500 group-hover:bg-amber-500 group-hover:text-black transition-all duration-700 shadow-[0_20px_40px_rgba(0,0,0,0.4)]">
+                                       <MessageSquareCode size={32} />
+                                    </div>
+                                    <div className="flex flex-col gap-1">
+                                       <div className="px-5 py-2 rounded-full border border-white/5 bg-white/5 text-[10px] font-black uppercase tracking-[0.4em] italic text-white/40 inline-block w-fit">
+                                          {p.category}
+                                       </div>
+                                       <div className="flex items-center gap-2 mt-2">
+                                          {[1, 2, 3, 4, 5].map((_, i) => (
+                                             <Star key={i} size={12} className={i < Math.floor(p.avg_rating) ? 'text-amber-500 fill-amber-500' : 'text-white/5'} />
+                                          ))}
+                                          <span className="text-[10px] font-mono text-white/20 font-black">{parseFloat(p.avg_rating as any).toFixed(1)}</span>
+                                       </div>
+                                    </div>
                                  </div>
-                                 <div className="px-4 py-1.5 rounded-full border border-white/5 bg-white/5 text-[9px] font-black uppercase tracking-[0.2em] italic text-white/30">
-                                    {p.category}
-                                 </div>
-                              </div>
 
-                              <h3 className="text-4xl font-black text-white italic uppercase tracking-tighter leading-tight mb-6 group-hover:text-amber-500 transition-colors">
-                                {p.title}
-                              </h3>
-                              <p className="text-white/30 text-sm font-medium italic line-clamp-4 leading-relaxed mb-10 group-hover:text-white/50 transition-colors">
-                                {p.description}
-                              </p>
+                                 <h3 className="text-6xl md:text-9xl font-black text-white italic uppercase tracking-tighter leading-[0.9] mb-12 group-hover:text-amber-500 transition-all duration-700 max-w-5xl">
+                                   {p.title}
+                                 </h3>
+                                 <p className="text-white/25 text-2xl font-medium italic line-clamp-3 md:line-clamp-4 leading-relaxed mb-20 group-hover:text-white/60 transition-colors duration-700 max-w-4xl">
+                                   {p.description}
+                                 </p>
 
-                              <div className="flex items-center gap-3">
-                                 <div className="w-6 h-6 rounded-full bg-white/10 overflow-hidden border border-white/10">
-                                    <img src={p.seller_avatar} alt="" className="w-full h-full object-cover" />
+                                 <div className="flex items-center gap-6 p-4 rounded-full bg-white/[0.02] border border-white/5 w-fit pr-10">
+                                    <div className="w-12 h-12 rounded-full bg-white/10 overflow-hidden border-2 border-white/10 shadow-2xl">
+                                       <img src={p.seller_avatar} alt="" className="w-full h-full object-cover" />
+                                    </div>
+                                    <div className="flex flex-col">
+                                       <span className="text-[9px] font-mono font-black text-white/20 uppercase tracking-[0.3em] italic">Origin Signal</span>
+                                       <span className="text-sm font-black uppercase tracking-widest text-white/50 italic group-hover:text-amber-500 transition-colors">@{p.seller_handle}</span>
+                                    </div>
                                  </div>
-                                 <span className="text-[10px] font-black uppercase tracking-widest text-white/40 italic">@{p.seller_handle}</span>
                               </div>
                            </div>
 
-                           <div className="pt-8 mt-10 border-t border-white/5 flex items-end justify-between">
-                              <div className="space-y-1">
-                                 <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">License Price</p>
-                                 <p className="text-4xl font-black text-white italic tracking-tighter leading-none">
-                                    {formatPrice(p.price)}
-                                 </p>
-                              </div>
-                              <div className="text-right">
-                                 <div className="flex items-center gap-1.5 mb-2 justify-end">
-                                    <Star size={10} className="text-amber-500 fill-amber-500" />
-                                    <span className="text-[10px] font-black text-white/20 italic">{parseFloat(p.avg_rating as any).toFixed(1)}</span>
+                           {/* Commercials */}
+                           <div className="w-full lg:w-auto lg:min-w-[320px] pt-16 lg:pt-0 lg:pl-16 border-t lg:border-t-0 lg:border-l border-white/5 flex flex-col justify-between items-end lg:items-start relative z-10">
+                              <div className="space-y-6 w-full text-right lg:text-left">
+                                 <div className="p-6 rounded-[32px] bg-white/[0.02] border border-white/5 inline-block group-hover:bg-amber-500/5 transition-colors">
+                                    <p className="text-[11px] font-mono font-black text-amber-500 uppercase tracking-[0.4em] italic">Circulation: {p.likes_count} Units</p>
                                  </div>
-                                 <div className="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/20 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all">
-                                    <ChevronRight size={20} />
+                                 <div className="flex items-center gap-4 justify-end lg:justify-start">
+                                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+                                    <span className="text-[9px] font-mono text-white/20 uppercase tracking-[0.4em] italic font-black">Trade Status: ACTIVE</span>
+                                 </div>
+                              </div>
+
+                              <div className="text-right lg:text-left mt-20 lg:mt-0 w-full">
+                                 <p className="text-[10px] font-mono font-black text-white/5 uppercase tracking-[0.5em] italic mb-6">Settlement Value</p>
+                                 <div className="flex flex-col lg:flex-row lg:items-end justify-end lg:justify-start gap-12">
+                                    <p className="text-8xl md:text-[10rem] font-black text-white italic tracking-tighter leading-none">
+                                       {p.price > 0 ? formatPrice(p.price) : "ZERO"}
+                                    </p>
+                                    <div className="w-24 h-24 rounded-[32px] border border-white/10 flex items-center justify-center text-white/5 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 group-hover:shadow-[0_0_80px_rgba(245,158,11,0.5)] transition-all duration-700 self-end lg:self-auto translate-y-4">
+                                       <ChevronRight size={40} />
+                                    </div>
                                  </div>
                               </div>
                            </div>

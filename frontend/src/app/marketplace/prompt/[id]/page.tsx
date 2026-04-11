@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
+import { load } from '@cashfreepayments/cashfree-js';
 import { 
   ArrowLeft, 
   ShoppingCart, 
@@ -109,6 +110,8 @@ export default function PromptDetailPage() {
         setComments([data.comment, ...comments]);
         setCommentText('');
         setCommentRating(5);
+        // Show success state briefly
+        alert("Transmission Success: Review Published.");
       } else {
         alert(data.error || "Failed to post review");
       }
@@ -129,9 +132,10 @@ export default function PromptDetailPage() {
       const data = await res.json();
       
       if (data.success && data.payment_session_id) {
-        // Cashfree SDK integration
-        // @ts-ignore
-        const cashfree = window.Cashfree({ mode: "production" });
+        const cashfree = await load({
+          mode: process.env.NEXT_PUBLIC_CASHFREE_ENVIRONMENT === 'PROD' ? 'production' : 'sandbox'
+        });
+
         await cashfree.checkout({
           paymentSessionId: data.payment_session_id,
           returnUrl: `${window.location.origin}/marketplace/success?order_id=${data.order_id}`,
@@ -162,58 +166,68 @@ export default function PromptDetailPage() {
     <div className="min-h-screen bg-[#050505] text-[#f5f5f7] selection:bg-amber-500/30 overflow-x-hidden">
       <Navbar />
       
-      {/* Dynamic Background */}
-      <div className="fixed inset-0 z-0 pointer-events-none opacity-20">
-        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-amber-500/10 blur-[150px] rounded-full" />
+      {/* Dynamic Background Ambience */}
+      <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-10%] right-[-10%] w-[60%] h-[60%] bg-amber-500/5 blur-[150px] rounded-full" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-orange-500/5 blur-[150px] rounded-full" />
       </div>
 
-      <main className="relative z-10 pt-40 pb-32 px-6 lg:px-[10%] max-w-[1400px] mx-auto">
+      <main className="relative z-10 pt-40 pb-32 px-6 lg:px-[10%] max-w-[1500px] mx-auto">
         
         {/* Back Button */}
         <button 
           onClick={() => router.back()}
-          className="group flex items-center gap-3 mb-12 text-[10px] font-black uppercase tracking-widest text-white/30 hover:text-white transition-all"
+          className="group flex items-center gap-4 mb-16 text-[10px] font-black uppercase tracking-[0.4em] text-white/20 hover:text-white transition-all italic"
         >
-          <div className="w-8 h-8 rounded-full border border-white/10 flex items-center justify-center group-hover:border-amber-500/50 group-hover:bg-amber-500/10 transition-all">
-            <ArrowLeft size={14} />
+          <div className="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center group-hover:border-amber-500/50 group-hover:bg-amber-500/10 transition-all">
+            <ArrowLeft size={16} />
           </div>
-          Back to Market
+          Return to Marketplace
         </button>
 
-        <section className="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-32 items-start">
+        <section className="grid grid-cols-1 xl:grid-cols-[1.3fr_1fr] gap-24 lg:gap-40 items-start">
           
-          {/* Left: Media & Details */}
-          <div className="space-y-12">
+          {/* Left Side: Immersive Proof & Details */}
+          <div className="space-y-20">
             
-            {/* Image Gallery */}
-            <div className="space-y-6">
+            {/* High-Fidelity Proof Display */}
+            <div className="space-y-10">
                <motion.div 
-                 initial={{ opacity: 0, scale: 0.95 }}
+                 initial={{ opacity: 0, scale: 0.98 }}
                  animate={{ opacity: 1, scale: 1 }}
-                 className="relative aspect-video rounded-[40px] overflow-hidden border border-white/5 bg-white/5 group"
+                 className="relative aspect-square md:aspect-video rounded-[80px] overflow-hidden border border-white/5 bg-black/40 group shadow-[0_0_100px_rgba(0,0,0,0.5)]"
                >
                  {prompt.proof_urls && prompt.proof_urls.length > 0 ? (
                    <img 
                      src={prompt.proof_urls[activeImage]} 
-                     alt="Proof" 
-                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                     alt="Protocol Proof" 
+                     className="w-full h-full object-cover transition-all duration-[2000ms] group-hover:scale-105" 
                    />
                  ) : (
-                   <div className="w-full h-full flex flex-col items-center justify-center gap-4 text-white/10">
-                      <Lock size={48} />
-                      <p className="text-[10px] font-black uppercase tracking-[0.4em]">No Visual Proof Provided</p>
+                   <div className="w-full h-full flex flex-col items-center justify-center gap-8 text-white/5">
+                      <Lock size={80} strokeWidth={1} />
+                      <p className="text-[10px] font-black uppercase tracking-[0.6em]">Classified Proof Material</p>
                    </div>
                  )}
-                 <div className="absolute inset-0 bg-linear-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
+                 <div className="absolute inset-0 bg-linear-to-t from-black via-transparent to-transparent opacity-80" />
+                 
+                 <div className="absolute bottom-12 left-12 flex items-center gap-6">
+                    <div className="px-6 py-2.5 rounded-full backdrop-blur-3xl bg-white/5 border border-white/10 text-[9px] font-black uppercase tracking-[0.4em] text-amber-500 italic shadow-2xl">
+                      Verified Environment Proof
+                    </div>
+                    <div className="flex items-center gap-2 px-6 py-2.5 rounded-full backdrop-blur-3xl bg-black/40 border border-white/5 text-[9px] font-black uppercase tracking-[0.4em] text-white/40 italic">
+                      <ShieldCheck size={12} className="text-green-500" /> SECURE HANDSHAKE
+                    </div>
+                 </div>
                </motion.div>
 
                {prompt.proof_urls && prompt.proof_urls.length > 1 && (
-                 <div className="flex gap-4">
+                 <div className="flex gap-6 px-4">
                    {prompt.proof_urls.map((url, i) => (
                      <button 
                        key={i} 
                        onClick={() => setActiveImage(i)}
-                       className={`w-24 aspect-video rounded-2xl overflow-hidden border-2 transition-all ${activeImage === i ? 'border-amber-500' : 'border-white/5 opacity-40 hover:opacity-100'}`}
+                       className={`w-28 aspect-square rounded-[32px] overflow-hidden border-2 transition-all duration-500 ${activeImage === i ? 'border-amber-500 scale-110 shadow-3xl shadow-amber-500/20' : 'border-white/5 opacity-20 hover:opacity-100 hover:scale-105'}`}
                      >
                        <img src={url} alt="Proof Thumb" className="w-full h-full object-cover" />
                      </button>
@@ -222,197 +236,217 @@ export default function PromptDetailPage() {
                )}
             </div>
 
-            {/* Title & Stats */}
-            <div className="space-y-8">
-               <div className="space-y-4">
-                  <div className="flex flex-wrap gap-3">
-                    <span className="px-5 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 text-[9px] font-black uppercase tracking-[0.3em] text-amber-500 italic">
-                      {prompt.category}
+            {/* Core Info & Narrative */}
+            <div className="space-y-16">
+               <div className="space-y-10">
+                  <div className="flex flex-wrap gap-4">
+                    <span className="px-8 py-3 rounded-full bg-amber-500 text-black text-[10px] font-black uppercase tracking-[0.4em] italic shadow-2xl">
+                        {prompt.category}
                     </span>
-                    <span className="px-5 py-1.5 rounded-full bg-white/5 border border-white/5 text-[9px] font-black uppercase tracking-[0.3em] text-white/30 italic flex items-center gap-2">
-                      <Globe size={10} /> Commercial License
+                    <span className="px-8 py-3 rounded-full bg-white/5 border border-white/10 text-[10px] font-black uppercase tracking-[0.4em] text-white/40 italic">
+                       Internal Protocol v4.01
                     </span>
                   </div>
-                  <h1 className="text-6xl font-black italic uppercase tracking-tighter leading-[0.9] text-white">
+                  <h1 className="text-7xl md:text-9xl font-black italic uppercase tracking-tighter leading-[0.8] text-white max-w-4xl drop-shadow-2xl">
                     {prompt.title}
                   </h1>
                </div>
 
-               <div className="flex items-center gap-10 py-8 border-y border-white/5">
-                  <div className="space-y-1">
-                    <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">User Rating</p>
-                    <div className="flex items-center gap-2">
-                       <div className="flex gap-0.5">
+               <div className="flex flex-wrap items-center gap-16 py-12 border-y border-white/5">
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic ml-1">Trust Score</p>
+                    <div className="flex items-center gap-4">
+                       <div className="flex gap-1.5 p-3 bg-white/5 rounded-2xl border border-white/5">
                           {[1, 2, 3, 4, 5].map(s => (
                             <Star 
                               key={s} 
-                              size={12} 
-                              className={s <= prompt.avg_rating ? 'text-amber-500 fill-amber-500' : 'text-white/10'} 
+                              size={16} 
+                              className={s <= prompt.avg_rating ? 'text-amber-500 fill-amber-500 drop-shadow-[0_0_8px_rgba(245,158,11,0.5)]' : 'text-white/5'} 
                             />
                           ))}
                        </div>
-                       <span className="text-xs font-black text-white italic">{parseFloat(prompt.avg_rating as any).toFixed(1)}</span>
+                       <span className="text-xl font-black text-white italic tracking-widest">{parseFloat(prompt.avg_rating as any).toFixed(1)}</span>
                     </div>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">Social Karma</p>
-                    <div className="flex items-center gap-2">
-                       <Heart size={14} className="text-pink-500 fill-pink-500" />
-                       <span className="text-xs font-black text-white italic">{prompt.likes_count} Loves</span>
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic ml-1">Market Karma</p>
+                    <div className="flex items-center gap-4 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+                       <Heart size={20} className="text-pink-500 fill-pink-500 animate-pulse" />
+                       <span className="text-xl font-black text-white italic tracking-widest">{prompt.likes_count} VOTES</span>
                     </div>
                   </div>
-                  <div className="space-y-1">
-                    <p className="text-[8px] font-mono font-black text-white/10 uppercase tracking-widest italic">Author</p>
-                    <div className="flex items-center gap-3">
-                       <img src={prompt.seller_avatar} className="w-5 h-5 rounded-full object-cover grayscale opacity-50" alt="" />
-                       <span className="text-[10px] font-black text-white/40 uppercase tracking-widest italic">@{prompt.seller_handle}</span>
+                  <div className="space-y-4">
+                    <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.5em] italic ml-1">Creator Profile</p>
+                    <div className="flex items-center gap-5 px-6 py-3 bg-white/5 rounded-2xl border border-white/5">
+                       <div className="w-10 h-10 rounded-full bg-white/10 overflow-hidden border border-white/10 shadow-2xl">
+                          <img src={prompt.seller_avatar} className="w-full h-full object-cover" alt="" />
+                       </div>
+                       <span className="text-sm font-black text-white/40 uppercase tracking-[0.3em] italic">@{prompt.seller_handle}</span>
                     </div>
                   </div>
                </div>
 
-               <div className="space-y-6">
-                 <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-amber-500/40">Technical Brief</h4>
-                 <p className="text-lg text-white/40 font-medium italic leading-relaxed prose prose-invert max-w-none">
+               <div className="space-y-10">
+                  <div className="flex items-center gap-6 text-white/5">
+                    <span className="text-[11px] font-black uppercase tracking-[0.6em] whitespace-nowrap">Technical Briefing</span>
+                    <div className="h-[2px] w-full bg-white/5" />
+                  </div>
+                  <p className="text-3xl text-white/30 font-medium italic leading-relaxed max-w-4xl">
                     {prompt.description}
-                 </p>
+                  </p>
                </div>
             </div>
           </div>
 
-          {/* Right: Checkout & Interaction */}
-          <div className="space-y-12 sticky top-40">
+          {/* Right Side: Command Center / Checkout */}
+          <div className="space-y-16 sticky top-40">
              
-             {/* Checkout Card */}
-             <div className="p-10 rounded-[56px] border border-white/10 bg-white/[0.02] backdrop-blur-3xl space-y-10 shadow-3xl">
-                <div className="space-y-4">
-                   <div className="flex justify-between items-end">
-                      <p className="text-[10px] font-black uppercase tracking-[0.4em] text-white/30 italic">Price</p>
-                      <div className="flex items-center gap-2 text-green-500">
-                         <ShieldCheck size={14} />
-                         <span className="text-[9px] font-black uppercase tracking-widest">Escrow Protected</span>
+             {/* Premium Checkout Sidebar */}
+             <div className="p-16 rounded-[80px] border border-white/10 bg-white/[0.03] backdrop-blur-[120px] space-y-16 shadow-[0_60px_120px_rgba(0,0,0,0.6)] relative overflow-hidden group/checkout">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover/checkout:opacity-100 transition-opacity duration-1000" />
+                
+                <div className="space-y-8 relative z-10">
+                   <div className="flex justify-between items-start">
+                      <div className="space-y-3">
+                        <p className="text-[11px] font-black uppercase tracking-[0.6em] text-white/20 italic">Acquisition Value</p>
+                        <div className="flex items-center gap-3 text-amber-500/60 p-2 bg-amber-500/5 border border-amber-500/10 rounded-xl w-fit">
+                           <ShieldCheck size={16} />
+                           <span className="text-[9px] font-black uppercase tracking-[0.4em] italic">Full Escrow Protection</span>
+                        </div>
+                      </div>
+                      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/10">
+                         <Coins size={20} />
                       </div>
                    </div>
-                   <h2 className="text-7xl font-black italic tracking-tighter text-white">
-                      {formatPrice(prompt.price)}
-                   </h2>
+                   <div className="space-y-2">
+                      <h2 className="text-9xl font-black italic tracking-tighter text-white leading-none">
+                         {formatPrice(prompt.price)}
+                      </h2>
+                      <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.4em] italic mt-4">One-time protocol issuance fee</p>
+                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-10 relative z-10">
                   <Magnetic strength={0.1}>
                     <button 
                       onClick={handleCheckout}
                       disabled={isBuying}
-                      className="w-full py-8 bg-white text-black rounded-[32px] font-black uppercase tracking-[0.5em] italic text-xs hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-4 disabled:opacity-50"
+                      className="w-full py-12 bg-[#f5f5f7] text-black rounded-[48px] font-black uppercase tracking-[0.6em] italic text-base hover:bg-amber-500 transition-all duration-700 flex items-center justify-center gap-8 disabled:opacity-50 shadow-[0_30px_60px_rgba(255,255,255,0.05)] relative overflow-hidden group/btn"
                     >
                       {isBuying ? (
                         <>
-                          <Loader2 className="w-5 h-5 animate-spin" />
-                          Processing...
+                          <Loader2 className="w-8 h-8 animate-spin" />
+                          STABILIZING...
                         </>
                       ) : (
                         <>
-                          Buy Prompt <ShoppingCart size={16} />
+                          SECURE PROTOCOL <ShoppingCart size={24} className="group-hover/btn:translate-x-3 transition-transform duration-500" />
                         </>
                       )}
                     </button>
                   </Magnetic>
-                  <p className="text-center text-[8px] font-mono font-black text-white/10 uppercase tracking-widest">
-                    Prompt details will be revealed in your dashboard after payment
-                  </p>
+                  
+                  <div className="flex items-center gap-6 justify-center">
+                     <div className="h-px flex-1 bg-white/5" />
+                     <p className="text-[9px] font-mono font-black text-white/10 uppercase tracking-[0.6em] italic">
+                       Authorized Transaction
+                     </p>
+                     <div className="h-px flex-1 bg-white/5" />
+                  </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-2 gap-8 relative z-10">
                    <button 
                      onClick={handleLike}
-                     className={`py-5 rounded-3xl border flex items-center justify-center gap-3 transition-all ${liked ? 'border-pink-500/50 bg-pink-500/10 text-pink-500' : 'border-white/5 bg-white/5 text-white/30 hover:text-white hover:bg-white/10'}`}
+                     className={`py-8 rounded-[40px] border flex items-center justify-center gap-5 transition-all duration-700 ${liked ? 'border-pink-500/50 bg-pink-500/10 text-pink-500 shadow-[0_0_40px_rgba(236,72,153,0.15)]' : 'border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20'}`}
                    >
-                     <Heart size={16} className={liked ? 'fill-pink-500' : ''} />
-                     <span className="text-[10px] font-black uppercase tracking-widest italic">{liked ? 'Liked' : 'Like'}</span>
+                     <Heart size={22} className={liked ? 'fill-pink-500' : ''} />
+                     <span className="text-[11px] font-black uppercase tracking-[0.5em] italic">{liked ? 'VOTED' : 'VOTE'}</span>
                    </button>
-                   <button className="py-5 rounded-3xl border border-white/5 bg-white/5 text-white/30 hover:text-white hover:bg-white/10 flex items-center justify-center gap-3 transition-all">
-                     <Share2 size={16} />
-                     <span className="text-[10px] font-black uppercase tracking-widest italic">Share</span>
+                   <button className="py-8 rounded-[40px] border border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20 flex items-center justify-center gap-5 transition-all duration-700">
+                     <Share2 size={22} />
+                     <span className="text-[11px] font-black uppercase tracking-[0.5em] italic">SIGNAL</span>
                    </button>
-                </div>
-
-                <div className="pt-8 border-t border-white/5 space-y-4">
-                   <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-widest text-white/20 italic">
-                      <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                      Live Network Stats
-                   </div>
-                   <div className="grid grid-cols-2 gap-6">
-                      <div className="space-y-1">
-                        <p className="text-[8px] font-mono font-black text-white/5 uppercase tracking-widest">Global Rank</p>
-                        <p className="text-sm font-black text-white italic">#12 in {prompt.category}</p>
-                      </div>
-                      <div className="space-y-1 text-right">
-                        <p className="text-[8px] font-mono font-black text-white/5 uppercase tracking-widest">Market Status</p>
-                        <p className="text-sm font-black text-green-500 italic uppercase">Liquid</p>
-                      </div>
-                   </div>
                 </div>
              </div>
 
-             {/* Comments Section */}
-             <div className="space-y-8">
-                <div className="flex items-center gap-4">
-                   <MessageSquare className="text-amber-500" size={20} />
-                   <h3 className="text-xs font-black uppercase tracking-[0.4em] italic text-white/40">Reviews ({comments.length})</h3>
+             {/* Enhanced Reviews Section */}
+             <div className="space-y-12">
+                <div className="flex items-center gap-6">
+                   <MessageSquare className="text-amber-500 shadow-[0_0_20px_rgba(245,158,11,0.4)]" size={24} />
+                   <h3 className="text-sm font-black uppercase tracking-[0.5em] italic text-white/40">Collective Testimony ({comments.length})</h3>
                 </div>
 
-                {/* Comment Form */}
-                <form onSubmit={handleCommentSubmit} className="p-8 rounded-[32px] bg-white/[0.04] border border-white/10 space-y-6">
-                    <div className="flex justify-between items-center">
-                       <h4 className="text-[10px] font-black uppercase tracking-widest text-white/40 italic">Post a Review</h4>
-                       <div className="flex gap-1">
-                          {[1, 2, 3, 4, 5].map(s => (
-                            <button 
-                              key={s} 
-                              type="button" 
-                              onClick={() => setCommentRating(s)}
-                              className="transition-transform active:scale-90"
-                            >
-                               <Star size={14} className={s <= commentRating ? 'text-amber-500 fill-amber-500' : 'text-white/10'} />
-                            </button>
-                          ))}
+                {/* Interactive Comment Form */}
+                <form onSubmit={handleCommentSubmit} className="p-12 rounded-[56px] bg-white/[0.03] border border-white/10 space-y-12 group/form relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-amber-500/20 to-transparent opacity-0 group-hover/form:opacity-100 transition-opacity" />
+                    
+                    <div className="flex justify-between items-center relative z-10">
+                       <h4 className="text-[11px] font-black uppercase tracking-[0.6em] text-white/30 italic">Establish Signal</h4>
+                       <div className="flex flex-col items-end gap-3">
+                          <div className="flex gap-2.5 p-4 bg-black/60 rounded-[28px] border border-white/5">
+                             {[1, 2, 3, 4, 5].map(s => (
+                               <button 
+                                 key={s} 
+                                 type="button" 
+                                 onMouseEnter={() => setCommentRating(s)}
+                                 onClick={() => setCommentRating(s)}
+                                 className="transition-all duration-500 transform hover:scale-150 focus:outline-none"
+                               >
+                                  <Star 
+                                    size={20} 
+                                    className={`transition-all duration-500 ${s <= commentRating ? 'text-amber-500 fill-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.6)]' : 'text-white/5'}`} 
+                                  />
+                               </button>
+                             ))}
+                          </div>
+                          <span className="text-[9px] font-mono text-amber-500 font-bold uppercase tracking-[0.5em] mr-4">{commentRating} / 5 Rating Magnitude</span>
                        </div>
                     </div>
-                    <textarea 
-                       value={commentText}
-                       onChange={e => setCommentText(e.target.value)}
-                       placeholder="Share your thoughts on this hack..."
-                       className="w-full min-h-[100px] p-6 rounded-2xl bg-black/40 border border-white/5 text-sm text-white focus:border-amber-500/30 outline-none resize-none italic font-medium placeholder:text-white/10"
-                    />
+                    <div className="relative z-10">
+                       <textarea 
+                          value={commentText}
+                          onChange={e => setCommentText(e.target.value)}
+                          placeholder="Transmit your findings to the collective archive..."
+                          className="w-full min-h-[180px] p-10 rounded-[40px] bg-black/80 border border-white/5 text-lg text-white focus:border-amber-500/50 outline-none resize-none italic font-medium placeholder:text-white/5 transition-all duration-700 shadow-inner"
+                       />
+                       <div className="absolute bottom-8 right-10 text-[9px] font-mono text-white/10 uppercase tracking-[0.5em] italic">Secure Transmission Buffer</div>
+                    </div>
                     <motion.button 
                       type="submit"
                       disabled={isSubmittingComment}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-4 bg-amber-500 text-black rounded-xl font-black uppercase tracking-widest italic text-[10px] disabled:opacity-50"
+                      className="w-full py-8 bg-amber-500 text-black rounded-[32px] font-black uppercase tracking-[0.5em] italic text-xs disabled:opacity-50 shadow-[0_20px_60px_rgba(245,158,11,0.2)] relative z-10"
                     >
-                       {isSubmittingComment ? 'Posting...' : 'Post Review'}
+                       {isSubmittingComment ? 'BROADCASTING...' : 'INITIALIZE BROADCAST'}
                     </motion.button>
                 </form>
 
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {comments.length === 0 ? (
-                    <div className="p-8 rounded-[32px] border border-dashed border-white/5 text-center">
-                       <p className="text-[10px] font-black text-white/10 uppercase tracking-widest italic">No reviews found for this hack.</p>
+                    <div className="p-16 rounded-[56px] border-2 border-dashed border-white/5 text-center bg-white/[0.01]">
+                       <p className="text-[11px] font-black text-white/10 uppercase tracking-[0.6em] italic">No testimonies recorded for this protocol.</p>
                     </div>
                   ) : (
                     comments.map(c => (
-                      <div key={c.id} className="p-8 rounded-[32px] bg-white/[0.02] border border-white/5 space-y-4">
+                      <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        key={c.id} 
+                        className="p-10 rounded-[48px] bg-white/[0.02] border border-white/5 space-y-6 hover:bg-white/[0.04] transition-all duration-700 group/msg"
+                      >
                         <div className="flex justify-between items-center">
-                           <div className="flex items-center gap-3">
-                              <img src={c.avatar_url} className="w-6 h-6 rounded-full" alt="" />
-                              <span className="text-[10px] font-black uppercase tracking-widest text-white/40">@{c.handle}</span>
+                           <div className="flex items-center gap-5">
+                              <img src={c.avatar_url} className="w-10 h-10 rounded-full border border-white/10 shadow-xl" alt="" />
+                              <span className="text-[11px] font-black uppercase tracking-[0.4em] text-white/30 italic group-hover/msg:text-amber-500/60 transition-colors">@{c.handle}</span>
                            </div>
-                           <div className="flex gap-0.5">
-                              {[1, 2, 3, 4, 5].map(s => <Star key={s} size={8} className={s <= c.rating ? 'text-amber-500 fill-amber-500' : 'text-white/5'} />)}
+                           <div className="flex gap-1.5 p-2 bg-black/40 rounded-xl border border-white/5">
+                              {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} className={s <= c.rating ? 'text-amber-500 fill-amber-500' : 'text-white/5'} />)}
                            </div>
                         </div>
-                        <p className="text-xs text-white/40 font-medium italic leading-relaxed">"{c.message}"</p>
-                      </div>
+                        <p className="text-lg text-white/40 font-medium italic leading-relaxed pl-4 border-l-2 border-amber-500/10 group-hover/msg:text-white/60 transition-colors">"{c.message}"</p>
+                      </motion.div>
                     ))
                   )}
                 </div>
@@ -421,17 +455,26 @@ export default function PromptDetailPage() {
 
         </section>
       </main>
-      
-      {/* Footer protocol */}
-      <footer className="py-20 border-t border-white/5 bg-black/40 backdrop-blur-xl relative z-10">
-         <div className="max-w-[1400px] mx-auto px-12 flex justify-between items-center">
-            <div className="flex items-center gap-4">
-               <div className="w-8 h-8 rounded-lg bg-white/5 flex items-center justify-center font-black italic text-xs">D</div>
-               <p className="text-[9px] font-mono font-black uppercase tracking-[0.4em] text-white/10">Portal Audit v4.1 // SECURE</p>
+
+      {/* Corporate Protocol Footer */}
+      <footer className="py-24 border-t border-white/5 bg-black/60 backdrop-blur-3xl relative z-10">
+         <div className="max-w-[1500px] mx-auto px-16 flex flex-col md:flex-row justify-between items-center gap-12">
+            <div className="flex items-center gap-6">
+               <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center font-black italic text-base">D</div>
+               <div>
+                  <p className="text-[10px] font-mono font-black uppercase tracking-[0.6em] text-white/20 leading-none">Debugr Terminal</p>
+                  <p className="text-[8px] font-mono font-black uppercase tracking-[0.6em] text-white/5 mt-2 italic">SECURE CONNECTION ESTABLISHED</p>
+               </div>
             </div>
-            <p className="text-[8px] font-mono text-white/10 uppercase tracking-widest italic flex items-center gap-2">
-               <ShieldCheck size={12} /> Verified by Debugr Support
-            </p>
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-[10px] font-mono text-white/10 uppercase tracking-[0.6em] italic flex items-center gap-3">
+                 <ShieldCheck size={14} className="text-amber-500/40" /> VERIFIED BY DEBUGR PROTOCOL SUPPORT
+              </p>
+              <div className="flex gap-10">
+                 <span className="text-[9px] font-mono text-white/5 hover:text-white/20 transition-all uppercase tracking-[0.6em] italic cursor-wait">Access Logs</span>
+                 <span className="text-[9px] font-mono text-white/5 hover:text-white/20 transition-all uppercase tracking-[0.6em] italic cursor-wait">Trace Protocol</span>
+              </div>
+            </div>
          </div>
       </footer>
     </div>

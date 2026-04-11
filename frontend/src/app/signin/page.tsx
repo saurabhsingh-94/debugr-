@@ -56,6 +56,7 @@ export default function SignIn() {
         setResendTimer(60);
       } else if (data.success) {
         setCookie('debugr_token', data.token);
+        localStorage.setItem('debugr_token', data.token);
         router.push('/explore');
       } else {
         setError(data.error || data.message || 'Authentication failed');
@@ -87,6 +88,7 @@ export default function SignIn() {
       const data = await res.json();
       if (data.success) {
         setCookie('debugr_token', data.token);
+        localStorage.setItem('debugr_token', data.token);
         router.push('/explore');
       } else {
         setError(data.error || 'Invalid or expired code');

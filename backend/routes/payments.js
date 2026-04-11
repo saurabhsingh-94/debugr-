@@ -1,17 +1,12 @@
+import Cashfree from "../utils/cashfree.js";
+
 import express from "express";
-import { Cashfree } from "cashfree-pg";
 import config from "../config/config.js";
 import ApiError from "../utils/ApiError.js";
 import { authenticate } from "../middleware/auth.js";
 import logger from "../utils/logger.js";
 
 const router = express.Router();
-
-Cashfree.XClientId = config.cashfree.appId;
-Cashfree.XClientSecret = config.cashfree.secretKey;
-Cashfree.XEnvironment = config.cashfree.env === "PROD" 
-  ? (Cashfree.Environment?.PRODUCTION || "PRODUCTION") 
-  : (Cashfree.Environment?.SANDBOX || "SANDBOX");
 
 router.post("/create-order", authenticate, async (req, res, next) => {
   try {

@@ -7,7 +7,8 @@ import { v2 as cloudinary } from "cloudinary";
 import config from "../config/config.js";
 import logger from "../utils/logger.js";
 import pkg from 'cashfree-pg';
-const { Cashfree, CFEnvironment } = pkg;
+import Cashfree from '../utils/cashfree.js';
+const { CFEnvironment } = pkg;
 
 // Configure Cloudinary from config
 cloudinary.config({
@@ -16,12 +17,7 @@ cloudinary.config({
   api_secret: config.cloudinary.apiSecret
 });
 
-// Initialize Cashfree Instance (v5+)
-const cashfree = new Cashfree(
-  config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX,
-  config.cashfree.appId,
-  config.cashfree.secretKey
-);
+// The Cashfree instance is now globally configured in backend/utils/cashfree.js
 
 const router = express.Router();
 
@@ -180,16 +176,7 @@ router.post("/buy/:id", authMiddleware, async (req, res, next) => {
       }
     };
 
-    // Check if Cashfree is configured
-    if (!config.cashfree.appId || !config.cashfree.secretKey) {
-      throw new ApiError(503, "Payment gateway configuration missing. Please update CASHFREE_APP_ID and CASHFREE_SECRET_KEY.");
-    }
-
-    // Set instance configs before calling
-    Cashfree.XClientId = config.cashfree.appId;
-    Cashfree.XClientSecret = config.cashfree.secretKey;
-    Cashfree.XEnvironment = config.cashfree.env === "PROD" ? CFEnvironment.PRODUCTION : CFEnvironment.SANDBOX;
-
+    // Use globally configured Cashfree instance
     const response = await Cashfree.PGCreateOrder("2023-08-01", request);
     
     // Log transaction as pending
@@ -284,7 +271,7 @@ router.post("/comment/:id", authMiddleware, async (req, res, next) => {
 router.get("/order-status/:orderId", authMiddleware, async (req, res, next) => {
   try {
     const { orderId } = req.params;
-    const response = await cashfree.PGFetchOrder("2023-08-01", orderId);
+    const response = await Cashfree.PGFetchOrder("2023-08-01", orderId);
     
     // If PAID, update the local transaction and grant access
     if (response.data.order_status === "PAID") {
