@@ -17,7 +17,8 @@ import {
   CheckCircle2, 
   Loader2,
   ChevronRight,
-  ExternalLink
+  ExternalLink,
+  Coins
 } from 'lucide-react';
 import Navbar from '@/components/layout/Navbar';
 import { useCurrency } from '@/context/CurrencyContext';
