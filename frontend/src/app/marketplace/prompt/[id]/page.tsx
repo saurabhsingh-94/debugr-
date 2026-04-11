@@ -186,7 +186,7 @@ export default function PromptDetailPage() {
           Return to Marketplace
         </button>
 
-        <section className="grid grid-cols-1 xl:grid-cols-[1.3fr_1fr] gap-24 lg:gap-40 items-start">
+        <section className="grid grid-cols-1 xl:grid-cols-[1.5fr_1fr] gap-16 lg:gap-24 items-start">
           
           {/* Left Side: Immersive Proof & Details */}
           <div className="space-y-20">
@@ -196,7 +196,7 @@ export default function PromptDetailPage() {
                <motion.div 
                  initial={{ opacity: 0, scale: 0.98 }}
                  animate={{ opacity: 1, scale: 1 }}
-                 className="relative aspect-square md:aspect-video rounded-[80px] overflow-hidden border border-white/5 bg-black/40 group shadow-[0_0_100px_rgba(0,0,0,0.5)]"
+                 className="relative aspect-square md:aspect-video rounded-[40px] overflow-hidden border border-white/5 bg-black/40 group shadow-[0_0_100px_rgba(0,0,0,0.5)]"
                >
                  {prompt.proof_urls && prompt.proof_urls.length > 0 ? (
                    <img 
@@ -248,7 +248,7 @@ export default function PromptDetailPage() {
                        Internal Protocol v4.01
                     </span>
                   </div>
-                  <h1 className="text-7xl md:text-9xl font-black italic uppercase tracking-tighter leading-[0.8] text-white max-w-4xl drop-shadow-2xl">
+                  <h1 className="text-5xl md:text-7xl font-black italic uppercase tracking-tighter leading-tight text-white max-w-4xl drop-shadow-2xl">
                     {prompt.title}
                   </h1>
                </div>
@@ -292,7 +292,7 @@ export default function PromptDetailPage() {
                     <span className="text-[11px] font-black uppercase tracking-[0.6em] whitespace-nowrap">Technical Briefing</span>
                     <div className="h-[2px] w-full bg-white/5" />
                   </div>
-                  <p className="text-3xl text-white/30 font-medium italic leading-relaxed max-w-4xl">
+                  <p className="text-xl md:text-2xl text-white/40 font-medium italic leading-relaxed max-w-4xl">
                     {prompt.description}
                   </p>
                </div>
@@ -303,7 +303,7 @@ export default function PromptDetailPage() {
           <div className="space-y-16 sticky top-40">
              
              {/* Premium Checkout Sidebar */}
-             <div className="p-16 rounded-[80px] border border-white/10 bg-white/[0.03] backdrop-blur-[120px] space-y-16 shadow-[0_60px_120px_rgba(0,0,0,0.6)] relative overflow-hidden group/checkout">
+             <div className="p-10 rounded-[40px] border border-white/10 bg-white/[0.03] backdrop-blur-[120px] space-y-12 shadow-[0_60px_120px_rgba(0,0,0,0.6)] relative overflow-hidden group/checkout">
                 <div className="absolute top-0 right-0 w-80 h-80 bg-amber-500/5 blur-[150px] rounded-full -translate-y-1/2 translate-x-1/2 opacity-0 group-hover/checkout:opacity-100 transition-opacity duration-1000" />
                 
                 <div className="space-y-8 relative z-10">
@@ -320,10 +320,10 @@ export default function PromptDetailPage() {
                       </div>
                    </div>
                    <div className="space-y-2">
-                      <h2 className="text-9xl font-black italic tracking-tighter text-white leading-none">
+                      <h2 className="text-7xl font-black italic tracking-tighter text-white leading-none">
                          {formatPrice(prompt.price)}
                       </h2>
-                      <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.4em] italic mt-4">One-time protocol issuance fee</p>
+                      <p className="text-[10px] font-mono font-black text-white/10 uppercase tracking-[0.4em] italic mt-2">One-time protocol issuance fee</p>
                    </div>
                 </div>
 
@@ -332,7 +332,7 @@ export default function PromptDetailPage() {
                     <button 
                       onClick={handleCheckout}
                       disabled={isBuying}
-                      className="w-full py-12 bg-[#f5f5f7] text-black rounded-[48px] font-black uppercase tracking-[0.6em] italic text-base hover:bg-amber-500 transition-all duration-700 flex items-center justify-center gap-8 disabled:opacity-50 shadow-[0_30px_60px_rgba(255,255,255,0.05)] relative overflow-hidden group/btn"
+                      className="w-full py-6 bg-[#f5f5f7] text-black rounded-2xl font-black uppercase tracking-[0.5em] italic text-sm hover:bg-amber-500 transition-all duration-700 flex items-center justify-center gap-6 disabled:opacity-50 shadow-[0_20px_40px_rgba(255,255,255,0.05)] relative overflow-hidden group/btn"
                     >
                       {isBuying ? (
                         <>
@@ -359,14 +359,14 @@ export default function PromptDetailPage() {
                 <div className="grid grid-cols-2 gap-8 relative z-10">
                    <button 
                      onClick={handleLike}
-                     className={`py-8 rounded-[40px] border flex items-center justify-center gap-5 transition-all duration-700 ${liked ? 'border-pink-500/50 bg-pink-500/10 text-pink-500 shadow-[0_0_40px_rgba(236,72,153,0.15)]' : 'border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20'}`}
+                     className={`py-5 rounded-2xl border flex items-center justify-center gap-4 transition-all duration-700 ${liked ? 'border-pink-500/50 bg-pink-500/10 text-pink-500 shadow-[0_0_40px_rgba(236,72,153,0.15)]' : 'border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20'}`}
                    >
-                     <Heart size={22} className={liked ? 'fill-pink-500' : ''} />
-                     <span className="text-[11px] font-black uppercase tracking-[0.5em] italic">{liked ? 'VOTED' : 'VOTE'}</span>
+                     <Heart size={18} className={liked ? 'fill-pink-500' : ''} />
+                     <span className="text-[10px] font-black uppercase tracking-[0.4em] italic">{liked ? 'VOTED' : 'VOTE'}</span>
                    </button>
-                   <button className="py-8 rounded-[40px] border border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20 flex items-center justify-center gap-5 transition-all duration-700">
-                     <Share2 size={22} />
-                     <span className="text-[11px] font-black uppercase tracking-[0.5em] italic">SIGNAL</span>
+                   <button className="py-5 rounded-2xl border border-white/5 bg-white/5 text-white/20 hover:text-white hover:bg-white/10 hover:border-white/20 flex items-center justify-center gap-4 transition-all duration-700">
+                     <Share2 size={18} />
+                     <span className="text-[10px] font-black uppercase tracking-[0.4em] italic">SIGNAL</span>
                    </button>
                 </div>
              </div>
@@ -379,7 +379,7 @@ export default function PromptDetailPage() {
                 </div>
 
                 {/* Interactive Comment Form */}
-                <form onSubmit={handleCommentSubmit} className="p-12 rounded-[56px] bg-white/[0.03] border border-white/10 space-y-12 group/form relative overflow-hidden">
+                <form onSubmit={handleCommentSubmit} className="p-8 rounded-[32px] bg-white/[0.03] border border-white/10 space-y-8 group/form relative overflow-hidden">
                     <div className="absolute top-0 left-0 w-full h-1 bg-linear-to-r from-transparent via-amber-500/20 to-transparent opacity-0 group-hover/form:opacity-100 transition-opacity" />
                     
                     <div className="flex justify-between items-center relative z-10">
@@ -409,7 +409,7 @@ export default function PromptDetailPage() {
                           value={commentText}
                           onChange={e => setCommentText(e.target.value)}
                           placeholder="Transmit your findings to the collective archive..."
-                          className="w-full min-h-[180px] p-10 rounded-[40px] bg-black/80 border border-white/5 text-lg text-white focus:border-amber-500/50 outline-none resize-none italic font-medium placeholder:text-white/5 transition-all duration-700 shadow-inner"
+                          className="w-full min-h-[180px] p-6 rounded-2xl bg-black/80 border border-white/5 text-base text-white focus:border-amber-500/50 outline-none resize-none italic font-medium placeholder:text-white/5 transition-all duration-700 shadow-inner"
                        />
                        <div className="absolute bottom-8 right-10 text-[9px] font-mono text-white/10 uppercase tracking-[0.5em] italic">Secure Transmission Buffer</div>
                     </div>
@@ -418,7 +418,7 @@ export default function PromptDetailPage() {
                       disabled={isSubmittingComment}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-8 bg-amber-500 text-black rounded-[32px] font-black uppercase tracking-[0.5em] italic text-xs disabled:opacity-50 shadow-[0_20px_60px_rgba(245,158,11,0.2)] relative z-10"
+                      className="w-full py-5 bg-amber-500 text-black rounded-2xl font-black uppercase tracking-\[0.4em\] italic text-[10px] disabled:opacity-50 shadow-[0_20px_60px_rgba(245,158,11,0.2)] relative z-10"
                     >
                        {isSubmittingComment ? 'BROADCASTING...' : 'INITIALIZE BROADCAST'}
                     </motion.button>
@@ -426,7 +426,7 @@ export default function PromptDetailPage() {
 
                 <div className="space-y-6">
                   {comments.length === 0 ? (
-                    <div className="p-16 rounded-[56px] border-2 border-dashed border-white/5 text-center bg-white/[0.01]">
+                    <div className="p-8 rounded-[32px] border-2 border-dashed border-white/5 text-center bg-white/[0.01]">
                        <p className="text-[11px] font-black text-white/10 uppercase tracking-[0.6em] italic">No testimonies recorded for this protocol.</p>
                     </div>
                   ) : (
@@ -435,7 +435,7 @@ export default function PromptDetailPage() {
                         initial={{ opacity: 0, x: 20 }}
                         animate={{ opacity: 1, x: 0 }}
                         key={c.id} 
-                        className="p-10 rounded-[48px] bg-white/[0.02] border border-white/5 space-y-6 hover:bg-white/[0.04] transition-all duration-700 group/msg"
+                        className="p-6 rounded-[32px] bg-white/[0.02] border border-white/5 space-y-4 hover:bg-white/[0.04] transition-all duration-700 group/msg"
                       >
                         <div className="flex justify-between items-center">
                            <div className="flex items-center gap-5">
@@ -446,7 +446,7 @@ export default function PromptDetailPage() {
                               {[1, 2, 3, 4, 5].map(s => <Star key={s} size={10} className={s <= c.rating ? 'text-amber-500 fill-amber-500' : 'text-white/5'} />)}
                            </div>
                         </div>
-                        <p className="text-lg text-white/40 font-medium italic leading-relaxed pl-4 border-l-2 border-amber-500/10 group-hover/msg:text-white/60 transition-colors">"{c.message}"</p>
+                        <p className="text-base text-white/40 font-medium italic leading-relaxed pl-4 border-l-2 border-amber-500/10 group-hover/msg:text-white/60 transition-colors">"{c.message}"</p>
                       </motion.div>
                     ))
                   )}

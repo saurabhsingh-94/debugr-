@@ -1072,3 +1072,26 @@
 2026-04-10 16:36:12:3612 info: ✓ Marketplace likes table created
 2026-04-10 16:36:12:3612 info: ✓ Marketplace comments table created
 2026-04-10 16:36:13:3613 info: ✓ Prompt purchases table created
+2026-04-10 23:31:36:3136 info: 📧 Using Real SMTP: smtp.gmail.com
+2026-04-10 23:31:36:3136 warn: ⚠️ REDIS_URL not found. Redis-dependent features will use fallbacks.
+2026-04-10 23:31:37:3137 info: 🚀 Server running on port 5000 in development mode
+2026-04-10 23:31:41:3141 info: ✅ Database initialized successfully
+2026-04-10 23:32:00:320 error: Expected property name or '}' in JSON at position 1 (line 1 column 2) - SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\body-parser\lib\types\json.js:72:19)
+    at C:\Projects\New_one\new_project_bugBounty\backend\node_modules\body-parser\lib\read.js:162:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:238:16)
+    at done (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+2026-04-10 23:32:14:3214 info: ::1 - - [10/Apr/2026:18:02:14 +0000] "POST /api/auth/register HTTP/1.1" 400 137 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"
+2026-04-10 23:32:26:3226 error: [Email Error] Failed to send email to noreplydebugr@gmail.com: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-82f0c4e2119sm4635497b3a.47 - gsmtp
+2026-04-10 23:32:26:3226 info: ::1 - - [10/Apr/2026:18:02:26 +0000] "POST /api/auth/register HTTP/1.1" 201 114 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"
+2026-04-10 23:32:41:3241 warn: 401 - Invalid credentials
+2026-04-10 23:32:41:3241 info: ::1 - - [10/Apr/2026:18:02:41 +0000] "POST /api/auth/login HTTP/1.1" 401 47 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"
+2026-04-10 23:33:07:337 warn: 400 - Email already registered
+2026-04-10 23:33:07:337 info: ::1 - - [10/Apr/2026:18:03:07 +0000] "POST /api/auth/register HTTP/1.1" 400 52 "-" "Mozilla/5.0 (Windows NT; Windows NT 10.0; en-IN) WindowsPowerShell/5.1.26100.8115"

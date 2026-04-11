@@ -2,3 +2,16 @@
     at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7
 2026-04-03 18:05:22:522 error: config is not defined - ReferenceError: config is not defined
     at file:///C:/Projects/New_one/new_project_bugBounty/backend/routes/auth.js:80:7
+2026-04-10 23:32:00:320 error: Expected property name or '}' in JSON at position 1 (line 1 column 2) - SyntaxError: Expected property name or '}' in JSON at position 1 (line 1 column 2)
+    at JSON.parse (<anonymous>)
+    at parse (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\body-parser\lib\types\json.js:72:19)
+    at C:\Projects\New_one\new_project_bugBounty\backend\node_modules\body-parser\lib\read.js:162:18
+    at AsyncResource.runInAsyncScope (node:async_hooks:214:14)
+    at invokeCallback (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:238:16)
+    at done (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:227:7)
+    at IncomingMessage.onEnd (C:\Projects\New_one\new_project_bugBounty\backend\node_modules\raw-body\index.js:287:7)
+    at IncomingMessage.emit (node:events:508:28)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1701:12)
+2026-04-10 23:32:26:3226 error: [Email Error] Failed to send email to noreplydebugr@gmail.com: Invalid login: 535-5.7.8 Username and Password not accepted. For more information, go to
+535 5.7.8  https://support.google.com/mail/?p=BadCredentials d2e1a72fcca58-82f0c4e2119sm4635497b3a.47 - gsmtp
