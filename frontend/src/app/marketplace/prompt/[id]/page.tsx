@@ -418,7 +418,7 @@ export default function PromptDetailPage() {
                       disabled={isSubmittingComment}
                       whileHover={{ scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      className="w-full py-5 bg-amber-500 text-black rounded-2xl font-black uppercase tracking-\[0.4em\] italic text-[10px] disabled:opacity-50 shadow-[0_20px_60px_rgba(245,158,11,0.2)] relative z-10"
+                      className="w-full py-5 bg-amber-500 text-black rounded-2xl font-black uppercase tracking-[0.4em] italic text-[10px] disabled:opacity-50 shadow-[0_20px_60px_rgba(245,158,11,0.2)] relative z-10"
                     >
                        {isSubmittingComment ? 'BROADCASTING...' : 'INITIALIZE BROADCAST'}
                     </motion.button>
