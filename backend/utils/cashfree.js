@@ -1,12 +1,11 @@
-import pkg from 'cashfree-pg';
-const { Cashfree } = pkg;
+import { Cashfree, CFEnvironment } from 'cashfree-pg';
 import config from '../config/config.js';
 
 // Initialize Cashfree Instance singleton configuration
 Cashfree.XClientId = config.cashfree.appId;
 Cashfree.XClientSecret = config.cashfree.secretKey;
 Cashfree.XEnvironment = config.cashfree.env === "PROD" 
-    ? Cashfree.Environment.PRODUCTION 
-    : Cashfree.Environment.SANDBOX;
+    ? CFEnvironment.PRODUCTION 
+    : CFEnvironment.SANDBOX;
 
 export default Cashfree;
